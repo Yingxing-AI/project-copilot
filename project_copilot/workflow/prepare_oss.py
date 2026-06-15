@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from project_copilot.oss import check_oss_readiness
-from project_copilot.workflow.types import WorkflowContext
+from project_copilot.workflow.types import WorkflowContext, WorkflowResult
 
 
 FILES: dict[str, str] = {
@@ -151,7 +151,7 @@ body:
 }
 
 
-def run(context: WorkflowContext) -> str:
+def run(context: WorkflowContext) -> WorkflowResult:
     context.root.mkdir(parents=True, exist_ok=True)
     created: list[str] = []
     kept: list[str] = []
@@ -166,15 +166,11 @@ def run(context: WorkflowContext) -> str:
         created.append(relative_path)
 
     readiness = check_oss_readiness(context.root)
-    lines = [
-        "已完成开源准备文件检查。",
-        f"OSS Readiness Score：{readiness.score}/100",
-    ]
-    if created:
-        lines.append("创建文件：" + ", ".join(created))
-    if kept:
-        lines.append("保留已有文件：" + ", ".join(kept))
-    if readiness.missing:
-        lines.append("仍缺失：" + ", ".join(readiness.missing))
-    lines.append("下一步：确认 README、LICENSE 和 GitHub topics 后创建公开仓库。")
-    return "\n".join(lines)
+    return WorkflowResult(
+        intent_name=context.intent_name,
+        status="success",
+        title="已完成开源准备文件检查。",
+        summary=f"OSS Readiness Score：{readiness.score}/100",
+        details={"创建文件": created, "保留已有文件": kept, "仍缺失": readiness.missing},
+        next_steps=["确认 README、LICENSE 和 GitHub topics 后创建公开仓库。"],
+    )

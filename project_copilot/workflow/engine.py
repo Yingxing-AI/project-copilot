@@ -14,9 +14,9 @@ from project_copilot.workflow import (
     oss_check,
     prepare_oss,
 )
-from project_copilot.workflow.types import WorkflowContext
+from project_copilot.workflow.types import WorkflowContext, WorkflowResult
 
-WorkflowHandler = Callable[[WorkflowContext], str]
+WorkflowHandler = Callable[[WorkflowContext], WorkflowResult]
 
 
 class WorkflowEngine:
@@ -34,12 +34,12 @@ class WorkflowEngine:
     def register(self, intent_name: str, handler: WorkflowHandler) -> None:
         self._registry[intent_name] = handler
 
-    def dispatch(self, root: Path, text: str, intent_name: str) -> str:
+    def dispatch(self, root: Path, text: str, intent_name: str) -> WorkflowResult:
         context = WorkflowContext(root=root, text=text, intent_name=intent_name)
         handler = self._registry.get(intent_name, check_project.run)
         return handler(context)
 
-    def run(self, root: Path, text: str) -> str:
+    def run(self, root: Path, text: str) -> WorkflowResult:
         intent_name = classify_intent_name(text)
         return self.dispatch(root=root, text=text, intent_name=intent_name)
 
@@ -48,5 +48,9 @@ class WorkflowEngine:
         return tuple(self._registry)
 
 
-def run_text_workflow(root: Path, text: str) -> str:
+def run_structured_workflow(root: Path, text: str) -> WorkflowResult:
     return WorkflowEngine().run(root, text)
+
+
+def run_text_workflow(root: Path, text: str) -> str:
+    return run_structured_workflow(root, text).render()

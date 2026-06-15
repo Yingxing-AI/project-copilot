@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from project_copilot.analyzer import analyze_project
 from project_copilot.memory import MemoryStore
-from project_copilot.workflow.types import WorkflowContext
-from project_copilot.workflow.utils import as_bullets, format_next_steps
+from project_copilot.workflow.types import WorkflowContext, WorkflowResult
+from project_copilot.workflow.utils import as_bullets
 
 
-def run(context: WorkflowContext) -> str:
+def run(context: WorkflowContext) -> WorkflowResult:
     root = context.root
     root.mkdir(parents=True, exist_ok=True)
     memory = MemoryStore(root)
@@ -59,17 +59,18 @@ def run(context: WorkflowContext) -> str:
     )
     memory.append_memory(f"接管已有项目：{context.text.strip()}")
 
-    lines = [
-        "已接管已有项目。",
-        "处理方式：未覆盖现有 README、LICENSE、源码或文档。",
-        "已更新：.ai/PROJECT_CONTEXT.md, .ai/STATUS.md, .ai/MEMORY.md",
-    ]
-    if profile["tech_stack"]:
-        lines.append("识别技术栈：" + ", ".join(profile["tech_stack"]))
-    if profile["signals"]:
-        lines.append("项目线索：" + ", ".join(profile["signals"][:8]))
-    lines.append(format_next_steps(analysis.next_steps))
-    return "\n".join(lines)
+    return WorkflowResult(
+        intent_name=context.intent_name,
+        status="success",
+        title="已接管已有项目。",
+        summary="处理方式：未覆盖现有 README、LICENSE、源码或文档。",
+        details={
+            "已更新": [".ai/PROJECT_CONTEXT.md", ".ai/STATUS.md", ".ai/MEMORY.md"],
+            "识别技术栈": profile["tech_stack"],
+            "项目线索": profile["signals"][:8],
+        },
+        next_steps=analysis.next_steps,
+    )
 
 
 def _inspect_existing_project(root) -> dict[str, list[str]]:
