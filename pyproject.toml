@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "project-copilot"
+version = "0.1.0"
+description = "Natural-language project operating system for AI coding projects."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Project Copilot Contributors" }]
+dependencies = []
+
+[project.scripts]
+project-copilot = "project_copilot.cli.main:main"
