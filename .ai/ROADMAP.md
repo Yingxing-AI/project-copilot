@@ -20,7 +20,7 @@
 - [x] Release dry-run and version/tag consistency checks
 - [x] GitHub Actions CI for Python 3.10, 3.11, and 3.12
 - [x] OSS product packaging docs
-- [x] Pytest baseline: 30 passed
+- [x] Pytest baseline: 31 passed
 
 ## v0.4
 

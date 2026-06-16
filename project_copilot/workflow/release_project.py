@@ -86,7 +86,7 @@ def release_project(root: Path, tag: str, runner: Runner | None = None, dry_run:
         return outcome
     outcome.actions.append("pytest -q")
 
-    notes = _write_release_notes(root, tag)
+    notes = _write_release_notes(root, tag, runner)
     outcome.release_notes = notes
     outcome.actions.append("生成 release notes")
 
@@ -183,14 +183,65 @@ def _git(root: Path, args: list[str], runner: Runner) -> str:
     return result.stdout.strip() if result.returncode == 0 else ""
 
 
-def _write_release_notes(root: Path, tag: str) -> Path:
+def _write_release_notes(root: Path, tag: str, runner: Runner) -> Path:
     notes_dir = root / ".ai" / "release"
     notes_dir.mkdir(parents=True, exist_ok=True)
     path = notes_dir / f"{tag}.md"
-    changelog = root / "CHANGELOG.md"
-    body = changelog.read_text(encoding="utf-8") if changelog.exists() else "# Release Notes\n"
-    path.write_text(f"# {tag}\n\n{body}", encoding="utf-8")
+    previous_tag = _previous_release_tag(root, tag, runner)
+    commits = _release_commits(root, tag, previous_tag, runner)
+    body = _render_release_notes(tag, previous_tag, commits, root / "CHANGELOG.md")
+    path.write_text(body, encoding="utf-8")
     return path
+
+
+def _previous_release_tag(root: Path, tag: str, runner: Runner) -> str | None:
+    tags = _git(root, ["tag", "--sort=-version:refname"], runner).splitlines()
+    for candidate in tags:
+        candidate = candidate.strip()
+        if candidate and candidate != tag and _tag_to_pep440_version(candidate):
+            return candidate
+    return None
+
+
+def _release_commits(root: Path, tag: str, previous_tag: str | None, runner: Runner) -> list[str]:
+    revision = f"{previous_tag}..HEAD" if previous_tag else "HEAD"
+    result = runner(root, ["git", "log", "--pretty=format:%h %s", revision])
+    if result.returncode != 0:
+        return []
+    release_commit_subject = f"chore: prepare release {tag}"
+    commits = []
+    for line in result.stdout.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        _, _, subject = line.partition(" ")
+        if subject == release_commit_subject:
+            continue
+        commits.append(line)
+    return commits
+
+
+def _render_release_notes(tag: str, previous_tag: str | None, commits: list[str], changelog: Path) -> str:
+    lines = [f"# {tag}", ""]
+    if previous_tag:
+        lines.extend([f"## Changes since {previous_tag}", ""])
+    else:
+        lines.extend(["## Changes", ""])
+
+    if commits:
+        lines.extend([f"- {commit}" for commit in commits])
+    else:
+        lines.append("- No code changes detected since the previous release tag.")
+
+    if changelog.exists():
+        lines.extend(["", "## Project Changelog", "", _latest_changelog_section(changelog.read_text(encoding="utf-8")).strip()])
+    lines.append("")
+    return "\n".join(lines)
+
+
+def _latest_changelog_section(text: str) -> str:
+    match = re.search(r"^## .+?(?=^## |\Z)", text, flags=re.MULTILINE | re.DOTALL)
+    return match.group(0) if match else text.strip()
 
 
 def _command_error(label: str, result: subprocess.CompletedProcess[str]) -> str:

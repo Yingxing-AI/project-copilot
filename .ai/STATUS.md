@@ -8,9 +8,9 @@
 
 - 版本：`0.3.0a5`
 - 分支：`main`
-- 最新提交：`d92ef0f docs: clarify alpha install guidance`
-- 最新标签：`v0.3.0-alpha.4`
-- 测试基线：`pytest -q` 通过，30 passed。
+- 最新提交：`bacb5cb chore: prepare release v0.3.0-alpha.5`
+- 最新标签：`v0.3.0-alpha.5`
+- 测试基线：`pytest -q` 通过，31 passed。
 - 项目健康度：100/100
 
 已完成功能：

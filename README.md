@@ -255,7 +255,7 @@ pytest -q
 Current baseline:
 
 ```text
-30 passed
+31 passed
 ```
 
 ## Contributing
