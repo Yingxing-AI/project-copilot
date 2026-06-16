@@ -41,12 +41,12 @@ class ReleaseProjectTest(unittest.TestCase):
                     return _ok(" M README.md\n")
                 return _ok("")
 
-            outcome = release_project(root, "v0.3.0-alpha.4", runner=runner)
+            outcome = release_project(root, "v0.3.0-alpha.5", runner=runner)
 
             self.assertEqual(outcome.status, "success")
             self.assertIn(["git", "push", "origin", "main"], calls)
-            self.assertIn(["git", "tag", "-a", "v0.3.0-alpha.4", "-m", "Project Copilot v0.3.0-alpha.4"], calls)
-            self.assertIn(["git", "push", "origin", "v0.3.0-alpha.4"], calls)
+            self.assertIn(["git", "tag", "-a", "v0.3.0-alpha.5", "-m", "Project Copilot v0.3.0-alpha.5"], calls)
+            self.assertIn(["git", "push", "origin", "v0.3.0-alpha.5"], calls)
             self.assertTrue(any(call[:3] == ["gh", "release", "create"] for call in calls))
 
     def test_release_dry_run_does_not_push_or_tag(self) -> None:
@@ -68,7 +68,7 @@ class ReleaseProjectTest(unittest.TestCase):
                     return _ok("Logged in\n")
                 return _ok("")
 
-            outcome = release_project(root, "v0.3.0-alpha.4", runner=runner, dry_run=True)
+            outcome = release_project(root, "v0.3.0-alpha.5", runner=runner, dry_run=True)
 
             self.assertEqual(outcome.status, "success")
             self.assertTrue(outcome.dry_run)
@@ -93,7 +93,7 @@ class ReleaseProjectTest(unittest.TestCase):
                     return _ok("")
                 return _ok("")
 
-            outcome = release_project(root, "v0.3.0-alpha.5", runner=runner, dry_run=True)
+            outcome = release_project(root, "v0.3.0-alpha.6", runner=runner, dry_run=True)
 
             self.assertEqual(outcome.status, "blocked")
             self.assertTrue(any("版本不匹配" in blocker for blocker in outcome.blockers))

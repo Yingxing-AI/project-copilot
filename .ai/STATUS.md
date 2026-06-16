@@ -6,10 +6,10 @@
 
 当前状态：
 
-- 版本：`0.3.0a4`
+- 版本：`0.3.0a5`
 - 分支：`main`
-- 最新提交：`4a3fcf7 feat: add one-command installer`
-- 最新标签：`v0.3.0-alpha.3`
+- 最新提交：`d92ef0f docs: clarify alpha install guidance`
+- 最新标签：`v0.3.0-alpha.4`
 - 测试基线：`pytest -q` 通过，30 passed。
 - 项目健康度：100/100
 
