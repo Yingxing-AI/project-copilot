@@ -13,6 +13,7 @@ from project_copilot.workflow import (
     init_project,
     oss_check,
     prepare_oss,
+    release_project,
     sync_project_state,
 )
 from project_copilot.workflow.types import WorkflowContext, WorkflowResult
@@ -32,6 +33,7 @@ class WorkflowEngine:
         self.register("github_sync", github_sync.run)
         self.register("adopt_project", adopt_project.run)
         self.register("sync_project_state", sync_project_state.run)
+        self.register("release_project", release_project.run)
 
     def register(self, intent_name: str, handler: WorkflowHandler) -> None:
         self._registry[intent_name] = handler
@@ -77,5 +79,6 @@ def _unknown_intent_result(context: WorkflowContext) -> WorkflowResult:
             "准备开源",
             "私有同步到 GitHub",
             "同步项目状态",
+            "发布 v0.3.0-alpha.2",
         ],
     )

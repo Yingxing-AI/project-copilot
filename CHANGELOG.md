@@ -28,11 +28,12 @@ Project Copilot is now packaged as a local-first natural-language project workfl
 - Architecture SVG and Mermaid source.
 - Automatic project state sync for `.ai/STATUS.md`, Roadmap, and Changelog.
 - Managed `AGENTS.md` synchronization block.
+- One-command GitHub push, tag, and release workflow.
 
 ### Verified
 
 - `pytest -q`
-- Current baseline: 25 passed.
+- Current baseline: 28 passed.
 
 ## v0.1.0
 

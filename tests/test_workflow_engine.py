@@ -17,6 +17,7 @@ class WorkflowEngineTest(unittest.TestCase):
         self.assertIn("prepare_oss", engine.registered_intents)
         self.assertIn("github_sync", engine.registered_intents)
         self.assertIn("sync_project_state", engine.registered_intents)
+        self.assertIn("release_project", engine.registered_intents)
 
     def test_dispatches_from_natural_language(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -95,3 +96,10 @@ class WorkflowEngineTest(unittest.TestCase):
             self.assertIn("手写约定。", agents)
             self.assertIn("project-copilot:managed:start", agents)
             self.assertIn("project-copilot doctor", agents)
+
+    def test_release_project_requires_tag(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            result = run_text_workflow(Path(directory), "一键发布")
+
+            self.assertIn("发布被阻止", result)
+            self.assertIn("请提供明确版本标签", result)

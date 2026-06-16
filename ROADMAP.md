@@ -16,7 +16,8 @@
 - [x] Command mode
 - [x] Unknown intent suggestions
 - [x] GitHub sync planning and preflight checks
-- [x] Pytest baseline: 25 passed
+- [x] One-command GitHub push, tag, and release workflow
+- [x] Pytest baseline: 28 passed
 
 ## v0.4
 

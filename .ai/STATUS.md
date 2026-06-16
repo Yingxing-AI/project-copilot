@@ -8,9 +8,9 @@
 
 - 版本：`0.3.0a0`
 - 分支：`main`
-- 最新提交：`d5c6cdd feat: package cli and add demo scripts`
+- 最新提交：`c9be4c5 feat: sync project state metadata`
 - 最新标签：`v0.3.0-alpha.1`
-- 测试基线：`pytest -q` 通过，25 passed。
+- 测试基线：`pytest -q` 通过，28 passed。
 - 项目健康度：100/100
 
 已完成功能：

@@ -13,6 +13,7 @@ class Intent(str, Enum):
     CHECK_OSS = "oss_check"
     PREPARE_OSS = "prepare_oss"
     GITHUB_SYNC = "github_sync"
+    RELEASE_PROJECT = "release_project"
     PREPARE_RELEASE = "prepare_release"
     WHAT_DID_TODAY = "what_did_today"
     NEXT_STEP = "next_step"
@@ -47,6 +48,18 @@ KEYWORDS: list[tuple[Intent, tuple[str, ...]]] = [
     ),
     (Intent.PREPARE_OSS, ("准备开源", "开源发布准备", "完善开源", "prepare oss", "prepare open source")),
     (Intent.CHECK_OSS, ("oss", "开源准备", "开源检查", "readiness")),
+    (
+        Intent.RELEASE_PROJECT,
+        (
+            "一键发布",
+            "创建 release",
+            "创建 github release",
+            "发布版本",
+            "发布 alpha",
+            "release project",
+            "github release",
+        ),
+    ),
     (Intent.PREPARE_RELEASE, ("准备发布", "发布", "release")),
     (Intent.GENERATE_ROADMAP, ("路线图", "roadmap")),
     (Intent.WHAT_DID_TODAY, ("今天做了什么", "今日变更", "what did")),

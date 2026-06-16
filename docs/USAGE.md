@@ -52,6 +52,12 @@ Sync project status, roadmap, changelog, and the managed `AGENTS.md` block:
 project-copilot 同步项目状态
 ```
 
+Create a GitHub release after push and tag:
+
+```bash
+project-copilot 发布 v0.3.0-alpha.2
+```
+
 Initialize a project:
 
 ```bash
