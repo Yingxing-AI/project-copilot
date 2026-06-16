@@ -36,6 +36,8 @@ class WorkflowEngine:
 
     def dispatch(self, root: Path, text: str, intent_name: str) -> WorkflowResult:
         context = WorkflowContext(root=root, text=text, intent_name=intent_name)
+        if intent_name == "unknown":
+            return _unknown_intent_result(context)
         handler = self._registry.get(intent_name, check_project.run)
         return handler(context)
 
@@ -54,3 +56,23 @@ def run_structured_workflow(root: Path, text: str) -> WorkflowResult:
 
 def run_text_workflow(root: Path, text: str) -> str:
     return run_structured_workflow(root, text).render()
+
+
+def _unknown_intent_result(context: WorkflowContext) -> WorkflowResult:
+    return WorkflowResult(
+        intent_name=context.intent_name,
+        status="needs_input",
+        title="暂时没有识别这个意图。",
+        summary="可以换一种说法，或直接输入下面这些常用操作。",
+        details={
+            "原始输入": context.text.strip(),
+        },
+        next_steps=[
+            "检查项目",
+            "继续开发项目",
+            "今天结束工作",
+            "检查 OSS 准备度",
+            "准备开源",
+            "私有同步到 GitHub",
+        ],
+    )

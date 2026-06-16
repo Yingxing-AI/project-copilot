@@ -56,3 +56,13 @@ class WorkflowEngineTest(unittest.TestCase):
             self.assertIn("仓库名称：", result)
             self.assertIn("GitHub CLI", result)
             self.assertIn("GitHub 登录", result)
+
+    def test_unknown_intent_returns_suggestions(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+
+            result = run_text_workflow(root, "随便说点无法识别的话")
+
+            self.assertIn("暂时没有识别这个意图", result)
+            self.assertIn("检查项目", result)
+            self.assertIn("继续开发项目", result)

@@ -1,29 +1,141 @@
 # Project Copilot
 
-Project Copilot 是一个面向 AI Coding 场景的自然语言项目操作系统。
+Natural Language Operating System for AI Coding Projects.
 
-用户不需要记 Git、Docker、Python、前后端或项目管理命令，只需要表达意图：
+Project Copilot 是一个面向 AI Coding 项目的自然语言项目操作系统。它把“检查项目”“继续开发”“今天结束工作”“准备开源”这类自然语言输入，转换成本地、可重复的项目工作流。
 
-- `初始化项目`
-- `接管已有项目`
-- `继续开发项目`
-- `检查项目`
-- `今天结束工作`
-- `检查 OSS 准备度`
-- `准备开源`
-- `开源到 GitHub`
-- `私有同步到 GitHub`
-- `准备发布`
+它解决的问题很直接：开发者不应该在每个项目里重复记忆 Git、Python、开源准备、项目状态和工作流命令。Project Copilot 用一个中文优先的 CLI，把这些项目操作组织成可持续维护的 workflow，并把项目上下文写入 `.ai/` 记忆目录。
 
-v0.1 是规则驱动的本地 MVP，不依赖外部 API。
+当前版本是 v0.3 Alpha：规则驱动、本地运行、不依赖外部 AI API。
 
-## 安装
+## Available Today
+
+- Natural-language intent recognition
+- Workflow engine
+- Interactive CLI mode
+- Command mode
+- `.ai/` project memory
+- Project initialization
+- Existing-project adoption
+- Project health check
+- Continue development workflow
+- Close day workflow
+- OSS readiness check
+- OSS preparation workflow
+- GitHub sync planning and preflight checks
+- Unknown intent suggestions
+- Pytest coverage for the current workflow surface
+
+## Quick Start
+
+Install in editable mode:
 
 ```bash
 pip install -e .
 ```
 
-## 使用
+Start interactive mode:
+
+```bash
+project-copilot
+```
+
+Run a single workflow:
+
+```bash
+project-copilot 检查项目
+```
+
+Run without installing the console script:
+
+```bash
+python3 -m project_copilot.cli.main 检查项目
+```
+
+## Usage Examples
+
+Initialize a project:
+
+```bash
+project-copilot 初始化项目
+```
+
+Adopt an existing project without overwriting existing files:
+
+```bash
+project-copilot 接管这个已有项目
+```
+
+Check project status:
+
+```bash
+project-copilot 检查项目
+```
+
+Continue from project memory:
+
+```bash
+project-copilot 继续开发项目
+```
+
+Close the day and update project memory:
+
+```bash
+project-copilot 今天结束工作
+```
+
+Check open-source readiness:
+
+```bash
+project-copilot 检查 OSS 准备度
+```
+
+Prepare open-source community files:
+
+```bash
+project-copilot 准备开源
+```
+
+Plan private GitHub sync:
+
+```bash
+project-copilot 私有同步到 GitHub
+```
+
+Run against another project root:
+
+```bash
+project-copilot --root /path/to/project 检查项目
+```
+
+## Interactive Mode
+
+Run `project-copilot` with no arguments to enter interactive mode.
+
+The CLI shows a short project status summary, then accepts continuous natural-language input:
+
+```text
+Project Copilot 交互模式
+项目状态摘要：
+- 当前阶段：可持续开发
+- 健康度：92/100
+- Git：main
+常用输入：检查项目、继续开发项目、今天结束工作、检查 OSS 准备度。
+输入 exit / quit / 退出 结束。
+project-copilot>
+```
+
+Exit commands:
+
+- `exit`
+- `quit`
+- `退出`
+
+If an intent cannot be recognized, Project Copilot returns a short list of available suggestions instead of running the wrong workflow.
+
+## Command Mode
+
+Command mode keeps the existing one-shot workflow style:
 
 ```bash
 project-copilot 检查项目
@@ -33,52 +145,97 @@ project-copilot 继续开发项目
 project-copilot 今天结束工作
 project-copilot 检查 OSS 准备度
 project-copilot 准备开源
-project-copilot 私有同步到GitHub
+project-copilot 私有同步到 GitHub
 ```
 
-也可以直接运行模块：
-
-```bash
-python -m project_copilot.cli.main 检查项目
-```
-
-## v0.1 能力
-
-- 项目初始化：生成 `README.md`、`LICENSE`、`AGENTS.md`、`docs/` 和 `.ai/` 记忆文件。
-- 已有项目接管：扫描现有文件，非破坏式生成 `.ai/` 项目记忆和接管报告。
-- 项目记忆：维护 `PROJECT_CONTEXT.md`、`MEMORY.md`、`ROADMAP.md`、`STATUS.md`、`DECISIONS.md`、`WORKFLOW.md`、`USER_PROFILE.md`。
-- 项目状态分析：检查 Git、基础文件、缺失项、风险和下一步建议。
-- 开发会话管理：继续开发、结束工作、今日总结。
-- OSS 检查：输出 OSS Readiness Score 和改进建议。
-- 开源准备：生成贡献指南、安全策略、行为准则、变更日志、Issue 模板和 PR 模板。
-- GitHub 同步：规划 public/private 仓库同步，检查 remote、GitHub CLI 和仓库地址。
-- 自然语言意图：用中文或简单英文触发工作流。
-
-## 调度架构
-
-自然语言请求统一进入 `intent` 识别，输出标准 `intent_name`。`workflow` engine 根据 `intent_name` 注册和分发工作流；每个工作流单独一个文件，并在内部调用 `analyzer`、`planner`、`memory`、`oss`、`gitops` 等模块。CLI 只调用 workflow engine。
-
-第一阶段核心工作流：
-
-- `init_project`
-- `check_project`
-- `continue_development`
-- `close_day`
-- `oss_check`
-- `prepare_oss`
-- `github_sync`
-
-## 目录结构
+## Architecture
 
 ```text
-project_copilot/
-  analyzer/
-  cli/
-  gitops/
-  intent/
-  memory/
-  oss/
-  planner/
-tests/
-docs/
+User text
+   |
+   v
+intent classifier
+   |
+   v
+workflow engine
+   |
+   +--> workflow handlers
+          |
+          +--> memory
+          +--> analyzer
+          +--> planner
+          +--> oss
+          +--> gitops
+   |
+   v
+WorkflowResult
+   |
+   v
+CLI output
 ```
+
+The CLI does not call workflow modules directly. It sends user text to the workflow engine, which classifies the intent, dispatches to a registered workflow, and renders a `WorkflowResult`.
+
+More details: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+
+## Project Memory
+
+Project Copilot stores project memory under `.ai/`.
+
+Current memory files:
+
+- `.ai/PROJECT_CONTEXT.md`: project identity, goals, users, stack, constraints
+- `.ai/STATUS.md`: current phase, completed work, next steps
+- `.ai/ROADMAP.md`: local roadmap used by development sessions
+- `.ai/MEMORY.md`: chronological project events
+- `.ai/DECISIONS.md`: project decisions and ADR-style notes
+- `.ai/WORKFLOW.md`: workflow conventions
+- `.ai/USER_PROFILE.md`: user preferences and collaboration defaults
+
+The memory system is local Markdown. It is designed to be readable, reviewable, and commit-friendly.
+
+## Coming Soon
+
+- Better project analysis
+- Stronger existing-project adoption reports
+- Git history analysis
+- Release and changelog automation
+- Optional AI Provider integrations
+- Codex Skill packaging
+- Codex Plugin packaging
+
+## Development
+
+Run tests:
+
+```bash
+pytest -q
+```
+
+Current baseline:
+
+```text
+22 passed
+```
+
+## Contributing
+
+Contributions are welcome. Good first contributions include:
+
+- Better intent examples
+- More workflow tests
+- Documentation improvements
+- Project analysis improvements
+- Existing-project adoption improvements
+
+Before opening a pull request, run:
+
+```bash
+pytest -q
+```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/USAGE.md](docs/USAGE.md).
+
+## License
+
+MIT License. See [LICENSE](LICENSE).

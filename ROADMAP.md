@@ -1,28 +1,50 @@
 # Roadmap
 
-## v0.1
+## v0.3 Alpha
 
 - [x] Natural-language intent recognition
 - [x] Workflow engine
+- [x] `.ai/` project memory
 - [x] Project initialization
-- [x] Project memory files
-- [x] Project status analysis
+- [x] Existing-project adoption
+- [x] Project health check
 - [x] Continue development workflow
 - [x] Close day workflow
 - [x] OSS readiness check
 - [x] OSS preparation workflow
+- [x] Interactive CLI
+- [x] Command mode
+- [x] Unknown intent suggestions
+- [x] GitHub sync planning and preflight checks
+- [x] Pytest baseline: 22 passed
 
-## v0.2
+## v0.4
 
-- [ ] Codex Skill for reusable cross-project workflows
-- [ ] Automatic GitHub public/private repository sync
-- [ ] Better existing-project adoption reports
-- [ ] Git commit message and changelog generation
-- [ ] Configurable workflow templates
+- [ ] Better project analysis
+- [ ] Stronger adopt-project reports
+- [ ] Git history analysis
+- [ ] More precise project stage detection
+- [ ] Better next-step recommendations from local project signals
 
-## v0.3
+## v0.5
 
-- [ ] Codex Plugin packaging
-- [ ] Optional provider integrations
-- [ ] GitHub repository automation
 - [ ] Release automation
+- [ ] Changelog generation
+- [ ] Commit message assistance
+- [ ] Version bump workflow
+- [ ] Release readiness checks
+
+## v0.6
+
+- [ ] Optional AI Provider interface
+- [ ] Provider configuration design
+- [ ] Local-first behavior when no provider is configured
+- [ ] Provider-backed summaries and planning as optional enhancements
+
+## v1.0
+
+- [ ] AI Coding Project OS
+- [ ] Stable workflow API
+- [ ] Stable `.ai/` memory format
+- [ ] Production-ready CLI UX
+- [ ] End-to-end project lifecycle workflows

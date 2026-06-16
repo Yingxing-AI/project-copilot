@@ -63,7 +63,7 @@ def classify_intent(text: str) -> Intent:
     for intent, keywords in KEYWORDS:
         if any(keyword.lower() in normalized for keyword in keywords):
             return intent
-    return Intent.CHECK_PROJECT
+    return Intent.UNKNOWN
 
 
 def classify_intent_name(text: str) -> str:

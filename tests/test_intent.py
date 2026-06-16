@@ -23,3 +23,7 @@ class IntentClassifierTest(unittest.TestCase):
         self.assertEqual(classify_intent_name("检查 OSS 准备度"), "oss_check")
         self.assertEqual(classify_intent_name("准备开源"), "prepare_oss")
         self.assertEqual(classify_intent_name("开源到GitHub"), "github_sync")
+
+    def test_unknown_intent_is_explicit(self) -> None:
+        self.assertEqual(classify_intent("随便说点无法识别的话"), Intent.UNKNOWN)
+        self.assertEqual(classify_intent_name("随便说点无法识别的话"), "unknown")
