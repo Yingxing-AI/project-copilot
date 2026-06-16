@@ -6,9 +6,9 @@
 
 当前状态：
 
-- 版本：`0.3.0a3`
+- 版本：`0.3.0a4`
 - 分支：`main`
-- 最新提交：`faca833 chore: prepare release v0.3.0-alpha.3`
+- 最新提交：`4a3fcf7 feat: add one-command installer`
 - 最新标签：`v0.3.0-alpha.3`
 - 测试基线：`pytest -q` 通过，30 passed。
 - 项目健康度：100/100
