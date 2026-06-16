@@ -8,7 +8,7 @@
 
 - 版本：`0.3.0a5`
 - 分支：`main`
-- 最新提交：`cd51ea2 docs: add project promo image`
+- 最新提交：`263327d docs: start sprint validation case study`
 - 最新标签：`v0.3.0-alpha.5`
 - 测试基线：`pytest -q` 通过，31 passed。
 - 项目健康度：100/100
