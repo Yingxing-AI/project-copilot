@@ -8,7 +8,7 @@
 
 - 版本：`0.3.0a0`
 - 分支：`main`
-- 最新提交：`c9be4c5 feat: sync project state metadata`
+- 最新提交：`672a24e feat: add one-command release workflow`
 - 最新标签：`v0.3.0-alpha.1`
 - 测试基线：`pytest -q` 通过，28 passed。
 - 项目健康度：100/100

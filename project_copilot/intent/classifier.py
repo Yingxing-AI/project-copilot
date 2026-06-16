@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from enum import Enum
 
 
@@ -86,6 +87,8 @@ def classify_intent(text: str) -> Intent:
     normalized = text.strip().lower()
     if not normalized:
         return Intent.UNKNOWN
+    if _looks_like_release_request(normalized):
+        return Intent.RELEASE_PROJECT
 
     for intent, keywords in KEYWORDS:
         if any(keyword.lower() in normalized for keyword in keywords):
@@ -95,3 +98,9 @@ def classify_intent(text: str) -> Intent:
 
 def classify_intent_name(text: str) -> str:
     return classify_intent(text).value
+
+
+def _looks_like_release_request(text: str) -> bool:
+    if "发布" not in text and "release" not in text:
+        return False
+    return re.search(r"\bv?\d+\.\d+\.\d+(?:[-.][0-9a-z.-]+)?\b", text) is not None

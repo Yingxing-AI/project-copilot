@@ -17,6 +17,7 @@ class IntentClassifierTest(unittest.TestCase):
         self.assertEqual(classify_intent("准备开源"), Intent.PREPARE_OSS)
         self.assertEqual(classify_intent("私有同步到GitHub"), Intent.GITHUB_SYNC)
         self.assertEqual(classify_intent("发布版本 v0.3.0-alpha.2"), Intent.RELEASE_PROJECT)
+        self.assertEqual(classify_intent("发布 v0.3.0-alpha.2"), Intent.RELEASE_PROJECT)
         self.assertEqual(classify_intent("同步项目状态"), Intent.SYNC_PROJECT_STATE)
 
     def test_outputs_standard_intent_name(self) -> None:
