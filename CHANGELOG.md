@@ -33,6 +33,7 @@ Project Copilot is now packaged as a local-first natural-language project workfl
 - Release dry-run and version/tag consistency checks.
 - One-command install script for GitHub-based installation.
 - Static promotional image for Project Copilot.
+- Sprint Validation case study for real-project management with `ai-recruitment`.
 
 ### Verified
 

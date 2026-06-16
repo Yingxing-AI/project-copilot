@@ -22,6 +22,16 @@
 - [x] OSS product packaging docs
 - [x] Pytest baseline: 31 passed
 
+## Sprint Validation
+
+- [x] Start real-project validation with `ai-recruitment`
+- [x] Add validation case study template
+- [ ] Record daily workflow usage
+- [ ] Track project health changes
+- [ ] Track Roadmap progress
+- [ ] Collect user feedback and pain points
+- [ ] Summarize validation findings before adding new capabilities
+
 ## v0.4
 
 - [ ] Better project analysis

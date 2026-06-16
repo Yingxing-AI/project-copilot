@@ -2,13 +2,13 @@
 
 更新日期：2026-06-16
 
-当前阶段：可持续开发
+当前阶段：Sprint Validation
 
 当前状态：
 
 - 版本：`0.3.0a5`
 - 分支：`main`
-- 最新提交：`22e0310 fix: generate release notes from tag changes`
+- 最新提交：`cd51ea2 docs: add project promo image`
 - 最新标签：`v0.3.0-alpha.5`
 - 测试基线：`pytest -q` 通过，31 passed。
 - 项目健康度：100/100
@@ -32,10 +32,16 @@
 - Release dry-run 和版本/tag 一致性检查。
 - 面向普通用户的一行安装脚本。
 
+当前验证重点：
+
+- 使用 `ai-recruitment` 真实项目验证 Project Copilot 是否能持续管理每日开发。
+- 记录每日工作流、使用频率、项目健康度变化、Roadmap 推进、用户反馈和痛点。
+- 验证价值优先，不新增复杂功能、不接外部 AI API、不开发 Web UI。
+
 当前风险：
 
-- 暂无。
+- 缺少连续真实项目使用数据。
 
 下一步任务：
 
-- 根据 ROADMAP 选择最高优先级任务继续开发。
+- 按 `docs/case-study-ai-recruitment.md` 每日记录 Sprint Validation 数据。
