@@ -23,6 +23,7 @@ SYNC_ADDED_ITEMS = [
     "Architecture SVG and Mermaid source.",
     "GitHub Actions CI for Python 3.10, 3.11, and 3.12.",
     "Release dry-run and version/tag consistency checks.",
+    "One-command install script for GitHub-based installation.",
 ]
 
 
@@ -138,6 +139,7 @@ def _render_status(today, analysis, pytest_baseline: str, latest_commit: str, la
             "- 自动同步 `.ai/STATUS.md`、Roadmap、Changelog 和 AGENTS managed 区块。",
             "- GitHub Actions CI 覆盖 Python 3.10、3.11、3.12。",
             "- Release dry-run 和版本/tag 一致性检查。",
+            "- 面向普通用户的一行安装脚本。",
             "",
             "当前风险：",
             "",
@@ -217,6 +219,7 @@ def _render_agents_managed_block(pytest_baseline: str) -> str:
             "<!-- project-copilot:managed:start -->",
             "## Project Copilot Managed Context",
             "",
+            "- 普通用户安装命令：`curl -LsSf https://raw.githubusercontent.com/Yingxing-AI/project-copilot/main/install.sh | sh`",
             "- 安装命令：`pip install -e .`",
             "- CLI 命令：`project-copilot`",
             "- 诊断命令：`project-copilot doctor`",

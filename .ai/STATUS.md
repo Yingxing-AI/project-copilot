@@ -8,8 +8,8 @@
 
 - 版本：`0.3.0a3`
 - 分支：`main`
-- 最新提交：`f79f873 chore: prepare release v0.3.0-alpha.2`
-- 最新标签：`v0.3.0-alpha.2`
+- 最新提交：`faca833 chore: prepare release v0.3.0-alpha.3`
+- 最新标签：`v0.3.0-alpha.3`
 - 测试基线：`pytest -q` 通过，30 passed。
 - 项目健康度：100/100
 
@@ -30,6 +30,7 @@
 - 自动同步 `.ai/STATUS.md`、Roadmap、Changelog 和 AGENTS managed 区块。
 - GitHub Actions CI 覆盖 Python 3.10、3.11、3.12。
 - Release dry-run 和版本/tag 一致性检查。
+- 面向普通用户的一行安装脚本。
 
 当前风险：
 

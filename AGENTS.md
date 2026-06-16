@@ -20,6 +20,7 @@
 <!-- project-copilot:managed:start -->
 ## Project Copilot Managed Context
 
+- 普通用户安装命令：`curl -LsSf https://raw.githubusercontent.com/Yingxing-AI/project-copilot/main/install.sh | sh`
 - 安装命令：`pip install -e .`
 - CLI 命令：`project-copilot`
 - 诊断命令：`project-copilot doctor`
