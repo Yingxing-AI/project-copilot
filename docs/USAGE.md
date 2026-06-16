@@ -28,6 +28,24 @@ quit
 
 ## Command Mode
 
+Show help:
+
+```bash
+project-copilot --help
+```
+
+Show version:
+
+```bash
+project-copilot --version
+```
+
+Check local environment:
+
+```bash
+project-copilot doctor
+```
+
 Initialize a project:
 
 ```bash

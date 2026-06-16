@@ -4,7 +4,9 @@ import argparse
 from collections.abc import Callable
 from pathlib import Path
 
+from project_copilot import __version__
 from project_copilot.analyzer import analyze_project
+from project_copilot.cli.doctor import render_doctor
 from project_copilot.workflow import run_text_workflow
 
 
@@ -12,6 +14,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="project-copilot", description="Natural-language project workflow runner.")
     parser.add_argument("text", nargs="*", help="自然语言项目意图，例如：检查项目")
     parser.add_argument("--root", default=".", help="项目根目录，默认当前目录")
+    parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     return parser
 
 
@@ -20,6 +23,9 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     root = Path(args.root).resolve()
     text = " ".join(args.text).strip()
+    if text.lower() == "doctor":
+        print(render_doctor(root))
+        return 0
     if not text:
         return run_interactive(root)
     result = run_text_workflow(root, text)

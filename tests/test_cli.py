@@ -2,6 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from project_copilot.cli.doctor import render_doctor
 from project_copilot.cli.main import main, run_interactive
 
 
@@ -44,3 +45,19 @@ class CliTest(unittest.TestCase):
 
             self.assertEqual(exit_code, 0)
             self.assertIn("已退出。", outputs)
+
+    def test_doctor_reports_environment(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            result = render_doctor(Path(directory))
+
+            self.assertIn("Project Copilot Doctor", result)
+            self.assertIn("Python：", result)
+            self.assertIn("Git：", result)
+            self.assertIn("当前目录：", result)
+            self.assertIn(".ai：", result)
+
+    def test_doctor_command_runs(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            exit_code = main(["--root", directory, "doctor"])
+
+            self.assertEqual(exit_code, 0)

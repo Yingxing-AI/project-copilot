@@ -1,16 +1,19 @@
 [build-system]
-requires = ["setuptools>=68"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling>=1.21"]
+build-backend = "hatchling.build"
 
 [project]
 name = "project-copilot"
 version = "0.3.0a0"
 description = "Natural-language project operating system for AI coding projects."
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "Project Copilot Contributors" }]
 dependencies = []
 
 [project.scripts]
 project-copilot = "project_copilot.cli.main:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["project_copilot"]
