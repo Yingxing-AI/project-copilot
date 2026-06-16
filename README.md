@@ -52,6 +52,15 @@ Run without installing the console script:
 python3 -m project_copilot.cli.main 检查项目
 ```
 
+## Demo
+
+![Demo](docs/demo/demo.svg)
+
+Demo scripts:
+
+- [Adopt Existing Project](docs/demo-script.md#demo-1-adopt-existing-project)
+- [New Project Lifecycle](docs/demo-script.md#demo-2-new-project-lifecycle)
+
 ## Usage Examples
 
 Initialize a project:
