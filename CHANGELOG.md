@@ -32,6 +32,7 @@ Project Copilot is now packaged as a local-first natural-language project workfl
 - GitHub Actions CI for Python 3.10, 3.11, and 3.12.
 - Release dry-run and version/tag consistency checks.
 - One-command install script for GitHub-based installation.
+- Static promotional image for Project Copilot.
 
 ### Verified
 

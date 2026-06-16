@@ -8,7 +8,7 @@
 
 - 版本：`0.3.0a5`
 - 分支：`main`
-- 最新提交：`bacb5cb chore: prepare release v0.3.0-alpha.5`
+- 最新提交：`22e0310 fix: generate release notes from tag changes`
 - 最新标签：`v0.3.0-alpha.5`
 - 测试基线：`pytest -q` 通过，31 passed。
 - 项目健康度：100/100

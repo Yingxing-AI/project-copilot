@@ -97,6 +97,10 @@ python3 -m project_copilot.cli.main 检查项目
 
 ![Demo](docs/demo/demo.svg)
 
+Promotional image:
+
+![Project Copilot promotional image](docs/promo/project-copilot-promo.png)
+
 Demo scripts:
 
 - [Adopt Existing Project](docs/demo-script.md#demo-1-adopt-existing-project)
