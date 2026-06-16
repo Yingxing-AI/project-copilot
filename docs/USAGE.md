@@ -12,7 +12,7 @@ curl -LsSf https://raw.githubusercontent.com/Yingxing-AI/project-copilot/main/in
 
 This installs the latest published Project Copilot Alpha from GitHub. If `pipx` is available, the installer uses it. Otherwise it falls back to a user-level `pip` install.
 
-This installer is for macOS, Linux, and WSL. Native Windows PowerShell installation will be added later.
+This installer is for macOS, Linux, and WSL. Native Windows PowerShell installation will be added later. See [Windows Install Notes](INSTALL_WINDOWS.md).
 
 Developer install from a local checkout:
 
