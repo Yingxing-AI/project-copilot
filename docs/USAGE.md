@@ -55,7 +55,13 @@ project-copilot 同步项目状态
 Create a GitHub release after push and tag:
 
 ```bash
-project-copilot 发布 v0.3.0-alpha.2
+project-copilot 发布 v0.3.0-alpha.3
+```
+
+Preview release actions without pushing, tagging, or creating a GitHub Release:
+
+```bash
+project-copilot 发布 v0.3.0-alpha.3 dry-run
 ```
 
 Initialize a project:

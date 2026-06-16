@@ -76,6 +76,7 @@ class WorkflowEngineTest(unittest.TestCase):
             (root / ".ai" / "STATUS.md").write_text("# Status\n\n旧状态\n", encoding="utf-8")
             (root / ".ai" / "ROADMAP.md").write_text("- [x] Pytest baseline: 22 passed\n", encoding="utf-8")
             (root / "ROADMAP.md").write_text("- [x] Pytest baseline: 22 passed\n", encoding="utf-8")
+            (root / "README.md").write_text("Current baseline:\n\n```text\n22 passed\n```\n", encoding="utf-8")
             (root / "AGENTS.md").write_text("# Agents\n\n手写约定。\n", encoding="utf-8")
             (root / "CHANGELOG.md").write_text(
                 "# Changelog\n\n## v0.3 Alpha\n\n### Added\n\n- Natural-language intent recognition.\n\n### Verified\n\n- `pytest -q`\n- Current baseline: 22 passed.\n",
@@ -86,6 +87,7 @@ class WorkflowEngineTest(unittest.TestCase):
 
             self.assertIn("已同步项目状态", result)
             self.assertNotIn("22 passed", (root / "ROADMAP.md").read_text(encoding="utf-8"))
+            self.assertNotIn("22 passed", (root / "README.md").read_text(encoding="utf-8"))
             self.assertNotIn("22 passed", (root / ".ai" / "ROADMAP.md").read_text(encoding="utf-8"))
             self.assertIn("测试基线", (root / ".ai" / "STATUS.md").read_text(encoding="utf-8"))
             changelog = (root / "CHANGELOG.md").read_text(encoding="utf-8")

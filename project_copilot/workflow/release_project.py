@@ -8,6 +8,7 @@ from pathlib import Path
 
 from project_copilot.workflow.sync_project_state import sync_project_state
 from project_copilot.workflow.types import WorkflowContext, WorkflowResult
+from project_copilot import __version__
 
 Runner = Callable[[Path, list[str]], subprocess.CompletedProcess[str]]
 
@@ -21,6 +22,7 @@ class ReleaseOutcome:
     actions: list[str] = field(default_factory=list)
     blockers: list[str] = field(default_factory=list)
     release_notes: Path | None = None
+    dry_run: bool = False
 
 
 def run(context: WorkflowContext) -> WorkflowResult:
@@ -34,27 +36,44 @@ def run(context: WorkflowContext) -> WorkflowResult:
             next_steps=["输入 `project-copilot 发布 v0.3.0-alpha.2`。"],
         )
 
-    outcome = release_project(context.root, tag)
+    dry_run = _is_dry_run(context.text)
+    outcome = release_project(context.root, tag, dry_run=dry_run)
     return WorkflowResult(
         intent_name=context.intent_name,
         status=outcome.status,
-        title="发布完成。" if outcome.status == "success" else "发布被阻止。",
+        title=_release_title(outcome),
         summary=f"目标标签：{outcome.tag}",
         details={
-            "已执行": outcome.actions,
+            "计划动作" if outcome.dry_run else "已执行": outcome.actions,
             "阻塞项": outcome.blockers,
             "Release notes": str(outcome.release_notes) if outcome.release_notes else None,
         },
-        next_steps=[] if outcome.status == "success" else ["修复阻塞项后重新运行发布命令。"],
+        next_steps=_release_next_steps(outcome),
     )
 
 
-def release_project(root: Path, tag: str, runner: Runner | None = None) -> ReleaseOutcome:
+def release_project(root: Path, tag: str, runner: Runner | None = None, dry_run: bool = False) -> ReleaseOutcome:
     runner = runner or _run
-    outcome = ReleaseOutcome(tag=tag, status="blocked")
-    blockers = _preflight(root, tag, runner)
+    outcome = ReleaseOutcome(tag=tag, status="blocked", dry_run=dry_run)
+    blockers = _preflight(root, tag, runner, require_gh_auth=not dry_run)
     if blockers:
         outcome.blockers.extend(blockers)
+        return outcome
+
+    planned_actions = [
+        "同步项目状态",
+        "pytest -q",
+        "生成 release notes",
+        "git add .",
+        f"git commit -m chore: prepare release {tag}",
+        "git push origin main",
+        f"git tag -a {tag}",
+        f"git push origin {tag}",
+        "gh release create",
+    ]
+    if dry_run:
+        outcome.status = "success"
+        outcome.actions.extend(planned_actions)
         return outcome
 
     sync = sync_project_state(root)
@@ -107,8 +126,16 @@ def extract_tag(text: str) -> str | None:
     return match.group(0) if match else None
 
 
-def _preflight(root: Path, tag: str, runner: Runner) -> list[str]:
+def _is_dry_run(text: str) -> bool:
+    normalized = text.lower()
+    return any(token in normalized for token in ("dry-run", "dry run", "预演", "演练", "只检查", "preflight"))
+
+
+def _preflight(root: Path, tag: str, runner: Runner, require_gh_auth: bool = True) -> list[str]:
     blockers: list[str] = []
+    expected_version = _tag_to_pep440_version(tag)
+    if expected_version and expected_version != __version__:
+        blockers.append(f"版本不匹配：tag {tag} 对应 {expected_version}，当前包版本是 {__version__}。")
     if _git(root, ["rev-parse", "--is-inside-work-tree"], runner) != "true":
         blockers.append("当前目录不是 Git 仓库。")
     branch = _git(root, ["branch", "--show-current"], runner)
@@ -120,9 +147,31 @@ def _preflight(root: Path, tag: str, runner: Runner) -> list[str]:
         blockers.append(f"标签已存在：{tag}")
     if runner(root, ["gh", "--version"]).returncode != 0:
         blockers.append("缺少 GitHub CLI：gh。")
-    elif runner(root, ["gh", "auth", "status"]).returncode != 0:
+    elif require_gh_auth and runner(root, ["gh", "auth", "status"]).returncode != 0:
         blockers.append("GitHub CLI 未登录，请先运行 gh auth login。")
     return blockers
+
+
+def _tag_to_pep440_version(tag: str) -> str | None:
+    normalized = tag[1:] if tag.startswith("v") else tag
+    match = re.fullmatch(r"(\d+\.\d+\.\d+)-alpha\.(\d+)", normalized)
+    if match:
+        return f"{match.group(1)}a{match.group(2)}"
+    return normalized if re.fullmatch(r"\d+\.\d+\.\d+(?:a\d+)?", normalized) else None
+
+
+def _release_title(outcome: ReleaseOutcome) -> str:
+    if outcome.status != "success":
+        return "发布被阻止。"
+    return "发布预演完成。" if outcome.dry_run else "发布完成。"
+
+
+def _release_next_steps(outcome: ReleaseOutcome) -> list[str]:
+    if outcome.status != "success":
+        return ["修复阻塞项后重新运行发布命令。"]
+    if outcome.dry_run:
+        return [f"确认无误后运行 `project-copilot 发布 {outcome.tag}`。"]
+    return []
 
 
 def _has_changes(root: Path, runner: Runner) -> bool:

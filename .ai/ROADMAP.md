@@ -17,8 +17,10 @@
 - [x] Unknown intent suggestions
 - [x] GitHub sync planning and preflight checks
 - [x] One-command GitHub push, tag, and release workflow
+- [x] Release dry-run and version/tag consistency checks
+- [x] GitHub Actions CI for Python 3.10, 3.11, and 3.12
 - [x] OSS product packaging docs
-- [x] Pytest baseline: 28 passed
+- [x] Pytest baseline: 30 passed
 
 ## v0.4
 

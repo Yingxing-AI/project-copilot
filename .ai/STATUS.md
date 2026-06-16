@@ -6,11 +6,11 @@
 
 当前状态：
 
-- 版本：`0.3.0a0`
+- 版本：`0.3.0a3`
 - 分支：`main`
-- 最新提交：`672a24e feat: add one-command release workflow`
-- 最新标签：`v0.3.0-alpha.1`
-- 测试基线：`pytest -q` 通过，28 passed。
+- 最新提交：`f79f873 chore: prepare release v0.3.0-alpha.2`
+- 最新标签：`v0.3.0-alpha.2`
+- 测试基线：`pytest -q` 通过，30 passed。
 - 项目健康度：100/100
 
 已完成功能：
@@ -28,6 +28,8 @@
 - 可编辑安装、`--version` 和 `doctor` 诊断命令。
 - Demo 脚本、终端动画和架构图文档。
 - 自动同步 `.ai/STATUS.md`、Roadmap、Changelog 和 AGENTS managed 区块。
+- GitHub Actions CI 覆盖 Python 3.10、3.11、3.12。
+- Release dry-run 和版本/tag 一致性检查。
 
 当前风险：
 

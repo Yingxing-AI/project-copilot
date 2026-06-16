@@ -21,6 +21,8 @@ SYNC_ADDED_ITEMS = [
     "PEP 660 editable install with Hatchling.",
     "Demo scripts and README demo area.",
     "Architecture SVG and Mermaid source.",
+    "GitHub Actions CI for Python 3.10, 3.11, and 3.12.",
+    "Release dry-run and version/tag consistency checks.",
 ]
 
 
@@ -73,6 +75,10 @@ def sync_project_state(root: Path) -> ProjectStateSync:
     changelog = root / "CHANGELOG.md"
     if changelog.exists():
         _write_if_changed(changelog, _sync_changelog(changelog.read_text(encoding="utf-8"), pytest_baseline), updated_files, "CHANGELOG.md")
+
+    readme = root / "README.md"
+    if readme.exists():
+        _write_if_changed(readme, _sync_readme(readme.read_text(encoding="utf-8"), pytest_baseline), updated_files, "README.md")
 
     agents = root / "AGENTS.md"
     if agents.exists():
@@ -130,6 +136,8 @@ def _render_status(today, analysis, pytest_baseline: str, latest_commit: str, la
             "- 可编辑安装、`--version` 和 `doctor` 诊断命令。",
             "- Demo 脚本、终端动画和架构图文档。",
             "- 自动同步 `.ai/STATUS.md`、Roadmap、Changelog 和 AGENTS managed 区块。",
+            "- GitHub Actions CI 覆盖 Python 3.10、3.11、3.12。",
+            "- Release dry-run 和版本/tag 一致性检查。",
             "",
             "当前风险：",
             "",
@@ -183,6 +191,12 @@ def _sync_changelog(text: str, pytest_baseline: str) -> str:
     if missing:
         marker = "### Verified"
         updated = updated.replace(marker, "\n".join(missing) + f"\n\n{marker}", 1)
+    return updated
+
+
+def _sync_readme(text: str, pytest_baseline: str) -> str:
+    updated = re.sub(r"Current baseline:\n\n```text\n.*?\n```", f"Current baseline:\n\n```text\n{pytest_baseline}\n```", text, flags=re.DOTALL)
+    updated = re.sub(r"当前版本是 v[^：]+：", f"当前版本是 v{__version__}：", updated)
     return updated
 
 
