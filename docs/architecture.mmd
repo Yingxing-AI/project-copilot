@@ -1,0 +1,14 @@
+flowchart TD
+    A[User Intent] --> B[Intent Classifier]
+    B --> C[Workflow Engine]
+    C --> D[Analyzer]
+    C --> E[Planner]
+    C --> F[Memory]
+    C --> G[OSS]
+    C --> H[GitOps]
+    D --> I[Workflow Result]
+    E --> I
+    F --> I
+    G --> I
+    H --> I
+    I --> J[CLI]

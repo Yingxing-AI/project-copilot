@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520" role="img" aria-labelledby="title desc">
+  <title id="title">Project Copilot Architecture</title>
+  <desc id="desc">User Intent flows into Intent Classifier, Workflow Engine, domain modules, Workflow Result, and CLI.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#334155"/>
+    </marker>
+    <style>
+      .box { fill: #ffffff; stroke: #334155; stroke-width: 2; rx: 10; }
+      .core { fill: #eef6ff; stroke: #2563eb; }
+      .module { fill: #f8fafc; stroke: #64748b; }
+      .text { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #0f172a; font-size: 18px; font-weight: 600; }
+      .small { font-size: 15px; font-weight: 600; }
+      .line { stroke: #334155; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="960" height="520" fill="#ffffff"/>
+
+  <rect class="box" x="380" y="28" width="200" height="56"/>
+  <text class="text" x="480" y="63" text-anchor="middle">User Intent</text>
+
+  <path class="line" d="M480 84 L480 118"/>
+  <rect class="box core" x="360" y="118" width="240" height="60"/>
+  <text class="text" x="480" y="155" text-anchor="middle">Intent Classifier</text>
+
+  <path class="line" d="M480 178 L480 214"/>
+  <rect class="box core" x="360" y="214" width="240" height="60"/>
+  <text class="text" x="480" y="251" text-anchor="middle">Workflow Engine</text>
+
+  <path class="line" d="M480 274 L480 308"/>
+  <path class="line" d="M480 308 L160 308 L160 340"/>
+  <path class="line" d="M480 308 L320 308 L320 340"/>
+  <path class="line" d="M480 308 L480 340"/>
+  <path class="line" d="M480 308 L640 308 L640 340"/>
+  <path class="line" d="M480 308 L800 308 L800 340"/>
+
+  <rect class="box module" x="90" y="340" width="140" height="52"/>
+  <text class="text small" x="160" y="372" text-anchor="middle">Analyzer</text>
+
+  <rect class="box module" x="250" y="340" width="140" height="52"/>
+  <text class="text small" x="320" y="372" text-anchor="middle">Planner</text>
+
+  <rect class="box module" x="410" y="340" width="140" height="52"/>
+  <text class="text small" x="480" y="372" text-anchor="middle">Memory</text>
+
+  <rect class="box module" x="570" y="340" width="140" height="52"/>
+  <text class="text small" x="640" y="372" text-anchor="middle">OSS</text>
+
+  <rect class="box module" x="730" y="340" width="140" height="52"/>
+  <text class="text small" x="800" y="372" text-anchor="middle">GitOps</text>
+
+  <path class="line" d="M160 392 L160 430 L480 430"/>
+  <path class="line" d="M320 392 L320 430 L480 430"/>
+  <path class="line" d="M480 392 L480 430"/>
+  <path class="line" d="M640 392 L640 430 L480 430"/>
+  <path class="line" d="M800 392 L800 430 L480 430"/>
+  <path class="line" d="M480 430 L480 438"/>
+
+  <rect class="box core" x="360" y="438" width="240" height="56"/>
+  <text class="text" x="480" y="473" text-anchor="middle">Workflow Result</text>
+
+  <path class="line" d="M600 466 L684 466"/>
+  <rect class="box" x="684" y="438" width="150" height="56"/>
+  <text class="text" x="759" y="473" text-anchor="middle">CLI</text>
+</svg>

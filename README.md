@@ -150,29 +150,7 @@ project-copilot 私有同步到 GitHub
 
 ## Architecture
 
-```text
-User text
-   |
-   v
-intent classifier
-   |
-   v
-workflow engine
-   |
-   +--> workflow handlers
-          |
-          +--> memory
-          +--> analyzer
-          +--> planner
-          +--> oss
-          +--> gitops
-   |
-   v
-WorkflowResult
-   |
-   v
-CLI output
-```
+![Project Copilot architecture](docs/architecture.svg)
 
 The CLI does not call workflow modules directly. It sends user text to the workflow engine, which classifies the intent, dispatches to a registered workflow, and renders a `WorkflowResult`.
 

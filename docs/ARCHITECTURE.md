@@ -6,31 +6,25 @@ Current implementation is rule-driven and does not depend on external AI APIs.
 
 ## Request Flow
 
-```text
-User input
-   |
-   v
-project_copilot.cli
-   |
-   v
-intent classifier
-   |
-   v
-workflow engine
-   |
-   +--> workflow handler
-          |
-          +--> memory
-          +--> analyzer
-          +--> planner
-          +--> oss
-          +--> gitops
-   |
-   v
-WorkflowResult
-   |
-   v
-Rendered CLI output
+![Project Copilot architecture](architecture.svg)
+
+Mermaid source: [architecture.mmd](architecture.mmd)
+
+```mermaid
+flowchart TD
+    A[User Intent] --> B[Intent Classifier]
+    B --> C[Workflow Engine]
+    C --> D[Analyzer]
+    C --> E[Planner]
+    C --> F[Memory]
+    C --> G[OSS]
+    C --> H[GitOps]
+    D --> I[Workflow Result]
+    E --> I
+    F --> I
+    G --> I
+    H --> I
+    I --> J[CLI]
 ```
 
 ## Intent To Workflow
