@@ -13,6 +13,7 @@ from project_copilot.workflow import (
     init_project,
     oss_check,
     prepare_oss,
+    sync_project_state,
 )
 from project_copilot.workflow.types import WorkflowContext, WorkflowResult
 
@@ -30,6 +31,7 @@ class WorkflowEngine:
         self.register("prepare_oss", prepare_oss.run)
         self.register("github_sync", github_sync.run)
         self.register("adopt_project", adopt_project.run)
+        self.register("sync_project_state", sync_project_state.run)
 
     def register(self, intent_name: str, handler: WorkflowHandler) -> None:
         self._registry[intent_name] = handler
@@ -74,5 +76,6 @@ def _unknown_intent_result(context: WorkflowContext) -> WorkflowResult:
             "检查 OSS 准备度",
             "准备开源",
             "私有同步到 GitHub",
+            "同步项目状态",
         ],
     )

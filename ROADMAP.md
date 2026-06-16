@@ -16,7 +16,7 @@
 - [x] Command mode
 - [x] Unknown intent suggestions
 - [x] GitHub sync planning and preflight checks
-- [x] Pytest baseline: 22 passed
+- [x] Pytest baseline: 25 passed
 
 ## v0.4
 

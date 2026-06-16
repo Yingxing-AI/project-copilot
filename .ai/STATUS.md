@@ -2,43 +2,37 @@
 
 更新日期：2026-06-16
 
-当前阶段：v0.3 Alpha 已完成，Sprint OSS 开源产品化包装完成，待审阅。
+当前阶段：可持续开发
+
+当前状态：
+
+- 版本：`0.3.0a0`
+- 分支：`main`
+- 最新提交：`d5c6cdd feat: package cli and add demo scripts`
+- 最新标签：`v0.3.0-alpha.1`
+- 测试基线：`pytest -q` 通过，25 passed。
+- 项目健康度：100/100
 
 已完成功能：
 
 - 自然语言意图识别。
 - Workflow engine 注册和分发。
 - `.ai/` 项目记忆系统。
-- 项目初始化。
-- 已有项目非破坏式接管。
+- 项目初始化和已有项目接管。
 - 项目状态分析和健康度评分。
 - 继续开发、结束工作和工作日志流程。
 - OSS readiness 检查和开源准备文件生成。
 - GitHub public/private 同步计划和前置条件检查。
-- 无参数交互式 CLI。
-- command mode 单次工作流调用。
+- 无参数交互式 CLI 和 command mode。
 - unknown intent 中文建议。
+- 可编辑安装、`--version` 和 `doctor` 诊断命令。
+- Demo 脚本、终端动画和架构图文档。
+- 自动同步 `.ai/STATUS.md`、Roadmap、Changelog 和 AGENTS managed 区块。
 
-当前状态：
+当前风险：
 
-- 分支：`main`
-- 本地 `main` 与 `origin/main` 同步，当前工作区有未提交变更。
-- 最新已提交版本：`0f60d6a docs: add agent guide and project memory`
-- 测试基线：`pytest -q` 通过，22 passed。
-- 本轮 Sprint OSS 未提交，等待审阅。
-
-本轮已完成事项：
-
-- 重构 `README.md` 为开源产品首页。
-- 新增 `docs/ARCHITECTURE.md`。
-- 新增 `docs/OSS_READINESS.md`。
-- 新增 `docs/USAGE.md`。
-- 新增 GitHub markdown issue templates、PR template 和 funding file。
-- 更新 `ROADMAP.md` 为 v0.3 Alpha 到 v1.0 路线。
-- 更新 `CHANGELOG.md` 记录 v0.3 Alpha。
+- 暂无。
 
 下一步任务：
 
-- 审阅 Sprint OSS 文档包装内容。
-- 如需调整 README 定位或 Roadmap 文案，先改文档。
-- 审阅通过后再提交，不自动提交。
+- 根据 ROADMAP 选择最高优先级任务继续开发。

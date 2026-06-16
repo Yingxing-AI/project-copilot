@@ -21,11 +21,18 @@ Project Copilot is now packaged as a local-first natural-language project workfl
 - Command mode.
 - Unknown intent suggestions.
 - README, roadmap, and OSS product documentation.
+- `project-copilot --version`.
+- `project-copilot doctor`.
+- PEP 660 editable install with Hatchling.
+- Demo scripts and README demo area.
+- Architecture SVG and Mermaid source.
+- Automatic project state sync for `.ai/STATUS.md`, Roadmap, and Changelog.
+- Managed `AGENTS.md` synchronization block.
 
 ### Verified
 
 - `pytest -q`
-- Current baseline: 22 passed.
+- Current baseline: 25 passed.
 
 ## v0.1.0
 

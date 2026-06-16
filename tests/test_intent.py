@@ -16,6 +16,7 @@ class IntentClassifierTest(unittest.TestCase):
         self.assertEqual(classify_intent("检查 OSS 准备度"), Intent.CHECK_OSS)
         self.assertEqual(classify_intent("准备开源"), Intent.PREPARE_OSS)
         self.assertEqual(classify_intent("私有同步到GitHub"), Intent.GITHUB_SYNC)
+        self.assertEqual(classify_intent("同步项目状态"), Intent.SYNC_PROJECT_STATE)
 
     def test_outputs_standard_intent_name(self) -> None:
         self.assertEqual(classify_intent_name("继续开发项目"), "continue_development")
@@ -23,6 +24,7 @@ class IntentClassifierTest(unittest.TestCase):
         self.assertEqual(classify_intent_name("检查 OSS 准备度"), "oss_check")
         self.assertEqual(classify_intent_name("准备开源"), "prepare_oss")
         self.assertEqual(classify_intent_name("开源到GitHub"), "github_sync")
+        self.assertEqual(classify_intent_name("同步文档"), "sync_project_state")
 
     def test_unknown_intent_is_explicit(self) -> None:
         self.assertEqual(classify_intent("随便说点无法识别的话"), Intent.UNKNOWN)

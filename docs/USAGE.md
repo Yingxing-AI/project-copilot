@@ -46,6 +46,12 @@ Check local environment:
 project-copilot doctor
 ```
 
+Sync project status, roadmap, changelog, and the managed `AGENTS.md` block:
+
+```bash
+project-copilot 同步项目状态
+```
+
 Initialize a project:
 
 ```bash

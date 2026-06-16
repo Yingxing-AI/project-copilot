@@ -17,6 +17,7 @@ class Intent(str, Enum):
     WHAT_DID_TODAY = "what_did_today"
     NEXT_STEP = "next_step"
     SUMMARIZE_PROJECT = "summarize_project"
+    SYNC_PROJECT_STATE = "sync_project_state"
     UNKNOWN = "unknown"
 
 
@@ -51,6 +52,19 @@ KEYWORDS: list[tuple[Intent, tuple[str, ...]]] = [
     (Intent.WHAT_DID_TODAY, ("今天做了什么", "今日变更", "what did")),
     (Intent.NEXT_STEP, ("下一步", "现在应该做什么", "next")),
     (Intent.SUMMARIZE_PROJECT, ("总结项目", "项目总结", "summary")),
+    (
+        Intent.SYNC_PROJECT_STATE,
+        (
+            "同步项目状态",
+            "更新项目状态",
+            "同步文档",
+            "更新文档",
+            "同步 roadmap",
+            "同步 changelog",
+            "sync project state",
+            "sync docs",
+        ),
+    ),
     (Intent.CHECK_PROJECT, ("检查项目", "项目状态", "项目怎么样", "健康度", "check project", "status")),
 ]
 

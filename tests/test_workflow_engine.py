@@ -16,6 +16,7 @@ class WorkflowEngineTest(unittest.TestCase):
         self.assertIn("oss_check", engine.registered_intents)
         self.assertIn("prepare_oss", engine.registered_intents)
         self.assertIn("github_sync", engine.registered_intents)
+        self.assertIn("sync_project_state", engine.registered_intents)
 
     def test_dispatches_from_natural_language(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -66,3 +67,31 @@ class WorkflowEngineTest(unittest.TestCase):
             self.assertIn("暂时没有识别这个意图", result)
             self.assertIn("检查项目", result)
             self.assertIn("继续开发项目", result)
+
+    def test_sync_project_state_updates_status_roadmap_and_changelog(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / ".ai").mkdir()
+            (root / ".ai" / "STATUS.md").write_text("# Status\n\n旧状态\n", encoding="utf-8")
+            (root / ".ai" / "ROADMAP.md").write_text("- [x] Pytest baseline: 22 passed\n", encoding="utf-8")
+            (root / "ROADMAP.md").write_text("- [x] Pytest baseline: 22 passed\n", encoding="utf-8")
+            (root / "AGENTS.md").write_text("# Agents\n\n手写约定。\n", encoding="utf-8")
+            (root / "CHANGELOG.md").write_text(
+                "# Changelog\n\n## v0.3 Alpha\n\n### Added\n\n- Natural-language intent recognition.\n\n### Verified\n\n- `pytest -q`\n- Current baseline: 22 passed.\n",
+                encoding="utf-8",
+            )
+
+            result = run_text_workflow(root, "同步项目状态")
+
+            self.assertIn("已同步项目状态", result)
+            self.assertNotIn("22 passed", (root / "ROADMAP.md").read_text(encoding="utf-8"))
+            self.assertNotIn("22 passed", (root / ".ai" / "ROADMAP.md").read_text(encoding="utf-8"))
+            self.assertIn("测试基线", (root / ".ai" / "STATUS.md").read_text(encoding="utf-8"))
+            changelog = (root / "CHANGELOG.md").read_text(encoding="utf-8")
+            self.assertNotIn("Current baseline: 22 passed.", changelog)
+            self.assertIn("`project-copilot doctor`", changelog)
+            self.assertIn("Managed `AGENTS.md` synchronization block.", changelog)
+            agents = (root / "AGENTS.md").read_text(encoding="utf-8")
+            self.assertIn("手写约定。", agents)
+            self.assertIn("project-copilot:managed:start", agents)
+            self.assertIn("project-copilot doctor", agents)
