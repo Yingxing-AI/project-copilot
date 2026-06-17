@@ -34,3 +34,10 @@
 - 完成内容：将首次项目档案从默认三问式 onboarding 改为方案驱动流程，新增完整方案解析、缺失项追问、`PROJECT_CONTEXT.md`/`STATUS.md`/`ROADMAP.md`/`DECISIONS.md` 自动生成，并同步更新 README、PRD、Usage、Roadmap、Status、Decisions、Memory 和 Knowledge。
 - 遇到问题：初版意图分类会把包含“决策”的完整方案误判为 `record_decision`，且裸 `init` 的旧测试假设需要统一改为“待补充”语义。
 - 明日计划：继续观察真实项目输入格式，必要时再增强方案解析对单行与多段文本的兼容性。
+
+## 2026-06-17 v0.3.0-alpha.8 Release
+
+- 日期：2026-06-17
+- 完成内容：完成 `v0.3.0-alpha.8` 发布，已同步项目状态、运行测试、生成发布说明、提交、打 tag、push 并创建 GitHub release。
+- 遇到问题：发布前的 release 测试断言仍停留在旧版本标签，导致首次发布尝试被阻塞。
+- 明日计划：继续跟踪发布后的仓库状态，确保 `STATUS.md`、Roadmap 和后续开发记录与最新 tag 一致。

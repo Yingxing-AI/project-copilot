@@ -8,8 +8,8 @@
 
 - 版本：`0.3.0a8`
 - 分支：`main`
-- 最新提交：`bde4a8d fix bug`
-- 最新标签：`v0.3.0-alpha.7`
+- 最新提交：`dbf54fb chore: prepare release v0.3.0-alpha.8`
+- 最新标签：`v0.3.0-alpha.8`
 - 测试基线：`pytest -q` 通过，53 passed。
 - 项目健康度：100/100
 
