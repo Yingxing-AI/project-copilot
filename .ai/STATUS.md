@@ -6,7 +6,7 @@
 
 当前状态：
 
-- 版本：`0.3.0a6`
+- 版本：`0.3.0a7`
 - 分支：`main`
 - 最新提交：`bbd1365 Add Codex native project memory setup`
 - 最新标签：`v0.3.0-alpha.5`

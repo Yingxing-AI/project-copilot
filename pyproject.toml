@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "project-copilot"
-version = "0.3.0a6"
+version = "0.3.0a7"
 description = "Project secretary for Codex projects."
 readme = "README.md"
 requires-python = ">=3.10"

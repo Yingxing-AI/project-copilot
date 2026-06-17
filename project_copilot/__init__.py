@@ -1,3 +1,3 @@
 """Project Copilot."""
 
-__version__ = "0.3.0a6"
+__version__ = "0.3.0a7"

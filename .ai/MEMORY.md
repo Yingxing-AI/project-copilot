@@ -70,3 +70,5 @@
 - 2026-06-17: 完成 Sprint Agents Hardening，强化生成版和当前项目 `AGENTS.md` 的项目使命优先级、MVP 守护、目标用户守护、历史决策冲突处理、记忆写入触发条件和复盘触发机制；测试基线更新为 `pytest -q` 通过，48 passed。
 
 - 2026-06-17: 重构 `docs/CODEX_WORKFLOW.md` 为面向用户的 Project Copilot 与 Codex 使用指南，行为规则保留在 `AGENTS.md`；生成模板与仓库文档保持一致，测试基线更新为 `pytest -q` 通过，49 passed。
+
+- 2026-06-17: 准备发布 `v0.3.0-alpha.7`，包含启动第一屏体验、Codex Native 记忆层安装流程、强化版 `AGENTS.md` 和用户版 `docs/CODEX_WORKFLOW.md`。

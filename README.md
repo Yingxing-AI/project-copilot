@@ -6,7 +6,7 @@ Project Copilot installs a persistent project memory layer for Codex.
 
 用户只和 Codex 对话。Project Copilot 负责安装和维护 `.ai/` 项目记忆规范、生成 `AGENTS.md` 规则，并告诉 Codex 如何记录项目历史、保存重要决策、提醒项目风险和防止项目跑偏。
 
-当前版本是 v0.3.0a6：规则驱动、本地运行、不依赖外部 AI API。
+当前版本是 v0.3.0a7：规则驱动、本地运行、不依赖外部 AI API。
 
 ## Alpha Notice
 
@@ -181,8 +181,8 @@ project-copilot 今天结束工作
 project-copilot 检查 OSS 准备度
 project-copilot 准备开源
 project-copilot 备份到云端
-project-copilot 发布版本 v0.3.0-alpha.6
-project-copilot 发布版本 v0.3.0-alpha.6 dry-run
+project-copilot 发布版本 v0.3.0-alpha.7
+project-copilot 发布版本 v0.3.0-alpha.7 dry-run
 ```
 
 Run against another project root:
