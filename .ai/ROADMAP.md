@@ -20,7 +20,29 @@
 - [x] Release dry-run and version/tag consistency checks
 - [x] GitHub Actions CI for Python 3.10, 3.11, and 3.12
 - [x] OSS product packaging docs
-- [x] Pytest baseline: 44 passed
+- [x] Pytest baseline: 49 passed
+
+## Sprint Codex Workflow Guide
+
+- [x] Refactor `docs/CODEX_WORKFLOW.md` from agent behavior rules into a user guide
+- [x] Keep behavior rules and guardrails in `AGENTS.md`
+- [x] Add repository-level `docs/CODEX_WORKFLOW.md`
+- [x] Update generated `docs/CODEX_WORKFLOW.md` template
+- [x] Update README and Usage references
+- [x] Add tests that generated and repository workflow docs stay aligned
+
+## Sprint Agents Hardening
+
+- [x] Add top-level mission-first rule to `AGENTS.md`
+- [x] Add strict MVP guardrail with three explicit user choices
+- [x] Add target-user mismatch handling
+- [x] Add historical decision conflict handling
+- [x] Add mandatory `DECISIONS.md` triggers and fixed entry format
+- [x] Add strict `KNOWLEDGE.md` write conditions
+- [x] Add strict `WORKLOG.md` append format
+- [x] Add 7-day and 30-day review triggers
+- [x] Remove fuzzy trigger wording from generated `AGENTS.md`
+- [x] Add tests for hardened Codex rules
 
 ## Sprint Codex Native Integration
 

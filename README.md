@@ -16,7 +16,7 @@ Project Copilot is currently an Alpha release. It is suitable for trial use, pro
 
 - Codex-native project memory installation
 - `AGENTS.md` rules for Codex
-- `docs/CODEX_WORKFLOW.md` daily workflow guide
+- `docs/CODEX_WORKFLOW.md` user guide for working with Codex
 - `.ai/` project memory structure
 - Existing-project adoption
 - New-project initialization
@@ -163,7 +163,7 @@ project-copilot 检查秘书配置
 
 `AGENTS.md` tells Codex to read and maintain `.ai`.
 
-`docs/CODEX_WORKFLOW.md` explains the daily Codex workflow.
+`docs/CODEX_WORKFLOW.md` explains the user-facing workflow: install project memory with Project Copilot, then work in Codex.
 
 ## Secondary Commands
 
@@ -272,7 +272,7 @@ pytest -q
 Current baseline:
 
 ```text
-44 passed
+49 passed
 ```
 
 ## Contributing

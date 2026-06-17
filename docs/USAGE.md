@@ -40,7 +40,7 @@ After this, work directly in Codex:
 继续开发这个项目
 ```
 
-Codex should read `AGENTS.md`, then read and maintain `.ai/`.
+Project memory gives Codex the context it needs for later conversations.
 
 ## Low-Frequency Tools
 
@@ -98,7 +98,7 @@ Then say:
 今天结束工作
 ```
 
-Codex should summarize the changes, update `.ai/STATUS.md`, append `.ai/WORKLOG.md`, and update memory files when needed.
+This keeps project status, work logs, and long-term memory fresh.
 
 每周复盘时说：
 
@@ -106,7 +106,7 @@ Codex should summarize the changes, update `.ai/STATUS.md`, append `.ai/WORKLOG.
 复盘项目
 ```
 
-Codex should read `.ai` and report completed work, key decisions, risk changes, roadmap progress, and drift risk.
+Use this to review completed work, key decisions, risk changes, roadmap progress, and drift risk.
 
 ## Compatibility Commands
 
