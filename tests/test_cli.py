@@ -149,9 +149,9 @@ class CliTest(unittest.TestCase):
             self.assertIn("问题1：这个项目是做什么的？", prompts[0])
             self.assertIn("问题2：主要给谁使用？", prompts[1])
             self.assertIn("问题3：最小可交付版本", prompts[2])
-            self.assertIn("项目是什么：AI 招聘系统", context)
-            self.assertIn("主要用户：招聘团队", context)
-            self.assertIn("最小可交付版本（MVP）：简历导入", context)
+            self.assertIn("项目使命：AI 招聘系统", context)
+            self.assertIn("目标用户：招聘团队", context)
+            self.assertIn("MVP 范围：简历导入", context)
 
     def test_noninteractive_startup_shows_codex_usage(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

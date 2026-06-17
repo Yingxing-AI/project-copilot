@@ -31,7 +31,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     root = Path(args.root).resolve()
     text = " ".join(args.text).strip()
-    if text.lower() == "doctor":
+    if text.lower() == "doctor" or text == "检查秘书配置":
         print(render_doctor(root))
         return 0
     if not text:

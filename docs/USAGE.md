@@ -1,6 +1,8 @@
 # Usage
 
-Project Copilot can run as an installed console script or directly as a Python module.
+Project Copilot installs a persistent project memory layer for Codex.
+
+用户只和 Codex 对话。Project Copilot 负责初始化 `.ai/` 项目记忆、生成 `AGENTS.md` 规则和 `docs/CODEX_WORKFLOW.md`，让 Codex 在日常开发中自动维护项目历史。
 
 ## Install
 
@@ -10,139 +12,124 @@ Recommended one-command install:
 curl -LsSf https://raw.githubusercontent.com/Yingxing-AI/project-copilot/main/install.sh | sh
 ```
 
-This installs the latest published Project Copilot Alpha from GitHub. If `pipx` is available, the installer uses it. Otherwise it falls back to a user-level `pip` install.
-
-This installer is for macOS, Linux, and WSL. Native Windows PowerShell installation will be added later. See [Windows Install Notes](INSTALL_WINDOWS.md).
-
 Developer install from a local checkout:
 
 ```bash
 pip install -e .
 ```
 
-## Interactive Mode
+## Primary Flow
 
-Start the Chinese interactive CLI:
+Adopt an existing project:
+
+```bash
+project-copilot adopt
+codex
+```
+
+Initialize a new project:
+
+```bash
+project-copilot init
+codex
+```
+
+After this, work directly in Codex:
+
+```text
+继续开发这个项目
+```
+
+Codex should read `AGENTS.md`, then read and maintain `.ai/`.
+
+## Low-Frequency Tools
+
+```bash
+project-copilot init
+project-copilot adopt
+project-copilot doctor
+```
+
+Chinese aliases:
+
+```bash
+project-copilot 初始化项目
+project-copilot 接管已有项目
+project-copilot 检查秘书配置
+```
+
+## Generated Files
+
+Project Copilot generates:
+
+- `.ai/`
+- `AGENTS.md`
+- `docs/CODEX_WORKFLOW.md`
+
+`.ai/` contains:
+
+- `PROJECT_CONTEXT.md`
+- `STATUS.md`
+- `ROADMAP.md`
+- `MEMORY.md`
+- `DECISIONS.md`
+- `WORKLOG.md`
+- `KNOWLEDGE.md`
+- `metrics.md`
+- `history/`
+
+## Codex Daily Use
+
+每天开始：
+
+```bash
+codex
+```
+
+Then say:
+
+```text
+继续开发这个项目
+```
+
+每天结束时说：
+
+```text
+今天结束工作
+```
+
+Codex should summarize the changes, update `.ai/STATUS.md`, append `.ai/WORKLOG.md`, and update memory files when needed.
+
+每周复盘时说：
+
+```text
+复盘项目
+```
+
+Codex should read `.ai` and report completed work, key decisions, risk changes, roadmap progress, and drift risk.
+
+## Compatibility Commands
+
+These commands remain available, but they are not the primary daily entry point:
+
+```bash
+project-copilot 项目状态
+project-copilot 项目复盘
+project-copilot 项目时间轴
+project-copilot 项目偏航检查
+project-copilot 记录决策 MVP 先做简历导入
+project-copilot 查看路线图
+project-copilot 继续开发项目
+project-copilot 今天结束工作
+```
+
+Interactive mode is also kept for compatibility:
 
 ```bash
 project-copilot
 ```
 
-The prompt accepts continuous natural-language input.
-
-Exit with:
-
-```text
-exit
-quit
-退出
-```
-
-## Command Mode
-
-Show help:
-
-```bash
-project-copilot --help
-```
-
-Show version:
-
-```bash
-project-copilot --version
-```
-
-Check local environment:
-
-```bash
-project-copilot doctor
-```
-
-Sync project status, roadmap, changelog, and the managed `AGENTS.md` block:
-
-```bash
-project-copilot 同步项目状态
-```
-
-Create a GitHub release after push and tag:
-
-```bash
-project-copilot 发布 v0.3.0-alpha.3
-```
-
-Preview release actions without pushing, tagging, or creating a GitHub Release:
-
-```bash
-project-copilot 发布 v0.3.0-alpha.3 dry-run
-```
-
-Initialize a project:
-
-```bash
-project-copilot 初始化项目
-```
-
-Adopt an existing project:
-
-```bash
-project-copilot 接管这个已有项目
-```
-
-Check project status:
-
-```bash
-project-copilot 检查项目
-```
-
-Continue development:
-
-```bash
-project-copilot 继续开发项目
-```
-
-Close the day:
-
-```bash
-project-copilot 今天结束工作
-```
-
-Check OSS readiness:
-
-```bash
-project-copilot 检查 OSS 准备度
-```
-
-Prepare open-source files:
-
-```bash
-project-copilot 准备开源
-```
-
-Plan private GitHub sync:
-
-```bash
-project-copilot 私有同步到 GitHub
-```
-
-Run against another project root:
-
-```bash
-project-copilot --root /path/to/project 检查项目
-```
-
-Run as a Python module:
-
-```bash
-python3 -m project_copilot.cli.main 检查项目
-```
-
-## Common Workflow
-
-```bash
-project-copilot 检查项目
-project-copilot 继续开发项目
-project-copilot 今天结束工作
-```
+Prefer `project-copilot adopt` or `project-copilot init`, then `codex`.
 
 ## Verification
 

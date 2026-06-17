@@ -8,9 +8,9 @@
 
 - 版本：`0.3.0a6`
 - 分支：`main`
-- 最新提交：`8bb0a1e docs: record sprint validation worklog`
+- 最新提交：`e03155a Improve startup first impression`
 - 最新标签：`v0.3.0-alpha.5`
-- 测试基线：`pytest -q` 通过，38 passed。
+- 测试基线：`pytest -q` 通过，44 passed。
 - 项目健康度：100/100
 
 已完成功能：
@@ -19,6 +19,10 @@
 - Workflow engine 注册和分发。
 - `.ai/` 项目记忆系统。
 - 项目初始化和已有项目接管。
+- Codex Native 主流程：`project-copilot init/adopt` 生成 `.ai/`、`AGENTS.md` 和 `docs/CODEX_WORKFLOW.md`。
+- `AGENTS.md` 生成 Codex 维护 `.ai` 项目记忆的规则。
+- `docs/CODEX_WORKFLOW.md` 说明 Codex 日常开始、开发中、结束工作和每周复盘流程。
+- `.ai` 模板更新为最终职责结构。
 - 问答式首次项目档案生成。
 - 启动第一屏秘书式介绍和项目状态卡片。
 - 健康度数值转换为“进展良好 / 需要关注 / 存在风险”。
@@ -41,8 +45,9 @@
 
 当前验证重点：
 
-- 验证 Project Copilot 是否像 Codex 项目的项目秘书，而不是另一个开发工具。
-- 验证非工程用户是否能通过中文命令理解项目状态、复盘历史和偏航风险。
+- 验证 Project Copilot 是否能作为 Codex 项目的记忆层安装器，而不是抢占日常入口。
+- 验证 `AGENTS.md` 是否能清晰约束 Codex 维护 `.ai` 项目记忆。
+- 验证用户是否可以只打开 Codex 并通过 `.ai` 获得连续项目上下文。
 - 验证价值优先，不新增复杂 AI 能力、不接外部 AI API、不开发 Web UI。
 
 当前风险：
@@ -51,4 +56,4 @@
 
 下一步任务：
 
-- 根据路线图选择最高优先级任务继续开发。
+- 验证真实项目中 Codex 是否按 `AGENTS.md` 自动维护 `.ai`。

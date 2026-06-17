@@ -64,3 +64,5 @@
 - 2026-06-17 10:37: 同步项目状态、路线图和协作文档。
 
 - 2026-06-17: 完成 Sprint First Impression，启动第一屏改为项目秘书介绍、友好项目状态、中文推荐命令和 Codex 非交互提示；测试基线更新为 `pytest -q` 通过，38 passed。
+
+- 2026-06-17: 进入并完成 Sprint Codex Native Integration，Project Copilot 定位调整为 Codex 项目的记忆层安装器、项目秘书规则生成器和 `.ai` 项目记忆规范；`init/adopt` 会生成 `AGENTS.md` 和 `docs/CODEX_WORKFLOW.md`，测试基线更新为 `pytest -q` 通过，44 passed。

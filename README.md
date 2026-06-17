@@ -1,10 +1,10 @@
 # Project Copilot
 
-The Project Secretary for Codex Projects.
+Persistent project memory for Codex.
 
-Project Copilot 是 Codex 项目的项目秘书。Codex 负责开发，Project Copilot 负责记住：项目背景、关键决策、工作历史、路线图、复盘和偏航提醒。
+Project Copilot installs a persistent project memory layer for Codex.
 
-它面向创业者、产品经理、业务人员、AI Coding 新手和非专业开发者。用户不需要记工程术语，只需要用中文告诉 Project Copilot 要查看项目状态、记录决策、做项目复盘或检查是否跑偏。
+用户只和 Codex 对话。Project Copilot 负责安装和维护 `.ai/` 项目记忆规范、生成 `AGENTS.md` 规则，并告诉 Codex 如何记录项目历史、保存重要决策、提醒项目风险和防止项目跑偏。
 
 当前版本是 v0.3.0a6：规则驱动、本地运行、不依赖外部 AI API。
 
@@ -14,13 +14,17 @@ Project Copilot is currently an Alpha release. It is suitable for trial use, pro
 
 ## Available Today
 
+- Codex-native project memory installation
+- `AGENTS.md` rules for Codex
+- `docs/CODEX_WORKFLOW.md` daily workflow guide
+- `.ai/` project memory structure
+- Existing-project adoption
+- New-project initialization
+- Local doctor checks
 - Natural-language intent recognition
 - Workflow engine
-- Interactive CLI mode
 - Command mode
-- `.ai/` project memory
 - Question-based project onboarding
-- Existing-project adoption
 - Project status card
 - Project review
 - Project timeline
@@ -61,34 +65,43 @@ For development, install from a local checkout:
 pip install -e .
 ```
 
-Start interactive mode:
+Adopt an existing project:
 
 ```bash
-project-copilot
+project-copilot adopt
 ```
 
-Run a single workflow:
+Or initialize a new project:
 
 ```bash
-project-copilot 项目状态
+project-copilot init
 ```
 
-Sync project status, roadmap, changelog, and the managed `AGENTS.md` block:
+Project Copilot generates:
+
+- `.ai/`
+- `AGENTS.md`
+- `docs/CODEX_WORKFLOW.md`
+
+Then work in Codex:
 
 ```bash
-project-copilot 同步项目状态
+codex
 ```
 
-Create a release with push, tag, and GitHub Release:
+Tell Codex:
 
-```bash
-project-copilot 发布版本 v0.3.0-alpha.6
+```text
+继续开发这个项目
 ```
 
-Preview release actions without changing GitHub:
+Codex reads `AGENTS.md` and maintains `.ai/` while it develops.
+
+Check the local setup when needed:
 
 ```bash
-project-copilot 发布版本 v0.3.0-alpha.6 dry-run
+project-copilot doctor
+project-copilot 检查秘书配置
 ```
 
 Run without installing the console script:
@@ -110,95 +123,65 @@ Demo scripts:
 - [Adopt Existing Project](docs/demo-script.md#demo-1-adopt-existing-project)
 - [New Project Lifecycle](docs/demo-script.md#demo-2-new-project-lifecycle)
 
-## Usage Examples
+## Primary Flow
 
-Initialize a project:
+For a project that already has code:
 
 ```bash
+project-copilot adopt
+codex
+```
+
+For a new project:
+
+```bash
+project-copilot init
+codex
+```
+
+Chinese aliases are supported:
+
+```bash
+project-copilot 接管已有项目
 project-copilot 初始化项目
+project-copilot 检查秘书配置
 ```
 
-Adopt an existing project without overwriting existing files:
+## Generated Files
 
-```bash
-project-copilot 接管这个已有项目
-```
+`.ai/` stores the project memory:
 
-Check project status:
+- `PROJECT_CONTEXT.md`: stable mission, target users, business goals, MVP scope, tech stack
+- `STATUS.md`: current stage, focus, goal, and risks
+- `ROADMAP.md`: Backlog, In Progress, Done
+- `MEMORY.md`: long-term facts, important events, milestones, things not to forget
+- `DECISIONS.md`: product, architecture, technical choices, and tradeoffs
+- `WORKLOG.md`: dated work log
+- `KNOWLEDGE.md`: best practices, references, product learning, community feedback
+- `metrics.md`: project age, decision count, milestones, health changes, drift index
+- `history/`: monthly history files such as `YYYY-MM.md`
+
+`AGENTS.md` tells Codex to read and maintain `.ai`.
+
+`docs/CODEX_WORKFLOW.md` explains the daily Codex workflow.
+
+## Secondary Commands
+
+These commands remain available for compatibility, but they are not the primary daily entry point:
 
 ```bash
 project-copilot 项目状态
-```
-
-Review the project:
-
-```bash
 project-copilot 项目复盘
-```
-
-Show the project timeline:
-
-```bash
 project-copilot 项目时间轴
-```
-
-Check whether a new idea is outside the MVP:
-
-```bash
 project-copilot 项目偏航检查 新增商城模块
-```
-
-Record an important decision:
-
-```bash
 project-copilot 记录决策 MVP 先做简历导入
-```
-
-Show the roadmap:
-
-```bash
 project-copilot 查看路线图
-```
-
-Continue from project memory:
-
-```bash
 project-copilot 继续开发项目
-```
-
-Close the day and update project memory:
-
-```bash
 project-copilot 今天结束工作
-```
-
-Check open-source readiness:
-
-```bash
 project-copilot 检查 OSS 准备度
-```
-
-Prepare open-source community files:
-
-```bash
 project-copilot 准备开源
-```
-
-Plan private GitHub sync:
-
-```bash
 project-copilot 备份到云端
-```
-
-Publish a release:
-
-```bash
 project-copilot 发布版本 v0.3.0-alpha.6
-```
-
-Preview a release:
-
-```bash
 project-copilot 发布版本 v0.3.0-alpha.6 dry-run
 ```
 
@@ -210,26 +193,10 @@ project-copilot --root /path/to/project 项目状态
 
 ## Interactive Mode
 
-Run `project-copilot` with no arguments to enter interactive mode.
+Interactive mode is kept for compatibility. It is not the primary daily workflow; prefer `project-copilot adopt` or `project-copilot init`, then use `codex`.
 
-The CLI shows a secretary-style project status card, then accepts continuous natural-language input:
-
-```text
-欢迎使用 Project Copilot。
-我是你的项目秘书。
-项目状态卡片
-
-项目：project-copilot
-当前阶段：可持续开发
-项目健康度：92
-距离上次复盘：今天
-路线图更新：今天
-
-提醒：
-- 暂无需要立即处理的提醒。
-常用输入：项目状态、项目复盘、项目时间轴、项目偏航检查、记录决策、结束工作。
-输入 exit / quit / 退出 结束。
-project-copilot>
+```bash
+project-copilot
 ```
 
 Exit commands:
@@ -272,15 +239,15 @@ Project Copilot stores project memory under `.ai/`.
 
 Current memory files:
 
-- `.ai/PROJECT_CONTEXT.md`: 项目是什么、给谁用、MVP 是什么
-- `.ai/STATUS.md`: 当前阶段、健康度、风险和提醒
-- `.ai/ROADMAP.md`: 当前路线图和阶段目标
-- `.ai/MEMORY.md`: 可读的项目历史
-- `.ai/DECISIONS.md`: 关键决策、原因和影响
-- `.ai/WORKLOG.md`: 每日工作记录
+- `.ai/PROJECT_CONTEXT.md`: 项目使命、目标用户、商业目标、MVP 范围、技术栈
+- `.ai/STATUS.md`: 当前阶段、当前重点、当前目标、当前风险
+- `.ai/ROADMAP.md`: Backlog、In Progress、Done
+- `.ai/MEMORY.md`: 长期事实、重要事件、关键里程碑、不应遗忘的信息
+- `.ai/DECISIONS.md`: 产品决策、架构决策、技术选型和取舍原因
+- `.ai/WORKLOG.md`: 日期、今日完成、问题、明日计划
 - `.ai/KNOWLEDGE.md`: 最佳实践、参考项目、产品认知、社区反馈和重要经验
-- `.ai/metrics.md`: 健康度、复盘间隔、路线图更新时间等指标
-- `.ai/history/`: 复盘和历史归档
+- `.ai/metrics.md`: 项目创建时间、已运行天数、决策数量、里程碑数量、健康度变化、偏航指数
+- `.ai/history/`: 按月保存的历史归档，例如 `YYYY-MM.md`
 
 The memory system is local Markdown. It is designed to be readable, reviewable, and easy to save with the project.
 
@@ -305,7 +272,7 @@ pytest -q
 Current baseline:
 
 ```text
-32 passed
+44 passed
 ```
 
 ## Contributing

@@ -20,7 +20,18 @@
 - [x] Release dry-run and version/tag consistency checks
 - [x] GitHub Actions CI for Python 3.10, 3.11, and 3.12
 - [x] OSS product packaging docs
-- [x] Pytest baseline: 38 passed
+- [x] Pytest baseline: 44 passed
+
+## Sprint Codex Native Integration
+
+- [x] Reposition Project Copilot as the Codex project memory installer
+- [x] Make `project-copilot init` and `project-copilot adopt` the primary setup tools
+- [x] Generate Codex-focused `AGENTS.md`
+- [x] Generate `docs/CODEX_WORKFLOW.md`
+- [x] Update `.ai` memory templates to the final responsibility structure
+- [x] Rewrite README and Usage around the Codex-native flow
+- [x] Keep interactive mode for compatibility but stop presenting it as the primary flow
+- [x] Add tests for Codex native files, README positioning, and `.ai` structure
 
 ## Sprint Secretary UX
 

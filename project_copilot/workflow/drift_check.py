@@ -66,7 +66,8 @@ def _detect_drift(project_context: str, requested: str) -> list[str]:
 
 
 def _compact_context(project_context: str) -> str:
+    preferred_prefixes = ("项目使命：", "MVP 范围：", "目标用户：", "项目是什么：")
     for line in project_context.splitlines():
-        if line.startswith("项目是什么："):
+        if line.startswith(preferred_prefixes):
             return line.split("：", 1)[1].strip()
     return "暂无明确项目目标。"

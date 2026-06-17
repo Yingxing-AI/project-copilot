@@ -4,6 +4,7 @@ from datetime import datetime
 
 from project_copilot.gitops import init_git_if_needed
 from project_copilot.memory import MemoryStore
+from project_copilot.workflow.codex_native import ensure_codex_native_files
 from project_copilot.workflow.types import WorkflowContext, WorkflowResult
 
 
@@ -15,7 +16,6 @@ def run(context: WorkflowContext) -> WorkflowResult:
     defaults = {
         "README.md": "# Project\n\n由 Codex 负责开发，由 Project Copilot 记录项目历史和关键决策。\n",
         "LICENSE": "MIT License\n\nCopyright (c) 2026 Project Copilot Contributors\n",
-        "AGENTS.md": "# Agents\n\n本项目由 AI Coding Agent 协作维护。优先使用中文、保持文档同步、变更前检查项目状态。\n",
     }
     for name, content in defaults.items():
         path = root / name
@@ -29,6 +29,7 @@ def run(context: WorkflowContext) -> WorkflowResult:
         created.append("docs/")
 
     created.extend(str(path.relative_to(root)) for path in memory.ensure())
+    created.extend(str(path.relative_to(root)) for path in ensure_codex_native_files(root))
     project_context = build_project_context(
         project_name=root.name,
         project_description=_extract_description(context.text),
@@ -50,7 +51,7 @@ def run(context: WorkflowContext) -> WorkflowResult:
             "创建文件": created,
             "保存进度记录": "已建立" if git_initialized else "已存在或暂不可用",
         },
-        next_steps=["运行“项目状态”查看状态卡片。", "说“记录决策 ...”保存关键决定。"],
+        next_steps=["打开 Codex：codex", "对 Codex 说“继续开发这个项目”。"],
     )
 
 
@@ -62,13 +63,17 @@ def build_project_context(project_name: str, project_description: str, target_us
             "",
             f"项目名称：{project_name}",
             "",
-            f"项目是什么：{project_description or '待确认。'}",
+            f"项目使命：{project_description or '待确认。'}",
             "",
-            f"主要用户：{target_users or '待确认。'}",
+            f"目标用户：{target_users or '待确认。'}",
             "",
-            f"最小可交付版本（MVP）：{mvp or '待确认。'}",
+            "商业目标：待确认。",
             "",
-            "当前边界：优先完成 MVP，新增方向先记录再决定。",
+            f"MVP 范围：{mvp or '待确认。'}",
+            "",
+            "技术栈：待确认。",
+            "",
+            "说明：这里记录长期稳定背景，极少修改；不要写临时状态。",
             "",
             f"创建日期：{today}",
             "",
