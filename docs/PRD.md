@@ -1,62 +1,75 @@
-# Project Copilot v0.1 产品需求文档
+# Project Copilot 产品需求文档
 
-Project Copilot 是一个面向 AI Coding 场景的自然语言项目操作系统。
+Project Copilot 是 Codex 项目的项目秘书。
 
-目标用户无需掌握 Git、Docker、Python、前端开发、后端开发或项目管理工具，只需要通过自然语言表达意图，即可完成项目创建、开发、维护、发布和开源运营。
+Codex 负责开发，Project Copilot 负责记住：项目档案、决策记录、项目时间轴、项目复盘、偏航提醒和知识沉淀。
+
+目标用户是创业者、产品经理、业务人员、AI Coding 新手和非专业开发者。用户不需要掌握 Git、Docker、Python、前端开发、后端开发或项目管理工具，只需要通过中文表达项目管理意图。
 
 ## MVP 目标
 
-- 项目初始化
+- 问答式项目初始化
 - 已有项目接管
 - 项目记忆
-- 项目状态分析
+- 项目状态卡片
+- 项目复盘
+- 项目时间轴
+- 项目偏航检查
+- 决策记录
+- 知识沉淀
 - 开发会话管理
-- 开源项目检查
-- 自然语言工作流
+- 中文优先自然语言工作流
 
 ## 第一版自然语言意图
 
 - 开始一个新项目
 - 接管已有项目
 - 继续开发
-- 检查项目
+- 项目状态
 - 今天结束工作
-- 生成路线图
-- 检查 OSS 准备度
-- 准备开源
-- 开源到 GitHub
-- 私有同步到 GitHub
-- 准备发布
+- 项目复盘
+- 项目时间轴
+- 项目偏航检查
+- 记录决策
+- 查看路线图
+- 保存进度
+- 备份到云端
+- 发布版本
 - 今天做了什么
 - 下一步做什么
 - 总结项目
 
 ## 技术架构
 
-Python 3.10+，v0.1 使用规则驱动和本地分析，不依赖外部 API。
+Python 3.10+，当前版本使用规则驱动和本地分析，不依赖外部 API。
 
 ## Workflow 调度层
 
 自然语言意图先进入 `intent` 识别，输出标准 `intent_name`。`workflow` engine 负责注册和分发工作流，CLI 不直接调用具体功能模块。
 
-第一阶段工作流：
+核心工作流：
 
 - `init_project`
 - `check_project`
 - `continue_development`
 - `close_day`
-- `oss_check`
-- `prepare_oss`
-- `github_sync`
+- `review_project`
+- `timeline_project`
+- `drift_check`
+- `record_decision`
+- `show_roadmap`
 
-## GitHub 同步
+## 秘书提醒
 
-Project Copilot 需要支持两种发布目标：
+Project Copilot 在启动、检查项目和偏航检查时主动提醒：
 
-- 公开开源：创建或连接 public GitHub 仓库，补齐 OSS 文件并推送。
-- 私有同步：创建或连接 private GitHub 仓库，用于个人或团队私有项目备份与协作。
+- 距离上次复盘过久
+- Roadmap 长时间未更新
+- 新增需求超出 MVP
+- 新方向偏离目标用户
+- 新决策与历史决策冲突
 
-第一阶段先实现同步计划和前置条件检查，包括 Git 状态、remote、GitHub CLI、仓库地址和目标可见性。后续版本继续补齐自动创建仓库、自动 push、release 和 changelog。
+用户界面不展示算法、治理、ADR 等技术术语，只展示“提醒”“风险”“请选择”。
 
 ## 已有项目接管
 
@@ -68,3 +81,9 @@ Project Copilot 需要支持两种发布目标：
 - 生成 `.ai/STATUS.md`
 - 在 `.ai/MEMORY.md` 记录接管事件
 - 将不确定信息标记为待确认
+
+## 与 Codex 的边界
+
+Codex 是开发工程师，负责写代码、测试、实现功能和修 Bug。
+
+Project Copilot 是项目秘书，负责记录、提醒、复盘、归档和守护项目方向。

@@ -20,7 +20,18 @@
 - [x] Release dry-run and version/tag consistency checks
 - [x] GitHub Actions CI for Python 3.10, 3.11, and 3.12
 - [x] OSS product packaging docs
-- [x] Pytest baseline: 31 passed
+- [x] Pytest baseline: 32 passed
+
+## Sprint Secretary UX
+
+- [x] Reposition Project Copilot as the project secretary for Codex projects
+- [x] Add question-based first-use onboarding
+- [x] Add secretary-style project status card
+- [x] Add Chinese aliases for review, timeline, drift check, decision recording, and roadmap viewing
+- [x] Add `.ai/KNOWLEDGE.md`, `.ai/metrics.md`, and `.ai/history/`
+- [x] Add rule-based secretary reminders
+- [x] Add visual, list-first project review output
+- [ ] Continue softening OSS wording across secondary workflows
 
 ## Sprint Validation
 
@@ -54,7 +65,7 @@
 
 ## v1.0
 
-- [ ] AI Coding Project OS
+- [ ] Project Secretary for Codex Projects
 - [ ] Stable workflow API
 - [ ] Stable `.ai` memory format
 - [ ] Production-ready CLI UX

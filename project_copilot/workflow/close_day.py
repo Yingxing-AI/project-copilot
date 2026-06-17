@@ -19,7 +19,7 @@ def run(context: WorkflowContext) -> WorkflowResult:
         intent_name=context.intent_name,
         status="success",
         title="已结束今日工作。",
-        summary="已更新项目状态、工作日志、Roadmap、Changelog 和 AGENTS managed 区块。",
+        summary="已更新项目状态、工作日志、路线图和项目协作记忆。",
         details={
             "当前开发阶段": analysis.stage,
             "更新文件": [".ai/WORKLOG.md", *sync.updated_files],

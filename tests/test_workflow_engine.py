@@ -18,6 +18,11 @@ class WorkflowEngineTest(unittest.TestCase):
         self.assertIn("github_sync", engine.registered_intents)
         self.assertIn("sync_project_state", engine.registered_intents)
         self.assertIn("release_project", engine.registered_intents)
+        self.assertIn("review_project", engine.registered_intents)
+        self.assertIn("timeline_project", engine.registered_intents)
+        self.assertIn("drift_check", engine.registered_intents)
+        self.assertIn("record_decision", engine.registered_intents)
+        self.assertIn("show_roadmap", engine.registered_intents)
 
     def test_dispatches_from_natural_language(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -26,8 +31,8 @@ class WorkflowEngineTest(unittest.TestCase):
             init_result = run_text_workflow(root, "初始化项目")
             check_result = run_text_workflow(root, "检查项目")
 
-            self.assertIn("已完成项目初始化", init_result)
-            self.assertIn("项目健康度评分", check_result)
+            self.assertIn("已完成项目档案初始化", init_result)
+            self.assertIn("项目健康度", check_result)
 
     def test_prepare_oss_creates_open_source_files_without_overwriting(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -51,13 +56,13 @@ class WorkflowEngineTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
 
-            result = run_text_workflow(root, "私有同步到GitHub")
+            result = run_text_workflow(root, "备份到云端")
 
-            self.assertIn("GitHub 同步计划", result)
-            self.assertIn("仓库可见性：private", result)
-            self.assertIn("仓库名称：", result)
-            self.assertIn("GitHub CLI", result)
-            self.assertIn("GitHub 登录", result)
+            self.assertIn("云端备份计划", result)
+            self.assertIn("备份空间：公开备份", result)
+            self.assertIn("项目名称：", result)
+            self.assertIn("云端工具", result)
+            self.assertIn("云端登录", result)
 
     def test_unknown_intent_returns_suggestions(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -67,7 +72,7 @@ class WorkflowEngineTest(unittest.TestCase):
 
             self.assertIn("暂时没有识别这个意图", result)
             self.assertIn("检查项目", result)
-            self.assertIn("继续开发项目", result)
+            self.assertIn("项目复盘", result)
 
     def test_sync_project_state_updates_status_roadmap_and_changelog(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -104,4 +109,4 @@ class WorkflowEngineTest(unittest.TestCase):
             result = run_text_workflow(Path(directory), "一键发布")
 
             self.assertIn("发布被阻止", result)
-            self.assertIn("请提供明确版本标签", result)
+            self.assertIn("请提供明确版本标记", result)

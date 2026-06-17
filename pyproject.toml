@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "project-copilot"
-version = "0.3.0a5"
-description = "Natural-language project operating system for AI coding projects."
+version = "0.3.0a6"
+description = "Project secretary for Codex projects."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }

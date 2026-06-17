@@ -25,7 +25,7 @@
 - CLI 命令：`project-copilot`
 - 诊断命令：`project-copilot doctor`
 - 版本命令：`project-copilot --version`
-- 测试命令：`pytest -q`（当前基线：31 passed）
+- 测试命令：`pytest -q`（当前基线：32 passed）
 - CLI 入口：`project_copilot/cli/main.py`
 - Workflow 入口：`project_copilot/workflow/`
 - Intent 入口：`project_copilot/intent/classifier.py`

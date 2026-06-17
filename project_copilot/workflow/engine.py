@@ -9,12 +9,17 @@ from project_copilot.workflow import (
     check_project,
     close_day,
     continue_development,
+    drift_check,
     github_sync,
     init_project,
     oss_check,
     prepare_oss,
+    record_decision,
     release_project,
+    review_project,
+    show_roadmap,
     sync_project_state,
+    timeline_project,
 )
 from project_copilot.workflow.types import WorkflowContext, WorkflowResult
 
@@ -34,6 +39,11 @@ class WorkflowEngine:
         self.register("adopt_project", adopt_project.run)
         self.register("sync_project_state", sync_project_state.run)
         self.register("release_project", release_project.run)
+        self.register("review_project", review_project.run)
+        self.register("timeline_project", timeline_project.run)
+        self.register("drift_check", drift_check.run)
+        self.register("record_decision", record_decision.run)
+        self.register("show_roadmap", show_roadmap.run)
 
     def register(self, intent_name: str, handler: WorkflowHandler) -> None:
         self._registry[intent_name] = handler
@@ -75,10 +85,12 @@ def _unknown_intent_result(context: WorkflowContext) -> WorkflowResult:
             "检查项目",
             "继续开发项目",
             "今天结束工作",
-            "检查 OSS 准备度",
-            "准备开源",
-            "私有同步到 GitHub",
+            "项目复盘",
+            "项目时间轴",
+            "项目偏航检查",
+            "记录决策",
+            "备份到云端",
             "同步项目状态",
-            "发布 v0.3.0-alpha.2",
+            "发布版本 v0.3.0-alpha.2",
         ],
     )

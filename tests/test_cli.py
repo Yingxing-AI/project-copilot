@@ -15,7 +15,7 @@ class CliTest(unittest.TestCase):
 
     def test_interactive_mode_shows_summary_runs_until_exit(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            inputs = iter(["检查项目", "随便说点无法识别的话", "退出"])
+            inputs = iter(["AI 招聘系统", "招聘团队", "简历导入", "检查项目", "随便说点无法识别的话", "退出"])
             outputs: list[str] = []
 
             exit_code = run_interactive(
@@ -26,10 +26,10 @@ class CliTest(unittest.TestCase):
 
             rendered = "\n".join(outputs)
             self.assertEqual(exit_code, 0)
-            self.assertIn("Project Copilot 交互模式", rendered)
-            self.assertIn("项目状态摘要", rendered)
-            self.assertIn("首次使用建议", rendered)
-            self.assertIn("项目状态检查完成", rendered)
+            self.assertIn("欢迎使用 Project Copilot", rendered)
+            self.assertIn("我是你的项目秘书", rendered)
+            self.assertIn("已生成 PROJECT_CONTEXT.md", rendered)
+            self.assertIn("项目状态卡片", rendered)
             self.assertIn("暂时没有识别这个意图", rendered)
             self.assertIn("已退出", rendered)
 

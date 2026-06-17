@@ -11,13 +11,16 @@ class WorkflowTest(unittest.TestCase):
             tmp_path = Path(directory)
             result = run_workflow(tmp_path, "这是一个 AI 招聘系统，请初始化项目")
 
-            self.assertIn("已完成项目初始化", result)
+            self.assertIn("已完成项目档案初始化", result)
             self.assertTrue((tmp_path / "README.md").exists())
             self.assertTrue((tmp_path / "LICENSE").exists())
             self.assertTrue((tmp_path / "AGENTS.md").exists())
             self.assertTrue((tmp_path / "docs").is_dir())
             self.assertTrue((tmp_path / ".ai" / "PROJECT_CONTEXT.md").exists())
             self.assertTrue((tmp_path / ".ai" / "MEMORY.md").exists())
+            self.assertTrue((tmp_path / ".ai" / "KNOWLEDGE.md").exists())
+            self.assertTrue((tmp_path / ".ai" / "metrics.md").exists())
+            self.assertTrue((tmp_path / ".ai" / "history").is_dir())
 
     def test_check_project_reports_health_score(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -25,8 +28,8 @@ class WorkflowTest(unittest.TestCase):
             run_workflow(tmp_path, "初始化项目")
             result = run_workflow(tmp_path, "检查项目")
 
-            self.assertIn("项目健康度评分", result)
-            self.assertIn("当前开发阶段", result)
+            self.assertIn("项目健康度", result)
+            self.assertIn("当前阶段", result)
             self.assertIn("下一步建议", result)
 
     def test_adopt_existing_project_does_not_overwrite_existing_files(self) -> None:
@@ -65,3 +68,22 @@ class WorkflowTest(unittest.TestCase):
 
             self.assertIn("已更新项目状态", result)
             self.assertIn("更新日期", (tmp_path / ".ai" / "STATUS.md").read_text(encoding="utf-8"))
+
+    def test_secretary_review_timeline_decision_and_drift_check(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            tmp_path = Path(directory)
+            run_workflow(tmp_path, "这是一个 AI 招聘系统，请初始化项目")
+
+            decision = run_workflow(tmp_path, "记录决策 MVP 先做简历导入")
+            review = run_workflow(tmp_path, "项目复盘")
+            timeline = run_workflow(tmp_path, "项目时间轴")
+            drift = run_workflow(tmp_path, "项目偏航检查 新增商城模块")
+            roadmap = run_workflow(tmp_path, "查看路线图")
+
+            self.assertIn("已记录决策", decision)
+            self.assertIn("MVP 先做简历导入", (tmp_path / ".ai" / "DECISIONS.md").read_text(encoding="utf-8"))
+            self.assertIn("项目健康度", review)
+            self.assertTrue(any((tmp_path / ".ai" / "history").iterdir()))
+            self.assertIn("项目时间轴", timeline)
+            self.assertIn("可能不在 MVP 范围内", drift)
+            self.assertIn("项目路线图", roadmap)

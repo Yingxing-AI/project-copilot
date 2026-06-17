@@ -20,6 +20,11 @@ class Intent(str, Enum):
     NEXT_STEP = "next_step"
     SUMMARIZE_PROJECT = "summarize_project"
     SYNC_PROJECT_STATE = "sync_project_state"
+    REVIEW_PROJECT = "review_project"
+    TIMELINE_PROJECT = "timeline_project"
+    DRIFT_CHECK = "drift_check"
+    RECORD_DECISION = "record_decision"
+    SHOW_ROADMAP = "show_roadmap"
     UNKNOWN = "unknown"
 
 
@@ -31,6 +36,11 @@ KEYWORDS: list[tuple[Intent, tuple[str, ...]]] = [
     (Intent.INIT_PROJECT, ("初始化", "创建项目", "新项目", "开始一个新项目", "init", "start project")),
     (Intent.CONTINUE_DEV, ("继续开发", "接着做", "恢复开发", "continue")),
     (Intent.END_WORK, ("结束工作", "下班", "今天结束", "收工", "end work")),
+    (Intent.REVIEW_PROJECT, ("项目复盘", "复盘项目", "review")),
+    (Intent.TIMELINE_PROJECT, ("项目时间轴", "时间轴", "timeline")),
+    (Intent.DRIFT_CHECK, ("项目偏航检查", "偏航检查", "检查偏航", "是否跑偏", "drift")),
+    (Intent.RECORD_DECISION, ("记录决策", "保存决策", "新增决策", "decision")),
+    (Intent.SHOW_ROADMAP, ("查看路线图", "看路线图", "路线图", "roadmap")),
     (
         Intent.GITHUB_SYNC,
         (
@@ -43,6 +53,8 @@ KEYWORDS: list[tuple[Intent, tuple[str, ...]]] = [
             "开源到github",
             "开源到 github",
             "私有同步",
+            "备份到云端",
+            "云端备份",
             "github sync",
             "push to github",
         ),
@@ -57,12 +69,13 @@ KEYWORDS: list[tuple[Intent, tuple[str, ...]]] = [
             "创建 github release",
             "发布版本",
             "发布 alpha",
+            "版本标记",
             "release project",
             "github release",
         ),
     ),
     (Intent.PREPARE_RELEASE, ("准备发布", "发布", "release")),
-    (Intent.GENERATE_ROADMAP, ("路线图", "roadmap")),
+    (Intent.GENERATE_ROADMAP, ("生成路线图",)),
     (Intent.WHAT_DID_TODAY, ("今天做了什么", "今日变更", "what did")),
     (Intent.NEXT_STEP, ("下一步", "现在应该做什么", "next")),
     (Intent.SUMMARIZE_PROJECT, ("总结项目", "项目总结", "summary")),

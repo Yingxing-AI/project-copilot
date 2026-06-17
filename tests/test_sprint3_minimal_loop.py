@@ -13,8 +13,10 @@ def test_init_project_workflow(tmp_path: Path) -> None:
     assert (tmp_path / ".ai" / "MEMORY.md").exists()
     assert (tmp_path / ".ai" / "STATUS.md").exists()
     assert (tmp_path / ".ai" / "DECISIONS.md").exists()
-    assert (tmp_path / ".ai" / "WORKFLOW.md").exists()
-    assert (tmp_path / ".ai" / "USER_PROFILE.md").exists()
+    assert (tmp_path / ".ai" / "WORKLOG.md").exists()
+    assert (tmp_path / ".ai" / "KNOWLEDGE.md").exists()
+    assert (tmp_path / ".ai" / "metrics.md").exists()
+    assert (tmp_path / ".ai" / "history").is_dir()
 
 
 def test_check_project_workflow(tmp_path: Path) -> None:
@@ -24,8 +26,8 @@ def test_check_project_workflow(tmp_path: Path) -> None:
 
     assert result.intent_name == "check_project"
     assert result.status == "success"
-    assert "项目健康度评分" in result.summary
-    assert result.details["当前开发阶段"]
+    assert "项目健康度" in result.summary
+    assert result.details["当前阶段"]
     assert "当前风险" in result.details
     assert result.next_steps
 
@@ -61,3 +63,8 @@ def test_natural_language_intent() -> None:
     assert classify_intent_name("当前项目状态如何") == "check_project"
     assert classify_intent_name("继续开发") == "continue_development"
     assert classify_intent_name("今天收工") == "close_day"
+    assert classify_intent_name("项目复盘") == "review_project"
+    assert classify_intent_name("项目时间轴") == "timeline_project"
+    assert classify_intent_name("项目偏航检查 新增商城模块") == "drift_check"
+    assert classify_intent_name("记录决策 MVP 先做简历导入") == "record_decision"
+    assert classify_intent_name("查看路线图") == "show_roadmap"

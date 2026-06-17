@@ -1,12 +1,12 @@
 # Project Copilot
 
-Natural Language Operating System for AI Coding Projects.
+The Project Secretary for Codex Projects.
 
-Project Copilot 是一个面向 AI Coding 项目的自然语言项目操作系统。它把“检查项目”“继续开发”“今天结束工作”“准备开源”这类自然语言输入，转换成本地、可重复的项目工作流。
+Project Copilot 是 Codex 项目的项目秘书。Codex 负责开发，Project Copilot 负责记住：项目背景、关键决策、工作历史、路线图、复盘和偏航提醒。
 
-它解决的问题很直接：开发者不应该在每个项目里重复记忆 Git、Python、开源准备、项目状态和工作流命令。Project Copilot 用一个中文优先的 CLI，把这些项目操作组织成可持续维护的 workflow，并把项目上下文写入 `.ai/` 记忆目录。
+它面向创业者、产品经理、业务人员、AI Coding 新手和非专业开发者。用户不需要记工程术语，只需要用中文告诉 Project Copilot 要查看项目状态、记录决策、做项目复盘或检查是否跑偏。
 
-当前版本是 v0.3.0a5：规则驱动、本地运行、不依赖外部 AI API。
+当前版本是 v0.3.0a6：规则驱动、本地运行、不依赖外部 AI API。
 
 ## Alpha Notice
 
@@ -19,9 +19,13 @@ Project Copilot is currently an Alpha release. It is suitable for trial use, pro
 - Interactive CLI mode
 - Command mode
 - `.ai/` project memory
-- Project initialization
+- Question-based project onboarding
 - Existing-project adoption
-- Project health check
+- Project status card
+- Project review
+- Project timeline
+- Drift check for MVP scope
+- Decision recording
 - Continue development workflow
 - Close day workflow
 - OSS readiness check
@@ -66,7 +70,7 @@ project-copilot
 Run a single workflow:
 
 ```bash
-project-copilot 检查项目
+project-copilot 项目状态
 ```
 
 Sync project status, roadmap, changelog, and the managed `AGENTS.md` block:
@@ -78,13 +82,13 @@ project-copilot 同步项目状态
 Create a release with push, tag, and GitHub Release:
 
 ```bash
-project-copilot 发布 v0.3.0-alpha.5
+project-copilot 发布版本 v0.3.0-alpha.6
 ```
 
 Preview release actions without changing GitHub:
 
 ```bash
-project-copilot 发布 v0.3.0-alpha.5 dry-run
+project-copilot 发布版本 v0.3.0-alpha.6 dry-run
 ```
 
 Run without installing the console script:
@@ -123,7 +127,37 @@ project-copilot 接管这个已有项目
 Check project status:
 
 ```bash
-project-copilot 检查项目
+project-copilot 项目状态
+```
+
+Review the project:
+
+```bash
+project-copilot 项目复盘
+```
+
+Show the project timeline:
+
+```bash
+project-copilot 项目时间轴
+```
+
+Check whether a new idea is outside the MVP:
+
+```bash
+project-copilot 项目偏航检查 新增商城模块
+```
+
+Record an important decision:
+
+```bash
+project-copilot 记录决策 MVP 先做简历导入
+```
+
+Show the roadmap:
+
+```bash
+project-copilot 查看路线图
 ```
 
 Continue from project memory:
@@ -153,40 +187,47 @@ project-copilot 准备开源
 Plan private GitHub sync:
 
 ```bash
-project-copilot 私有同步到 GitHub
+project-copilot 备份到云端
 ```
 
 Publish a release:
 
 ```bash
-project-copilot 发布 v0.3.0-alpha.5
+project-copilot 发布版本 v0.3.0-alpha.6
 ```
 
 Preview a release:
 
 ```bash
-project-copilot 发布 v0.3.0-alpha.5 dry-run
+project-copilot 发布版本 v0.3.0-alpha.6 dry-run
 ```
 
 Run against another project root:
 
 ```bash
-project-copilot --root /path/to/project 检查项目
+project-copilot --root /path/to/project 项目状态
 ```
 
 ## Interactive Mode
 
 Run `project-copilot` with no arguments to enter interactive mode.
 
-The CLI shows a short project status summary, then accepts continuous natural-language input:
+The CLI shows a secretary-style project status card, then accepts continuous natural-language input:
 
 ```text
-Project Copilot 交互模式
-项目状态摘要：
-- 当前阶段：可持续开发
-- 健康度：92/100
-- Git：main
-常用输入：检查项目、继续开发项目、今天结束工作、检查 OSS 准备度。
+欢迎使用 Project Copilot。
+我是你的项目秘书。
+项目状态卡片
+
+项目：project-copilot
+当前阶段：可持续开发
+项目健康度：92
+距离上次复盘：今天
+路线图更新：今天
+
+提醒：
+- 暂无需要立即处理的提醒。
+常用输入：项目状态、项目复盘、项目时间轴、项目偏航检查、记录决策、结束工作。
 输入 exit / quit / 退出 结束。
 project-copilot>
 ```
@@ -204,14 +245,17 @@ If an intent cannot be recognized, Project Copilot returns a short list of avail
 Command mode keeps the existing one-shot workflow style:
 
 ```bash
-project-copilot 检查项目
+project-copilot 项目状态
 project-copilot 初始化项目
 project-copilot 接管这个已有项目
+project-copilot 项目复盘
+project-copilot 项目时间轴
+project-copilot 项目偏航检查 新增商城模块
+project-copilot 记录决策 MVP 先做简历导入
+project-copilot 查看路线图
 project-copilot 继续开发项目
 project-copilot 今天结束工作
-project-copilot 检查 OSS 准备度
-project-copilot 准备开源
-project-copilot 私有同步到 GitHub
+project-copilot 备份到云端
 ```
 
 ## Architecture
@@ -228,22 +272,24 @@ Project Copilot stores project memory under `.ai/`.
 
 Current memory files:
 
-- `.ai/PROJECT_CONTEXT.md`: project identity, goals, users, stack, constraints
-- `.ai/STATUS.md`: current phase, completed work, next steps
-- `.ai/ROADMAP.md`: local roadmap used by development sessions
-- `.ai/MEMORY.md`: chronological project events
-- `.ai/DECISIONS.md`: project decisions and ADR-style notes
-- `.ai/WORKFLOW.md`: workflow conventions
-- `.ai/USER_PROFILE.md`: user preferences and collaboration defaults
+- `.ai/PROJECT_CONTEXT.md`: 项目是什么、给谁用、MVP 是什么
+- `.ai/STATUS.md`: 当前阶段、健康度、风险和提醒
+- `.ai/ROADMAP.md`: 当前路线图和阶段目标
+- `.ai/MEMORY.md`: 可读的项目历史
+- `.ai/DECISIONS.md`: 关键决策、原因和影响
+- `.ai/WORKLOG.md`: 每日工作记录
+- `.ai/KNOWLEDGE.md`: 最佳实践、参考项目、产品认知、社区反馈和重要经验
+- `.ai/metrics.md`: 健康度、复盘间隔、路线图更新时间等指标
+- `.ai/history/`: 复盘和历史归档
 
-The memory system is local Markdown. It is designed to be readable, reviewable, and commit-friendly.
+The memory system is local Markdown. It is designed to be readable, reviewable, and easy to save with the project.
 
 ## Coming Soon
 
 - Better project analysis
 - Stronger existing-project adoption reports
-- Git history analysis
-- Stronger release and changelog automation
+- Better secretary reminders
+- Softer wording for cloud backup and version publishing
 - Optional AI Provider integrations
 - Codex Skill packaging
 - Codex Plugin packaging
@@ -259,7 +305,7 @@ pytest -q
 Current baseline:
 
 ```text
-31 passed
+32 passed
 ```
 
 ## Contributing

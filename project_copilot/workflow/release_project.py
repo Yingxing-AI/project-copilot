@@ -32,8 +32,8 @@ def run(context: WorkflowContext) -> WorkflowResult:
             intent_name=context.intent_name,
             status="blocked",
             title="发布被阻止。",
-            summary="请提供明确版本标签，例如：project-copilot 发布 v0.3.0-alpha.2",
-            next_steps=["输入 `project-copilot 发布 v0.3.0-alpha.2`。"],
+            summary="请提供明确版本标记，例如：project-copilot 发布版本 v0.3.0-alpha.2",
+            next_steps=["输入 `project-copilot 发布版本 v0.3.0-alpha.2`。"],
         )
 
     dry_run = _is_dry_run(context.text)
@@ -42,11 +42,11 @@ def run(context: WorkflowContext) -> WorkflowResult:
         intent_name=context.intent_name,
         status=outcome.status,
         title=_release_title(outcome),
-        summary=f"目标标签：{outcome.tag}",
+        summary=f"目标版本标记：{outcome.tag}",
         details={
-            "计划动作" if outcome.dry_run else "已执行": outcome.actions,
-            "阻塞项": outcome.blockers,
-            "Release notes": str(outcome.release_notes) if outcome.release_notes else None,
+            "计划动作" if outcome.dry_run else "已执行": [_soften_release_action(action) for action in outcome.actions],
+            "阻塞项": [_soften_blocker(blocker) for blocker in outcome.blockers],
+            "发布说明": str(outcome.release_notes) if outcome.release_notes else None,
         },
         next_steps=_release_next_steps(outcome),
     )
@@ -170,8 +170,40 @@ def _release_next_steps(outcome: ReleaseOutcome) -> list[str]:
     if outcome.status != "success":
         return ["修复阻塞项后重新运行发布命令。"]
     if outcome.dry_run:
-        return [f"确认无误后运行 `project-copilot 发布 {outcome.tag}`。"]
+        return [f"确认无误后运行 `project-copilot 发布版本 {outcome.tag}`。"]
     return []
+
+
+def _soften_release_action(action: str) -> str:
+    replacements = {
+        "同步项目状态": "同步项目状态",
+        "pytest -q": "运行测试",
+        "生成 release notes": "生成发布说明",
+        "git add .": "整理待保存内容",
+        "git push origin main": "备份到云端",
+        "gh release create": "创建发布版本",
+    }
+    if action in replacements:
+        return replacements[action]
+    if action.startswith("git commit"):
+        return "保存发布进度"
+    if action.startswith("git tag"):
+        return "创建版本标记"
+    if action.startswith("git push origin"):
+        return "备份版本标记到云端"
+    return action
+
+
+def _soften_blocker(blocker: str) -> str:
+    return (
+        blocker.replace("tag", "版本标记")
+        .replace("Git 仓库", "保存进度记录")
+        .replace("当前分支", "当前保存分支")
+        .replace("remote origin", "云端备份地址")
+        .replace("标签", "版本标记")
+        .replace("GitHub CLI", "云端发布工具")
+        .replace("gh auth login", "云端工具登录")
+    )
 
 
 def _has_changes(root: Path, runner: Runner) -> bool:

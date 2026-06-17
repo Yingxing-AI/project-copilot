@@ -19,15 +19,15 @@ class ProjectAnalysis:
 
 REQUIRED_PATHS = [
     "README.md",
-    "LICENSE",
     "AGENTS.md",
     ".ai/PROJECT_CONTEXT.md",
     ".ai/MEMORY.md",
     ".ai/ROADMAP.md",
     ".ai/STATUS.md",
     ".ai/DECISIONS.md",
-    ".ai/WORKFLOW.md",
-    ".ai/USER_PROFILE.md",
+    ".ai/WORKLOG.md",
+    ".ai/KNOWLEDGE.md",
+    ".ai/metrics.md",
 ]
 
 
@@ -40,9 +40,9 @@ def analyze_project(root: Path) -> ProjectAnalysis:
     if missing:
         risks.append("项目基础文件不完整。")
     if git_status.available and not git_status.initialized:
-        risks.append("Git 尚未初始化。")
+        risks.append("还没有保存进度记录。")
     if git_status.dirty_files:
-        risks.append("存在未提交变更。")
+        risks.append("有尚未保存的工作进展。")
 
     score = max(0, 100 - len(missing) * 7 - len(risks) * 8)
     if score >= 85:
@@ -54,9 +54,9 @@ def analyze_project(root: Path) -> ProjectAnalysis:
 
     next_steps = []
     if missing:
-        next_steps.append("补齐项目初始化文件和 .ai 项目记忆。")
+        next_steps.append("补齐项目档案和项目记忆。")
     if not git_status.initialized:
-        next_steps.append("初始化 Git 仓库。")
-    next_steps.append("根据 ROADMAP 选择最高优先级任务继续开发。")
+        next_steps.append("建立保存进度记录。")
+    next_steps.append("根据路线图选择最高优先级任务继续开发。")
 
     return ProjectAnalysis(score, stage, completed, missing, risks, next_steps, git_status)

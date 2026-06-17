@@ -42,7 +42,7 @@ def run(context: WorkflowContext) -> WorkflowResult:
         intent_name=context.intent_name,
         status="success",
         title="已同步项目状态。",
-        summary="已更新项目记忆、Roadmap 和 Changelog 的当前版本信息。",
+        summary="已更新项目记忆、路线图和协作文档的当前版本信息。",
         details={
             "版本": sync.version,
             "最新提交": sync.latest_commit,
@@ -50,7 +50,7 @@ def run(context: WorkflowContext) -> WorkflowResult:
             "测试基线": sync.pytest_baseline,
             "更新文件": sync.updated_files,
         },
-        next_steps=["运行 `pytest -q` 验证。", "审阅后提交同步结果。"],
+        next_steps=["运行 `pytest -q` 验证。", "审阅后保存进度。"],
     )
 
 
@@ -91,7 +91,7 @@ def sync_project_state(root: Path) -> ProjectStateSync:
         )
 
     if updated_files:
-        memory.append_memory("同步项目状态、Roadmap、Changelog 和 AGENTS managed 区块。")
+        memory.append_memory("同步项目状态、路线图和协作文档。")
         if ".ai/MEMORY.md" not in updated_files:
             updated_files.append(".ai/MEMORY.md")
 
@@ -128,7 +128,11 @@ def _render_status(today, analysis, pytest_baseline: str, latest_commit: str, la
             "- Workflow engine 注册和分发。",
             "- `.ai/` 项目记忆系统。",
             "- 项目初始化和已有项目接管。",
+            "- 问答式首次项目档案生成。",
+            "- 秘书式项目状态卡片。",
+            "- 项目复盘、项目时间轴、项目偏航检查、记录决策和查看路线图。",
             "- 项目状态分析和健康度评分。",
+            "- `.ai/KNOWLEDGE.md`、`.ai/metrics.md` 和 `.ai/history/`。",
             "- 继续开发、结束工作和工作日志流程。",
             "- OSS readiness 检查和开源准备文件生成。",
             "- GitHub public/private 同步计划和前置条件检查。",
@@ -140,6 +144,12 @@ def _render_status(today, analysis, pytest_baseline: str, latest_commit: str, la
             "- GitHub Actions CI 覆盖 Python 3.10、3.11、3.12。",
             "- Release dry-run 和版本/tag 一致性检查。",
             "- 面向普通用户的一行安装脚本。",
+            "",
+            "当前验证重点：",
+            "",
+            "- 验证 Project Copilot 是否像 Codex 项目的项目秘书，而不是另一个开发工具。",
+            "- 验证非工程用户是否能通过中文命令理解项目状态、复盘历史和偏航风险。",
+            "- 验证价值优先，不新增复杂 AI 能力、不接外部 AI API、不开发 Web UI。",
             "",
             "当前风险：",
             "",
@@ -154,7 +164,7 @@ def _render_status(today, analysis, pytest_baseline: str, latest_commit: str, la
 
 
 def _without_transient_dirty_risk(analysis):
-    risks = [risk for risk in analysis.risks if risk != "存在未提交变更。"]
+    risks = [risk for risk in analysis.risks if risk != "有尚未保存的工作进展。"]
     git = type(analysis.git)(
         available=analysis.git.available,
         initialized=analysis.git.initialized,
@@ -174,7 +184,7 @@ def _without_transient_dirty_risk(analysis):
 
 
 def _health_score_without_dirty(score: int, old_risks: list[str], new_risks: list[str]) -> int:
-    if "存在未提交变更。" in old_risks and "存在未提交变更。" not in new_risks:
+    if "有尚未保存的工作进展。" in old_risks and "有尚未保存的工作进展。" not in new_risks:
         return min(100, score + 8)
     return score
 
