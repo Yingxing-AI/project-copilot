@@ -1,13 +1,19 @@
 from __future__ import annotations
 
 import argparse
+import sys
 from collections.abc import Callable
 from pathlib import Path
 
 from project_copilot import __version__
 from project_copilot.cli.doctor import render_doctor
 from project_copilot.memory import MemoryStore
-from project_copilot.secretary import render_status_card
+from project_copilot.secretary import (
+    render_noninteractive_help,
+    render_recommended_commands,
+    render_secretary_intro,
+    render_status_card,
+)
 from project_copilot.workflow.init_project import build_project_context
 from project_copilot.workflow import run_text_workflow
 
@@ -29,6 +35,13 @@ def main(argv: list[str] | None = None) -> int:
         print(render_doctor(root))
         return 0
     if not text:
+        if not sys.stdin.isatty():
+            print(render_secretary_intro())
+            print()
+            print(render_status_card(root))
+            print()
+            print(render_noninteractive_help())
+            return 0
         return run_interactive(root)
     result = run_text_workflow(root, text)
     print(result)
@@ -40,17 +53,15 @@ def run_interactive(
     input_func: Callable[[str], str] = input,
     output_func: Callable[[str], None] = print,
 ) -> int:
-    output_func("欢迎使用 Project Copilot。")
-    output_func("我是你的项目秘书。")
+    output_func(render_secretary_intro())
     if _needs_onboarding(root):
         _run_onboarding(root, input_func, output_func)
     output_func(render_status_card(root))
-    output_func("常用输入：项目状态、项目复盘、项目时间轴、项目偏航检查、记录决策、结束工作。")
-    output_func("输入 exit / quit / 退出 结束。")
+    output_func(render_recommended_commands())
 
     while True:
         try:
-            text = input_func("project-copilot> ").strip()
+            text = input_func("项目秘书> ").strip()
         except EOFError:
             output_func("已结束。")
             return 0
