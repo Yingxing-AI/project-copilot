@@ -8,8 +8,8 @@
 
 - 版本：`0.3.0a9`
 - 分支：`main`
-- 最新提交：`6ae4d94 Update OSS preparation workflow and project memory`
-- 最新标签：`v0.3.0-alpha.8`
+- 最新提交：`2455692 chore: prepare release v0.3.0-alpha.9`
+- 最新标签：`v0.3.0-alpha.9`
 - 测试基线：`pytest -q` 通过，58 passed。
 - 项目健康度：100/100
 
@@ -37,6 +37,7 @@
 - GitHub Actions CI 覆盖 Python 3.10、3.11、3.12。
 - Release dry-run 和版本/tag 一致性检查。
 - 面向普通用户的一行安装脚本。
+- 完成 `v0.3.0-alpha.9` 发布，版本号、安装脚本、发布说明和 release tag 已同步。
 
 当前验证重点：
 
