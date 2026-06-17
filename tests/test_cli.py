@@ -31,7 +31,7 @@ class CliTest(unittest.TestCase):
             self.assertEqual(exit_code, 0)
             self.assertIn("你好，我是你的项目秘书", rendered)
             self.assertIn("Codex 负责开发", rendered)
-            self.assertIn("已生成 PROJECT_CONTEXT.md、STATUS.md、ROADMAP.md 和 DECISIONS.md", rendered)
+            self.assertIn("已生成 PROJECT_CONTEXT.md、STATUS.md、HYPOTHESES.md、ROADMAP.md 和 DECISIONS.md", rendered)
             self.assertIn("项目状态：", rendered)
             self.assertIn("已退出", rendered)
 

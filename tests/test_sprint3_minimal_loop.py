@@ -11,6 +11,7 @@ def test_init_project_workflow(tmp_path: Path) -> None:
     assert result.status == "success"
     assert (tmp_path / ".ai" / "PROJECT_CONTEXT.md").exists()
     assert (tmp_path / ".ai" / "MEMORY.md").exists()
+    assert (tmp_path / ".ai" / "HYPOTHESES.md").exists()
     assert (tmp_path / ".ai" / "STATUS.md").exists()
     assert (tmp_path / ".ai" / "DECISIONS.md").exists()
     assert (tmp_path / ".ai" / "WORKLOG.md").exists()
@@ -36,6 +37,10 @@ def test_continue_development_workflow(tmp_path: Path) -> None:
     run_structured_workflow(tmp_path, "初始化项目")
     status_path = tmp_path / ".ai" / "STATUS.md"
     status_path.write_text("# Status\n\n当前阶段：测试阶段。\n\n下一步任务：补充测试。\n", encoding="utf-8")
+    before = {
+        name: (tmp_path / ".ai" / name).read_text(encoding="utf-8")
+        for name in ("MEMORY.md", "HYPOTHESES.md", "ROADMAP.md", "DECISIONS.md")
+    }
 
     result = run_structured_workflow(tmp_path, "继续开发项目")
 
@@ -43,6 +48,8 @@ def test_continue_development_workflow(tmp_path: Path) -> None:
     assert result.status == "success"
     assert "测试阶段" in str(result.details["STATUS 摘要"])
     assert result.next_steps
+    for name, content in before.items():
+        assert (tmp_path / ".ai" / name).read_text(encoding="utf-8") == content
 
 
 def test_close_day_workflow(tmp_path: Path) -> None:
@@ -56,6 +63,31 @@ def test_close_day_workflow(tmp_path: Path) -> None:
     assert (tmp_path / ".ai" / "WORKLOG.md").exists()
     assert "更新日期" in (tmp_path / ".ai" / "STATUS.md").read_text(encoding="utf-8")
     assert "已更新项目状态" in (tmp_path / ".ai" / "WORKLOG.md").read_text(encoding="utf-8")
+    assert "下一步：" not in (tmp_path / ".ai" / "WORKLOG.md").read_text(encoding="utf-8")
+
+
+def test_record_decision_routes_uncertain_input_to_hypotheses(tmp_path: Path) -> None:
+    run_structured_workflow(tmp_path, "初始化项目")
+
+    result = run_structured_workflow(tmp_path, "记录决策 也许先做简历导入")
+
+    assert result.intent_name == "record_decision"
+    assert result.status == "needs_input"
+    assert "假设" in result.title
+    assert "也许先做简历导入" in (tmp_path / ".ai" / "HYPOTHESES.md").read_text(encoding="utf-8")
+    assert "也许先做简历导入" not in (tmp_path / ".ai" / "DECISIONS.md").read_text(encoding="utf-8")
+
+
+def test_record_decision_does_not_duplicate_into_memory(tmp_path: Path) -> None:
+    run_structured_workflow(tmp_path, "初始化项目")
+    before = (tmp_path / ".ai" / "MEMORY.md").read_text(encoding="utf-8")
+
+    result = run_structured_workflow(tmp_path, "记录决策 MVP 先做简历导入")
+
+    assert result.intent_name == "record_decision"
+    assert result.status == "success"
+    assert "MVP 先做简历导入" in (tmp_path / ".ai" / "DECISIONS.md").read_text(encoding="utf-8")
+    assert before == (tmp_path / ".ai" / "MEMORY.md").read_text(encoding="utf-8")
 
 
 def test_natural_language_intent() -> None:

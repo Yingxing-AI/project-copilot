@@ -13,7 +13,7 @@ def run(context: WorkflowContext) -> WorkflowResult:
     memory.ensure()
     analysis = analyze_project(context.root)
     now = datetime.now()
-    _append_worklog(memory, now.strftime("%Y-%m-%d %H:%M"), analysis.next_steps)
+    _append_worklog(memory, now.strftime("%Y-%m-%d %H:%M"), analysis.stage, analysis.health_score)
     sync = sync_project_state(context.root)
     return WorkflowResult(
         intent_name=context.intent_name,
@@ -25,16 +25,16 @@ def run(context: WorkflowContext) -> WorkflowResult:
             "更新文件": [".ai/WORKLOG.md", *sync.updated_files],
             "当前风险": analysis.risks,
         },
-        next_steps=analysis.next_steps,
+        next_steps=["次日继续时，先恢复当前上下文，再根据实际进展决定下一步。"],
     )
 
 
-def _append_worklog(memory: MemoryStore, stamp: str, next_steps: list[str]) -> None:
+def _append_worklog(memory: MemoryStore, stamp: str, stage: str, health_score: int) -> None:
     path = memory.ai_dir / "WORKLOG.md"
     if not path.exists():
         path.write_text("# Worklog\n", encoding="utf-8")
     with path.open("a", encoding="utf-8") as handle:
         handle.write(f"\n## {stamp}\n\n")
         handle.write("- 已更新项目状态。\n")
-        for step in next_steps:
-            handle.write(f"- 下一步：{step}\n")
+        handle.write(f"- 当前阶段：{stage}\n")
+        handle.write(f"- 项目健康度：{health_score}/100\n")

@@ -86,6 +86,7 @@ def test_ai_memory_structure(tmp_path: Path) -> None:
     for name in (
         "PROJECT_CONTEXT.md",
         "STATUS.md",
+        "HYPOTHESES.md",
         "ROADMAP.md",
         "MEMORY.md",
         "DECISIONS.md",
@@ -112,7 +113,7 @@ def test_agents_md_contains_codex_rules(tmp_path: Path) -> None:
     assert "确保项目持续朝着既定目标演进。" in text
     assert "必须优先阻止偏离，而不是继续实现功能。" in text
     assert "你负责开发。" in text
-    assert "同时你必须维护 `.ai` 项目记忆。" in text
+    assert "同时你必须维护 `.ai` 分层项目记忆" in text
     assert "阅读 `.ai/PROJECT_CONTEXT.md`" in text
     assert "更新 `.ai/STATUS.md`" in text
     assert "追加 `.ai/WORKLOG.md`" in text
@@ -125,6 +126,7 @@ def test_agents_md_contains_codex_rules(tmp_path: Path) -> None:
     assert "`push` = 备份到云端" in text
     assert "`release` = 发布版本" in text
     assert "`tag` = 版本标记" in text
+    assert "HYPOTHESES.md" in text
 
 
 def test_agents_md_contains_guardrail_triggers(tmp_path: Path) -> None:
@@ -163,6 +165,7 @@ def test_agents_md_contains_memory_write_rules(tmp_path: Path) -> None:
     assert "开源项目启发" in text
     assert "用户反馈总结" in text
     assert "产品认知提升" in text
+    assert "HYPOTHESES.md" in text
     assert "禁止写入：" in text
     assert "代码实现细节" in text
     assert "临时调试经验" in text
@@ -196,12 +199,13 @@ def test_repository_agents_md_is_hardened() -> None:
     assert "必要时" not in text
     assert "如果合适" not in text
     assert "可能需要" not in text
+    assert "当前基线：56 passed" in text
 
 
 def test_readme_promotes_codex_native_flow() -> None:
     text = Path("README.md").read_text(encoding="utf-8")
 
-    assert "Project Copilot installs a persistent project memory layer for Codex." in text
+    assert "Layered project memory for Codex." in text
     assert "project-copilot adopt" in text
     assert "project-copilot init" in text
     assert "codex" in text

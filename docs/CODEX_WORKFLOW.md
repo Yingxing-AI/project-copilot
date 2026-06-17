@@ -1,6 +1,6 @@
 # Project Copilot 与 Codex
 
-Project Copilot 为 Codex 安装持久项目记忆层。
+Project Copilot 为 Codex 安装分层项目记忆。
 
 Codex 负责开发。
 
@@ -78,7 +78,7 @@ codex
 
 正常与 Codex 对话即可。
 
-Project Copilot 会通过项目记忆帮助 Codex 理解：
+Project Copilot 会通过分层项目记忆帮助 Codex 理解：
 
 - 项目目标
 - MVP 范围
@@ -97,7 +97,7 @@ Project Copilot 会通过项目记忆帮助 Codex 理解：
 
 - 项目状态
 - 工作日志
-- 长期记忆
+- 分层记忆
 
 ### 每周复盘
 
@@ -144,7 +144,11 @@ Project Copilot 会通过项目记忆帮助 Codex 理解：
 
 `MEMORY.md`
 
-记录长期事实和里程碑。
+记录稳定事实、重要事件、关键里程碑和不应遗忘的信息。
+
+`HYPOTHESES.md`
+
+记录未确认判断、待验证分析和低置信度结论。
 
 `DECISIONS.md`
 
@@ -152,7 +156,7 @@ Project Copilot 会通过项目记忆帮助 Codex 理解：
 
 `WORKLOG.md`
 
-记录每日工作。
+记录每日工作，只写实际完成内容，不写推测或规划。
 
 `KNOWLEDGE.md`
 

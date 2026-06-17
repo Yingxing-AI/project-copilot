@@ -10,7 +10,7 @@
 - 分支：`main`
 - 最新提交：`dbf54fb chore: prepare release v0.3.0-alpha.8`
 - 最新标签：`v0.3.0-alpha.8`
-- 测试基线：`pytest -q` 通过，53 passed。
+- 测试基线：`pytest -q` 通过，56 passed。
 - 项目健康度：100/100
 
 已完成功能：
@@ -26,7 +26,9 @@
 - 项目复盘、项目时间轴、项目偏航检查、记录决策和查看路线图。
 - 项目状态分析和健康度评分。
 - `.ai/KNOWLEDGE.md`、`.ai/metrics.md` 和 `.ai/history/`。
+- `.ai/HYPOTHESES.md` 用于保存未确认判断、待验证分析和低置信度结论。
 - 继续开发、结束工作和工作日志流程。
+- 复盘归档使用月文件格式，关键决策仅保留最近 3 条。
 - OSS readiness 检查和开源准备文件生成。
 - GitHub public/private 同步计划和前置条件检查。
 - 无参数交互式 CLI 和 command mode。
@@ -37,6 +39,7 @@
 - GitHub Actions CI 覆盖 Python 3.10、3.11、3.12。
 - Release dry-run 和版本/tag 一致性检查。
 - 面向普通用户的一行安装脚本。
+- 记忆边界收口：`MEMORY.md` 去噪、`HYPOTHESES.md` 分层、`DECISIONS.md` 单一来源、文档术语统一为“分层记忆”。
 
 当前验证重点：
 
@@ -44,6 +47,7 @@
 - 验证 `.ai` 中的工作日志、决策和知识沉淀是否能成为跨项目价值指标。
 - 验证用户是否可以只打开 Codex 并通过 `.ai` 获得连续项目上下文。
 - 验证价值优先，不新增复杂 AI 能力、不接外部 AI API、不开发 Web UI。
+- 验证事实、假设、计划和决策分层是否能避免项目记忆污染。
 
 当前风险：
 

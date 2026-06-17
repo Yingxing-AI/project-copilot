@@ -45,7 +45,7 @@ def run(context: WorkflowContext) -> WorkflowResult:
         intent_name=context.intent_name,
         status="success",
         title="已同步项目状态。",
-        summary="已更新项目记忆、路线图和协作文档的当前版本信息。",
+        summary="已更新状态、路线图和协作文档的当前版本信息。",
         details={
             "版本": sync.version,
             "最新提交": sync.latest_commit,
@@ -92,11 +92,6 @@ def sync_project_state(root: Path) -> ProjectStateSync:
             updated_files,
             "AGENTS.md",
         )
-
-    if updated_files:
-        memory.append_memory("同步项目状态、路线图和协作文档。")
-        if ".ai/MEMORY.md" not in updated_files:
-            updated_files.append(".ai/MEMORY.md")
 
     return ProjectStateSync(
         updated_files=updated_files,

@@ -100,6 +100,24 @@ Goal: 验证多个项目的项目记忆价值。
 - [x] Ask follow-up questions only when key information is missing
 - [x] Generate `PROJECT_CONTEXT.md`, `STATUS.md`, `ROADMAP.md`, and `DECISIONS.md` from the proposal
 
+## Sprint Evidence Layer Separation
+
+- [x] Add `HYPOTHESES.md` for unconfirmed judgments and low-confidence conclusions
+- [x] Restrict `continue` to read-only context recovery without recursive planning
+- [x] Route uncertain decision input into `HYPOTHESES.md` instead of `DECISIONS.md`
+- [x] Keep `WORKLOG.md` limited to actual completed work, not future planning
+
+## Sprint Memory and Docs Hygiene
+
+- [x] Remove maintenance-only entries from `MEMORY.md`
+- [x] Keep `record_decision` out of `MEMORY.md`
+- [x] Rephrase documentation around layered memory boundaries
+- [x] Normalize `AGENTS.md`, README, Usage, and Codex workflow terminology
+- [x] Update the project-state baseline to `pytest -q` passing, 56 passed
+- [x] Normalize `.ai/history/` to monthly archive files
+- [x] Limit review archives to the recent 3 decisions
+- [x] Standardize `timeline_project` into fixed sections
+
 ## Sprint Validation
 
 - [x] Start real-project validation with `ai-recruitment`

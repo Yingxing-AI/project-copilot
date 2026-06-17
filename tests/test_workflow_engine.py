@@ -81,11 +81,13 @@ class WorkflowEngineTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             (root / ".ai").mkdir()
+            (root / ".ai" / "MEMORY.md").write_text("# Memory\n\n## 长期事实\n\n- Existing fact.\n", encoding="utf-8")
             (root / ".ai" / "STATUS.md").write_text("# Status\n\n旧状态\n", encoding="utf-8")
             (root / ".ai" / "ROADMAP.md").write_text("- [x] Pytest baseline: 22 passed\n", encoding="utf-8")
             (root / "ROADMAP.md").write_text("- [x] Pytest baseline: 22 passed\n", encoding="utf-8")
             (root / "README.md").write_text("Current baseline:\n\n```text\n22 passed\n```\n", encoding="utf-8")
             (root / "AGENTS.md").write_text("# Agents\n\n手写约定。\n", encoding="utf-8")
+            before_memory = (root / ".ai" / "MEMORY.md").read_text(encoding="utf-8")
             (root / "CHANGELOG.md").write_text(
                 "# Changelog\n\n## v0.3 Alpha\n\n### Added\n\n- Natural-language intent recognition.\n\n### Verified\n\n- `pytest -q`\n- Current baseline: 22 passed.\n",
                 encoding="utf-8",
@@ -98,6 +100,7 @@ class WorkflowEngineTest(unittest.TestCase):
             self.assertNotIn("22 passed", (root / "README.md").read_text(encoding="utf-8"))
             self.assertNotIn("22 passed", (root / ".ai" / "ROADMAP.md").read_text(encoding="utf-8"))
             self.assertIn("测试基线", (root / ".ai" / "STATUS.md").read_text(encoding="utf-8"))
+            self.assertEqual(before_memory, (root / ".ai" / "MEMORY.md").read_text(encoding="utf-8"))
             status = (root / ".ai" / "STATUS.md").read_text(encoding="utf-8")
             self.assertIn("Codex Native 主流程", status)
             self.assertIn("记忆层安装器", status)

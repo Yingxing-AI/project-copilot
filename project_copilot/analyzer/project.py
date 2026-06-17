@@ -22,6 +22,7 @@ REQUIRED_PATHS = [
     "AGENTS.md",
     ".ai/PROJECT_CONTEXT.md",
     ".ai/MEMORY.md",
+    ".ai/HYPOTHESES.md",
     ".ai/ROADMAP.md",
     ".ai/STATUS.md",
     ".ai/DECISIONS.md",

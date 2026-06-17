@@ -9,7 +9,8 @@ class WorkflowTest(unittest.TestCase):
     def test_init_project_creates_memory_and_project_files(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             tmp_path = Path(directory)
-            result = run_workflow(tmp_path, "这是一个 AI 招聘系统，请初始化项目")
+            proposal = "这是一个 AI 招聘系统，请初始化项目"
+            result = run_workflow(tmp_path, proposal)
 
             self.assertIn("项目方案还需要补充", result)
             self.assertTrue((tmp_path / "README.md").exists())
@@ -18,9 +19,12 @@ class WorkflowTest(unittest.TestCase):
             self.assertTrue((tmp_path / "docs").is_dir())
             self.assertTrue((tmp_path / ".ai" / "PROJECT_CONTEXT.md").exists())
             self.assertTrue((tmp_path / ".ai" / "MEMORY.md").exists())
+            self.assertTrue((tmp_path / ".ai" / "HYPOTHESES.md").exists())
             self.assertTrue((tmp_path / ".ai" / "KNOWLEDGE.md").exists())
             self.assertTrue((tmp_path / ".ai" / "metrics.md").exists())
             self.assertTrue((tmp_path / ".ai" / "history").is_dir())
+            self.assertIn("完成首次方案驱动项目档案初始化。", (tmp_path / ".ai" / "MEMORY.md").read_text(encoding="utf-8"))
+            self.assertNotIn(proposal, (tmp_path / ".ai" / "MEMORY.md").read_text(encoding="utf-8"))
 
     def test_check_project_reports_health_score(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -50,6 +54,8 @@ class WorkflowTest(unittest.TestCase):
                 "package.json",
                 (tmp_path / ".ai" / "PROJECT_CONTEXT.md").read_text(encoding="utf-8"),
             )
+            self.assertIn("完成已有项目接管。", (tmp_path / ".ai" / "MEMORY.md").read_text(encoding="utf-8"))
+            self.assertNotIn("接管这个已有项目", (tmp_path / ".ai" / "MEMORY.md").read_text(encoding="utf-8"))
 
     def test_oss_readiness_reports_missing_items(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -75,6 +81,7 @@ class WorkflowTest(unittest.TestCase):
             run_workflow(tmp_path, "这是一个 AI 招聘系统，请初始化项目")
 
             decision = run_workflow(tmp_path, "记录决策 MVP 先做简历导入")
+            before_memory = (tmp_path / ".ai" / "MEMORY.md").read_text(encoding="utf-8")
             review = run_workflow(tmp_path, "项目复盘")
             timeline = run_workflow(tmp_path, "项目时间轴")
             drift = run_workflow(tmp_path, "项目偏航检查 新增商城模块")
@@ -83,7 +90,44 @@ class WorkflowTest(unittest.TestCase):
             self.assertIn("已记录决策", decision)
             self.assertIn("MVP 先做简历导入", (tmp_path / ".ai" / "DECISIONS.md").read_text(encoding="utf-8"))
             self.assertIn("项目健康度", review)
-            self.assertTrue(any((tmp_path / ".ai" / "history").iterdir()))
+            self.assertTrue((tmp_path / ".ai" / "history" / "2026-06.md").exists())
+            self.assertIn("# History 2026-06", (tmp_path / ".ai" / "history" / "2026-06.md").read_text(encoding="utf-8"))
+            self.assertIn("项目健康度：", (tmp_path / ".ai" / "history" / "2026-06.md").read_text(encoding="utf-8"))
+            self.assertIn("下一步：", (tmp_path / ".ai" / "history" / "2026-06.md").read_text(encoding="utf-8"))
+            self.assertEqual(before_memory, (tmp_path / ".ai" / "MEMORY.md").read_text(encoding="utf-8"))
             self.assertIn("项目时间轴", timeline)
+            self.assertIn("最近里程碑：", timeline)
+            self.assertIn("近期工作：", timeline)
+            self.assertIn("关键决策：", timeline)
             self.assertIn("可能不在 MVP 范围内", drift)
             self.assertIn("项目路线图", roadmap)
+
+    def test_review_project_limits_key_decisions_to_recent_three(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            tmp_path = Path(directory)
+            run_workflow(tmp_path, "初始化项目")
+            for item in (
+                "记录决策 MVP 先做简历导入",
+                "记录决策 第二条决策",
+                "记录决策 第三条决策",
+                "记录决策 第四条决策",
+            ):
+                run_workflow(tmp_path, item)
+
+            review = run_workflow(tmp_path, "项目复盘")
+
+            self.assertIn("第三条决策", review)
+            self.assertIn("第四条决策", review)
+            self.assertIn("第二条决策", review)
+            self.assertNotIn("MVP 先做简历导入", review)
+
+    def test_record_decision_uncertain_input_routes_to_hypotheses(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            tmp_path = Path(directory)
+            run_workflow(tmp_path, "初始化项目")
+
+            result = run_workflow(tmp_path, "记录决策 可能先做简历导入")
+
+            self.assertIn("假设", result)
+            self.assertIn("可能先做简历导入", (tmp_path / ".ai" / "HYPOTHESES.md").read_text(encoding="utf-8"))
+            self.assertNotIn("可能先做简历导入", (tmp_path / ".ai" / "DECISIONS.md").read_text(encoding="utf-8"))

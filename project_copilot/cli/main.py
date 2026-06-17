@@ -105,7 +105,7 @@ def _run_onboarding(
     memory.ensure()
     _write_initial_memory(memory, proposal)
     memory.append_memory("完成首次方案驱动项目档案。")
-    output_func("已生成 PROJECT_CONTEXT.md、STATUS.md、ROADMAP.md 和 DECISIONS.md。")
+    output_func("已生成 PROJECT_CONTEXT.md、STATUS.md、HYPOTHESES.md、ROADMAP.md 和 DECISIONS.md。")
     if proposal.missing_fields:
         output_func(f"仍有待补充信息：{'、'.join(proposal.missing_fields)}")
 

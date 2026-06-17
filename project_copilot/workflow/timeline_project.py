@@ -7,8 +7,21 @@ from project_copilot.workflow.types import WorkflowContext, WorkflowResult
 def run(context: WorkflowContext) -> WorkflowResult:
     memory = MemoryStore(context.root)
     memory.ensure()
-    events = _collect_events(memory.read("MEMORY.md"), memory.read("WORKLOG.md"))
-    summary = "\n".join(f"- {event}" for event in events) if events else "- 暂无项目时间轴。"
+    milestones = _recent_items(memory.read("MEMORY.md"), limit=5) or ["暂无里程碑。"]
+    worklog_items = _recent_worklog_items(memory.read("WORKLOG.md"), limit=4) or ["暂无工作记录。"]
+    decisions = _recent_decisions(memory.read("DECISIONS.md"), limit=3) or ["暂无关键决策。"]
+    summary = "\n".join(
+        [
+            "最近里程碑：",
+            *[f"- {item}" for item in milestones],
+            "",
+            "近期工作：",
+            *[f"- {item}" for item in worklog_items],
+            "",
+            "关键决策：",
+            *[f"- {item}" for item in decisions],
+        ]
+    )
     return WorkflowResult(
         intent_name=context.intent_name,
         status="success",
@@ -18,13 +31,49 @@ def run(context: WorkflowContext) -> WorkflowResult:
     )
 
 
-def _collect_events(memory_text: str, worklog_text: str) -> list[str]:
-    events: list[str] = []
-    for text in (memory_text, worklog_text):
-        for line in text.splitlines():
+def _recent_items(text: str, limit: int) -> list[str]:
+    items: list[str] = []
+    for line in text.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("- "):
+            items.append(stripped[2:])
+    return items[-limit:]
+
+
+def _recent_worklog_items(text: str, limit: int) -> list[str]:
+    items: list[str] = []
+    for line in text.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("- ") and "下一步" not in stripped:
+            items.append(stripped[2:])
+    return items[-limit:]
+
+
+def _recent_decisions(text: str, limit: int) -> list[str]:
+    blocks: list[str] = []
+    current: list[str] = []
+
+    def flush() -> None:
+        nonlocal current
+        if not current:
+            return
+        decision = ""
+        for line in current:
             stripped = line.strip()
-            if stripped.startswith("- ") and "同步项目状态" not in stripped:
-                events.append(stripped[2:])
-            elif stripped.startswith("## ") and stripped != "## 决策记录":
-                events.append(stripped[3:])
-    return events[-12:]
+            if stripped.startswith("- 决策："):
+                decision = stripped.removeprefix("- 决策：").strip()
+                break
+        if decision:
+            blocks.append(decision)
+        current = []
+
+    for line in text.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("## "):
+            flush()
+            current = [line]
+            continue
+        if current:
+            current.append(line)
+    flush()
+    return blocks[-limit:]

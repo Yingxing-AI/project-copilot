@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 
 from project_copilot.memory import MemoryStore
+from project_copilot.workflow.hypothesis_utils import looks_uncertain
 from project_copilot.workflow.types import WorkflowContext, WorkflowResult
 
 
@@ -19,6 +20,16 @@ def run(context: WorkflowContext) -> WorkflowResult:
             next_steps=["例如：记录决策 MVP 先做简历导入，因为这是核心使用路径。"],
         )
 
+    if looks_uncertain(decision):
+        memory.append_hypothesis(f"待确认判断：{decision}")
+        return WorkflowResult(
+            intent_name=context.intent_name,
+            status="needs_input",
+            title="这更像一个假设，还不能写入决策。",
+            summary=decision,
+            next_steps=["如果已经确认，请改成明确结论后再记录决策。", "如果还未确认，保留在假设层。"],
+        )
+
     stamp = datetime.now().strftime("%Y-%m-%d %H:%M")
     path = memory.ai_dir / "DECISIONS.md"
     with path.open("a", encoding="utf-8") as handle:
@@ -26,7 +37,6 @@ def run(context: WorkflowContext) -> WorkflowResult:
         handle.write(f"- 决策：{decision}\n")
         handle.write("- 原因：待补充。\n")
         handle.write("- 影响：后续需求以此为边界。\n")
-    memory.append_memory(f"记录关键决策：{decision}")
     return WorkflowResult(
         intent_name=context.intent_name,
         status="success",

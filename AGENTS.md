@@ -12,7 +12,7 @@
 
 你是 Codex。
 你负责开发。
-同时你必须维护 `.ai` 项目记忆。
+同时你必须维护 `.ai` 分层项目记忆，避免把维护动作写进事实层。
 
 ## 项目使命优先级
 
@@ -118,7 +118,7 @@
 - 开始开发前先检查 `git status --short --branch`，确认工作区状态。
 - 优先阅读 `README.md`、`docs/PRD.md`、`ROADMAP.md` 和 `.ai/` 项目记忆。
 - 修改代码后运行相关测试；当前基线命令是 `pytest -q`。
-- 保持 `.ai/STATUS.md`、`.ai/ROADMAP.md` 和 `.ai/MEMORY.md` 与真实进度同步。
+- 保持 `.ai/STATUS.md`、`.ai/ROADMAP.md` 和 `.ai/MEMORY.md` 与真实进度一致，不要把维护动作双写进事实层。
 - 不覆盖用户已有改动，不执行破坏性 Git 操作，除非用户明确要求。
 
 ## 项目重点
@@ -136,7 +136,7 @@
 - CLI 命令：`project-copilot`
 - 诊断命令：`project-copilot doctor`
 - 版本命令：`project-copilot --version`
-- 测试命令：`pytest -q`（当前基线：53 passed）
+- 测试命令：`pytest -q`（当前基线：56 passed）
 - CLI 入口：`project_copilot/cli/main.py`
 - Workflow 入口：`project_copilot/workflow/`
 - Intent 入口：`project_copilot/intent/classifier.py`

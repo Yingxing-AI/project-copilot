@@ -8,6 +8,7 @@ from pathlib import Path
 MEMORY_FILES = {
     "PROJECT_CONTEXT.md": "# Project Context\n\n项目使命：待确认。\n\n目标用户：待确认。\n\n商业目标：待确认。\n\nMVP 范围：待确认。\n\n技术栈：待确认。\n\n说明：这里记录长期稳定背景，极少修改；不要写临时状态。\n",
     "MEMORY.md": "# Memory\n\n## 长期事实\n\n- Project Copilot 已开始记录项目历史。\n\n## 重要事件\n\n暂无。\n\n## 关键里程碑\n\n暂无。\n\n## 不应遗忘的信息\n\n暂无。\n",
+    "HYPOTHESES.md": "# Hypotheses\n\n## 待验证假设\n\n暂无。\n\n## 待确认推测\n\n暂无。\n\n说明：这里记录未确认的判断、待验证的分析和低置信度结论，不要写成事实或决策。\n",
     "ROADMAP.md": "# Roadmap\n\n## Backlog\n\n- [ ] 明确项目目标\n- [ ] 明确目标用户\n- [ ] 明确最小可交付版本\n\n## In Progress\n\n暂无。\n\n## Done\n\n暂无。\n",
     "STATUS.md": "# Status\n\n当前阶段：初始化。\n\n当前重点：完善项目背景。\n\n当前目标：明确 MVP 范围。\n\n当前风险：暂无。\n",
     "DECISIONS.md": "# Decisions\n\n## 决策记录\n\n暂无关键决策。\n\n说明：只追加，不覆盖历史。\n",
@@ -49,6 +50,12 @@ class MemoryStore:
         self.ensure()
         stamp = datetime.now().strftime("%Y-%m-%d %H:%M")
         with (self.ai_dir / "MEMORY.md").open("a", encoding="utf-8") as handle:
+            handle.write(f"\n- {stamp}: {text}\n")
+
+    def append_hypothesis(self, text: str) -> None:
+        self.ensure()
+        stamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+        with (self.ai_dir / "HYPOTHESES.md").open("a", encoding="utf-8") as handle:
             handle.write(f"\n- {stamp}: {text}\n")
 
     def update_status(self, content: str) -> None:

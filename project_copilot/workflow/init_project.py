@@ -40,7 +40,7 @@ def run(context: WorkflowContext) -> WorkflowResult:
     proposal = parse_project_proposal(context.text, root.name)
     created.extend(_write_initial_memory(memory, proposal))
     git_initialized = init_git_if_needed(root)
-    memory.append_memory(f"收到初始化意图：{context.text.strip()}")
+    memory.append_memory("完成首次方案驱动项目档案初始化。")
 
     status = "success"
     title = "已完成项目档案初始化。"

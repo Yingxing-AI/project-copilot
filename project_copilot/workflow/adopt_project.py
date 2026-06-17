@@ -63,7 +63,7 @@ def run(context: WorkflowContext) -> WorkflowResult:
         ),
         encoding="utf-8",
     )
-    memory.append_memory(f"接管已有项目：{context.text.strip()}")
+    memory.append_memory("完成已有项目接管。")
 
     return WorkflowResult(
         intent_name=context.intent_name,

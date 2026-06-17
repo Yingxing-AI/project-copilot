@@ -1,10 +1,10 @@
 # Project Copilot
 
-Persistent project memory for Codex.
+Layered project memory for Codex.
 
-Project Copilot installs a persistent project memory layer for Codex.
+Project Copilot installs a layered project memory set for Codex.
 
-用户只和 Codex 对话。Project Copilot 负责安装和维护 `.ai/` 项目记忆规范、生成 `AGENTS.md` 规则，并告诉 Codex 如何记录项目历史、保存重要决策、提醒项目风险和防止项目跑偏。
+用户只和 Codex 对话。Project Copilot 负责安装和维护 `.ai/` 分层项目记忆规范、生成 `AGENTS.md` 规则，并告诉 Codex 如何区分事实、假设、计划和决策，提醒项目风险和防止项目跑偏。
 
 当前版本是 v0.3.0a8：规则驱动、本地运行、不依赖外部 AI API。
 
@@ -158,9 +158,10 @@ project-copilot 检查秘书配置
 - `PROJECT_CONTEXT.md`: stable mission, target users, business goals, MVP scope, tech stack
 - `STATUS.md`: current stage, focus, goal, and risks
 - `ROADMAP.md`: Backlog, In Progress, Done
-- `MEMORY.md`: long-term facts, important events, milestones, things not to forget
+- `MEMORY.md`: stable facts, important events, milestones, things not to forget
+- `HYPOTHESES.md`: unconfirmed judgments, pending analysis, low-confidence conclusions
 - `DECISIONS.md`: product, architecture, technical choices, and tradeoffs
-- `WORKLOG.md`: dated work log
+- `WORKLOG.md`: dated work log for completed work only
 - `KNOWLEDGE.md`: best practices, references, product learning, community feedback
 - `metrics.md`: project age, decision count, milestones, health changes, drift index
 - `history/`: monthly history files such as `YYYY-MM.md`
@@ -254,9 +255,10 @@ Current memory files:
 - `.ai/PROJECT_CONTEXT.md`: 项目使命、目标用户、商业目标、MVP 范围、技术栈
 - `.ai/STATUS.md`: 当前阶段、当前重点、当前目标、当前风险
 - `.ai/ROADMAP.md`: Backlog、In Progress、Done
-- `.ai/MEMORY.md`: 长期事实、重要事件、关键里程碑、不应遗忘的信息
+- `.ai/MEMORY.md`: 稳定事实、重要事件、关键里程碑、不应遗忘的信息
+- `.ai/HYPOTHESES.md`: 未确认判断、待验证分析、低置信度结论
 - `.ai/DECISIONS.md`: 产品决策、架构决策、技术选型和取舍原因
-- `.ai/WORKLOG.md`: 日期、今日完成、问题、明日计划
+- `.ai/WORKLOG.md`: 日期、今日完成、问题、明日计划，仅记录实际完成工作
 - `.ai/KNOWLEDGE.md`: 最佳实践、参考项目、产品认知、社区反馈和重要经验
 - `.ai/metrics.md`: 项目创建时间、已运行天数、决策数量、里程碑数量、健康度变化、偏航指数
 - `.ai/history/`: 按月保存的历史归档，例如 `YYYY-MM.md`
@@ -284,7 +286,7 @@ pytest -q
 Current baseline:
 
 ```text
-53 passed
+56 passed
 ```
 
 ## Contributing
