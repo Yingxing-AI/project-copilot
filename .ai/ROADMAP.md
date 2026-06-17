@@ -20,7 +20,16 @@
 - [x] Release dry-run and version/tag consistency checks
 - [x] GitHub Actions CI for Python 3.10, 3.11, and 3.12
 - [x] OSS product packaging docs
-- [x] Pytest baseline: 49 passed
+- [x] Pytest baseline: 52 passed
+
+## Codex for Open Source Readiness
+
+- [x] Update installer to the current release tag
+- [x] Preserve existing `AGENTS.md` content during adopt/init
+- [x] Refresh project-state sync wording around Codex-native memory
+- [x] Add `docs/CODEX_FOR_OPEN_SOURCE.md`
+- [x] Align contributing docs with `pytest -q`
+- [x] Add tests for installer version, AGENTS merge safety, and readiness docs
 
 ## Validation System
 

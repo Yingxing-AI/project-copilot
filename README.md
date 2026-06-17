@@ -51,6 +51,8 @@ curl -LsSf https://raw.githubusercontent.com/Yingxing-AI/project-copilot/main/in
 
 This installer is for macOS, Linux, and WSL. Native Windows PowerShell installation will be added later. See [Windows Install Notes](docs/INSTALL_WINDOWS.md).
 
+The installer pins the current alpha release tag. You can inspect [install.sh](install.sh) before running it, or install from a local checkout with `pip install -e .`.
+
 Verify the installed CLI:
 
 ```bash
@@ -171,6 +173,7 @@ Project Copilot 正在多个真实项目中验证，重点观察 `.ai/` 项目�
 
 - [Validation Report](docs/validation-report.md)
 - [Case Studies](docs/case-studies/)
+- [Codex for Open Source Readiness](docs/CODEX_FOR_OPEN_SOURCE.md)
 
 ## Secondary Commands
 
@@ -279,7 +282,7 @@ pytest -q
 Current baseline:
 
 ```text
-49 passed
+52 passed
 ```
 
 ## Contributing

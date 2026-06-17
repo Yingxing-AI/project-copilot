@@ -51,7 +51,7 @@ Project Copilot is now packaged as a local-first natural-language project workfl
 ### Verified
 
 - `pytest -q`
-- Current baseline: 49 passed.
+- Current baseline: 52 passed.
 
 ## v0.1.0
 

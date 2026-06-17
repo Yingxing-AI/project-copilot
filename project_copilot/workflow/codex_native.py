@@ -2,20 +2,36 @@ from __future__ import annotations
 
 from pathlib import Path
 
+CODEX_RULES_START = "<!-- project-copilot:codex-rules:start -->"
+CODEX_RULES_END = "<!-- project-copilot:codex-rules:end -->"
+
 
 def ensure_codex_native_files(root: Path) -> list[Path]:
     docs_dir = root / "docs"
     docs_dir.mkdir(exist_ok=True)
 
     files = {
-        root / "AGENTS.md": render_agents_md(),
         docs_dir / "CODEX_WORKFLOW.md": render_codex_workflow_doc(),
     }
     written: list[Path] = []
+    agents = root / "AGENTS.md"
+    _write_text(agents, merge_agents_md(agents.read_text(encoding="utf-8") if agents.exists() else ""))
+    written.append(agents)
     for path, content in files.items():
-        path.write_text(content, encoding="utf-8")
+        _write_text(path, content)
         written.append(path)
     return written
+
+
+def merge_agents_md(existing: str) -> str:
+    rules = _managed_agents_block()
+    if CODEX_RULES_START in existing and CODEX_RULES_END in existing:
+        start = existing.index(CODEX_RULES_START)
+        end = existing.index(CODEX_RULES_END) + len(CODEX_RULES_END)
+        return existing[:start].rstrip() + "\n\n" + rules + "\n" + existing[end:].lstrip()
+    if not existing.strip():
+        return rules + "\n"
+    return existing.rstrip() + "\n\n" + rules + "\n"
 
 
 def render_agents_md() -> str:
@@ -171,6 +187,14 @@ def render_agents_md() -> str:
             "",
         ]
     )
+
+
+def _managed_agents_block() -> str:
+    return "\n".join([CODEX_RULES_START, render_agents_md().strip(), CODEX_RULES_END])
+
+
+def _write_text(path: Path, content: str) -> None:
+    path.write_text(content, encoding="utf-8")
 
 
 def render_codex_workflow_doc() -> str:

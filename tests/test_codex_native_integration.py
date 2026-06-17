@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from project_copilot.workflow.codex_native import render_codex_workflow_doc
+from project_copilot.workflow.codex_native import CODEX_RULES_START, merge_agents_md, render_codex_workflow_doc
 from project_copilot.workflow import run_structured_workflow
 
 
@@ -14,6 +14,28 @@ def test_adopt_generates_agents_md(tmp_path: Path) -> None:
     assert result.status == "success"
     assert agents.exists()
     assert "你是 Codex。" in agents.read_text(encoding="utf-8")
+
+
+def test_adopt_preserves_existing_agents_md(tmp_path: Path) -> None:
+    existing = "# Agents\n\n- 保留项目原有协作规则。\n"
+    (tmp_path / "AGENTS.md").write_text(existing, encoding="utf-8")
+
+    run_structured_workflow(tmp_path, "adopt")
+
+    text = (tmp_path / "AGENTS.md").read_text(encoding="utf-8")
+    assert "- 保留项目原有协作规则。" in text
+    assert CODEX_RULES_START in text
+    assert "你是 Codex。" in text
+
+
+def test_agents_md_merge_replaces_managed_block_only() -> None:
+    first = merge_agents_md("# Agents\n\n- 手写规则。\n")
+    second = merge_agents_md(first.replace("你是 Codex。", "你是旧规则。"))
+
+    assert "- 手写规则。" in second
+    assert "你是 Codex。" in second
+    assert "你是旧规则。" not in second
+    assert second.count(CODEX_RULES_START) == 1
 
 
 def test_init_generates_codex_workflow_doc(tmp_path: Path) -> None:
@@ -184,6 +206,19 @@ def test_readme_promotes_codex_native_flow() -> None:
     assert "project-copilot init" in text
     assert "codex" in text
     assert "用户只和 Codex 对话" in text
+    assert "Codex for Open Source Readiness" in text
+
+
+def test_open_source_readiness_docs_and_install_are_current() -> None:
+    install = Path("install.sh").read_text(encoding="utf-8")
+    contributing = Path("CONTRIBUTING.md").read_text(encoding="utf-8")
+    readiness = Path("docs/CODEX_FOR_OPEN_SOURCE.md").read_text(encoding="utf-8")
+
+    assert 'REF="${PROJECT_COPILOT_REF:-v0.3.0-alpha.7}"' in install
+    assert "pytest -q" in contributing
+    assert "python3 -m unittest discover" not in contributing
+    assert "Existing `AGENTS.md` content is preserved" in readiness
+    assert "Validation report" in readiness
 
 
 def test_interactive_mode_not_primary() -> None:

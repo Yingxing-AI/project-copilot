@@ -20,3 +20,10 @@
 - 完成内容：建立多项目验证体系，新增 `docs/case-studies/`、case study 模板和 `docs/validation-report.md`，并将 ai-recruitment 纳入验证报告。
 - 遇到问题：当前只有一个真实项目样本，统计仍以手动读取 `.ai` 文件为主。
 - 明日计划：继续纳入更多真实项目，观察工作日志、决策和知识沉淀是否能稳定反映项目记忆价值。
+
+## 2026-06-17 Codex for Open Source Readiness
+
+- 日期：2026-06-17
+- 完成内容：修复安装脚本版本滞后、`AGENTS.md` 覆盖风险、同步模板旧叙事和贡献文档测试命令；新增 `docs/CODEX_FOR_OPEN_SOURCE.md`。
+- 遇到问题：当前验证样本仍不足，PyPI 发布和更多开源项目 case study 还未完成。
+- 明日计划：继续扩大真实开源项目验证，并准备申请材料中的证据链。

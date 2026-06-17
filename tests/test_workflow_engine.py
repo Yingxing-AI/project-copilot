@@ -51,6 +51,9 @@ class WorkflowEngineTest(unittest.TestCase):
             self.assertTrue((root / "CHANGELOG.md").exists())
             self.assertTrue((root / ".github" / "ISSUE_TEMPLATE" / "bug_report.yml").exists())
             self.assertTrue((root / ".github" / "pull_request_template.md").exists())
+            contributing = (root / "CONTRIBUTING.md").read_text(encoding="utf-8")
+            self.assertIn("pytest -q", contributing)
+            self.assertNotIn("python3 -m unittest discover", contributing)
 
     def test_github_sync_reports_visibility_and_missing_prerequisites(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -95,6 +98,10 @@ class WorkflowEngineTest(unittest.TestCase):
             self.assertNotIn("22 passed", (root / "README.md").read_text(encoding="utf-8"))
             self.assertNotIn("22 passed", (root / ".ai" / "ROADMAP.md").read_text(encoding="utf-8"))
             self.assertIn("测试基线", (root / ".ai" / "STATUS.md").read_text(encoding="utf-8"))
+            status = (root / ".ai" / "STATUS.md").read_text(encoding="utf-8")
+            self.assertIn("Codex Native 主流程", status)
+            self.assertIn("记忆层安装器", status)
+            self.assertNotIn("像 Codex 项目的项目秘书", status)
             changelog = (root / "CHANGELOG.md").read_text(encoding="utf-8")
             self.assertNotIn("Current baseline: 22 passed.", changelog)
             self.assertIn("`project-copilot doctor`", changelog)

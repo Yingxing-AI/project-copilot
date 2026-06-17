@@ -5,7 +5,7 @@ Thanks for your interest in Project Copilot.
 ## Development
 
 ```bash
-python3 -m unittest discover -s tests
+pytest -q
 ```
 
 ## Pull Requests

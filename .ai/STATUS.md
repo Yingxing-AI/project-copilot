@@ -10,7 +10,7 @@
 - 分支：`main`
 - 最新提交：`428779d chore: prepare release v0.3.0-alpha.7`
 - 最新标签：`v0.3.0-alpha.7`
-- 测试基线：`pytest -q` 通过，49 passed。
+- 测试基线：`pytest -q` 通过，52 passed。
 - 项目健康度：100/100
 
 已完成功能：
@@ -44,6 +44,7 @@
 - Release dry-run 和版本/tag 一致性检查。
 - 面向普通用户的一行安装脚本。
 - 多项目验证体系：`docs/case-studies/`、case study 模板和 `docs/validation-report.md`。
+- Codex for Open Source readiness 文档、安装脚本版本同步、保留已有 `AGENTS.md` 的安全合并策略。
 
 当前验证重点：
 
@@ -58,4 +59,4 @@
 
 下一步任务：
 
-- 继续纳入更多真实项目，并按统一模板记录验证数据。
+- 继续补充真实开源项目验证，并准备更完整的 Codex for Open Source 申请材料。
