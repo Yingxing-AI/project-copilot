@@ -13,3 +13,10 @@
 - 已更新 README、PRD、Roadmap 和 `.ai` 项目记忆。
 - 测试基线更新为 `pytest -q` 通过，32 passed。
 - 下一步：继续软化 OSS 等次级工作流文案，并开始真实项目连续验证。
+
+## 2026-06-17 Sprint Multi-Project Validation
+
+- 日期：2026-06-17
+- 完成内容：建立多项目验证体系，新增 `docs/case-studies/`、case study 模板和 `docs/validation-report.md`，并将 ai-recruitment 纳入验证报告。
+- 遇到问题：当前只有一个真实项目样本，统计仍以手动读取 `.ai` 文件为主。
+- 明日计划：继续纳入更多真实项目，观察工作日志、决策和知识沉淀是否能稳定反映项目记忆价值。

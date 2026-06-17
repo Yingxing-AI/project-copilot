@@ -19,7 +19,21 @@
 - [x] One-command GitHub push, tag, and release workflow
 - [x] Release dry-run and version/tag consistency checks
 - [x] GitHub Actions CI for Python 3.10, 3.11, and 3.12
-- [x] Pytest baseline: 32 passed
+- [x] Pytest baseline: 49 passed
+
+## Validation System
+
+Status: In Progress
+
+Goal: 验证多个项目的项目记忆价值。
+
+- [x] Create `docs/case-studies/` directory
+- [x] Move `ai-recruitment` case study into the multi-project structure
+- [x] Add reusable case study template
+- [x] Add validation report
+- [ ] Add more real project case studies
+- [ ] Track cross-project work logs, decisions, and knowledge entries
+- [ ] Summarize multi-project validation findings
 
 ## Sprint Secretary UX
 

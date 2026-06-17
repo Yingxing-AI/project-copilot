@@ -72,3 +72,5 @@
 - 2026-06-17: 重构 `docs/CODEX_WORKFLOW.md` 为面向用户的 Project Copilot 与 Codex 使用指南，行为规则保留在 `AGENTS.md`；生成模板与仓库文档保持一致，测试基线更新为 `pytest -q` 通过，49 passed。
 
 - 2026-06-17: 准备发布 `v0.3.0-alpha.7`，包含启动第一屏体验、Codex Native 记忆层安装流程、强化版 `AGENTS.md` 和用户版 `docs/CODEX_WORKFLOW.md`。
+
+- 2026-06-17: 进入 Sprint Multi-Project Validation，建立 `docs/case-studies/`、case study 模板和 `docs/validation-report.md`，将 ai-recruitment 纳入多项目验证体系。

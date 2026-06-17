@@ -165,6 +165,13 @@ project-copilot 检查秘书配置
 
 `docs/CODEX_WORKFLOW.md` explains the user-facing workflow: install project memory with Project Copilot, then work in Codex.
 
+## Validation
+
+Project Copilot 正在多个真实项目中验证，重点观察 `.ai/` 项目记忆是否能长期保持可读、可维护、可复盘。
+
+- [Validation Report](docs/validation-report.md)
+- [Case Studies](docs/case-studies/)
+
 ## Secondary Commands
 
 These commands remain available for compatibility, but they are not the primary daily entry point:

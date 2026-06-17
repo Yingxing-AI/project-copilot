@@ -8,8 +8,8 @@
 
 - 版本：`0.3.0a7`
 - 分支：`main`
-- 最新提交：`bbd1365 Add Codex native project memory setup`
-- 最新标签：`v0.3.0-alpha.5`
+- 最新提交：`428779d chore: prepare release v0.3.0-alpha.7`
+- 最新标签：`v0.3.0-alpha.7`
 - 测试基线：`pytest -q` 通过，49 passed。
 - 项目健康度：100/100
 
@@ -43,11 +43,12 @@
 - GitHub Actions CI 覆盖 Python 3.10、3.11、3.12。
 - Release dry-run 和版本/tag 一致性检查。
 - 面向普通用户的一行安装脚本。
+- 多项目验证体系：`docs/case-studies/`、case study 模板和 `docs/validation-report.md`。
 
 当前验证重点：
 
-- 验证 Project Copilot 是否能作为 Codex 项目的记忆层安装器，而不是抢占日常入口。
-- 验证 `AGENTS.md` 是否能强制约束 Codex 维护 `.ai` 项目记忆并阻止项目跑偏。
+- 验证 Project Copilot 是否能在多个真实项目中持续维护项目记忆。
+- 验证 `.ai` 中的工作日志、决策和知识沉淀是否能成为跨项目价值指标。
 - 验证用户是否可以只打开 Codex 并通过 `.ai` 获得连续项目上下文。
 - 验证价值优先，不新增复杂 AI 能力、不接外部 AI API、不开发 Web UI。
 
@@ -57,4 +58,4 @@
 
 下一步任务：
 
-- 验证真实项目中 Codex 是否按强化后的 `AGENTS.md` 自动维护 `.ai` 并主动触发项目守护提醒。
+- 继续纳入更多真实项目，并按统一模板记录验证数据。

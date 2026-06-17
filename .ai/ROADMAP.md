@@ -22,6 +22,20 @@
 - [x] OSS product packaging docs
 - [x] Pytest baseline: 49 passed
 
+## Validation System
+
+Status: In Progress
+
+Goal: 验证多个项目的项目记忆价值。
+
+- [x] Create `docs/case-studies/` directory
+- [x] Move `ai-recruitment` case study into the multi-project structure
+- [x] Add reusable case study template
+- [x] Add validation report
+- [ ] Add more real project case studies
+- [ ] Track cross-project work logs, decisions, and knowledge entries
+- [ ] Summarize multi-project validation findings
+
 ## Sprint Codex Workflow Guide
 
 - [x] Refactor `docs/CODEX_WORKFLOW.md` from agent behavior rules into a user guide
