@@ -252,6 +252,8 @@ def render_codex_workflow_doc() -> str:
             "project-copilot init",
             "```",
             "",
+            "先贴完整项目方案，Project Copilot 会先提取项目使命、目标用户、商业目标、MVP 范围、技术栈、当前阶段、初始 Roadmap 和初始 Decisions，缺失时再追问。",
+            "",
             "系统将生成：",
             "",
             "- `.ai/`",

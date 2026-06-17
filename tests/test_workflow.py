@@ -11,7 +11,7 @@ class WorkflowTest(unittest.TestCase):
             tmp_path = Path(directory)
             result = run_workflow(tmp_path, "这是一个 AI 招聘系统，请初始化项目")
 
-            self.assertIn("已完成项目档案初始化", result)
+            self.assertIn("项目方案还需要补充", result)
             self.assertTrue((tmp_path / "README.md").exists())
             self.assertTrue((tmp_path / "LICENSE").exists())
             self.assertTrue((tmp_path / "AGENTS.md").exists())

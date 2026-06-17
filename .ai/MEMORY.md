@@ -76,3 +76,9 @@
 - 2026-06-17: 进入 Sprint Multi-Project Validation，建立 `docs/case-studies/`、case study 模板和 `docs/validation-report.md`，将 ai-recruitment 纳入多项目验证体系。
 
 - 2026-06-17: 完成 Codex for Open Source readiness 修整：安装脚本同步到 `v0.3.0-alpha.7`，`init/adopt` 保留已有 `AGENTS.md` 并追加 managed block，新增 readiness 文档，测试基线更新为 `pytest -q` 通过，52 passed。
+
+- 2026-06-17: 首次项目档案改为方案驱动，先解析完整项目方案，再在关键信息缺失时追问，不再默认三问式问卷。
+
+- 2026-06-17 18:32: 同步项目状态、路线图和协作文档。
+
+- 2026-06-17 18:33: 同步项目状态、路线图和协作文档。

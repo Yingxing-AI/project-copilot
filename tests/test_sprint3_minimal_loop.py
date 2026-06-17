@@ -5,7 +5,7 @@ from project_copilot.workflow import run_structured_workflow
 
 
 def test_init_project_workflow(tmp_path: Path) -> None:
-    result = run_structured_workflow(tmp_path, "请初始化项目")
+    result = run_structured_workflow(tmp_path, _sample_proposal())
 
     assert result.intent_name == "init_project"
     assert result.status == "success"
@@ -68,3 +68,18 @@ def test_natural_language_intent() -> None:
     assert classify_intent_name("项目偏航检查 新增商城模块") == "drift_check"
     assert classify_intent_name("记录决策 MVP 先做简历导入") == "record_decision"
     assert classify_intent_name("查看路线图") == "show_roadmap"
+
+
+def _sample_proposal() -> str:
+    return "\n".join(
+        [
+            "项目使命：AI 招聘系统",
+            "目标用户：招聘团队",
+            "商业目标：提高招聘筛选效率",
+            "MVP 范围：简历导入",
+            "技术栈：Python 3.11，本地规则驱动，pytest",
+            "当前阶段：Sprint Proposal Driven Context",
+            "初始 Roadmap：先做方案解析；再生成 .ai 记忆；最后补齐文档。",
+            "初始 Decisions：先支持完整方案输入，缺失信息再追问；保持本地运行。",
+        ]
+    )

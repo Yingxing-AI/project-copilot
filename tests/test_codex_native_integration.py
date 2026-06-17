@@ -43,7 +43,7 @@ def test_init_generates_codex_workflow_doc(tmp_path: Path) -> None:
 
     workflow_doc = tmp_path / "docs" / "CODEX_WORKFLOW.md"
     assert result.intent_name == "init_project"
-    assert result.status == "success"
+    assert result.status == "needs_input"
     assert workflow_doc.exists()
     text = workflow_doc.read_text(encoding="utf-8")
     assert "# Project Copilot 与 Codex" in text
@@ -214,7 +214,7 @@ def test_open_source_readiness_docs_and_install_are_current() -> None:
     contributing = Path("CONTRIBUTING.md").read_text(encoding="utf-8")
     readiness = Path("docs/CODEX_FOR_OPEN_SOURCE.md").read_text(encoding="utf-8")
 
-    assert 'REF="${PROJECT_COPILOT_REF:-v0.3.0-alpha.7}"' in install
+    assert 'REF="${PROJECT_COPILOT_REF:-v0.3.0-alpha.8}"' in install
     assert "pytest -q" in contributing
     assert "python3 -m unittest discover" not in contributing
     assert "Existing `AGENTS.md` content is preserved" in readiness

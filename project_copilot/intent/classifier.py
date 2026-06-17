@@ -100,6 +100,8 @@ def classify_intent(text: str) -> Intent:
     normalized = text.strip().lower()
     if not normalized:
         return Intent.UNKNOWN
+    if _looks_like_initial_project_proposal(normalized):
+        return Intent.INIT_PROJECT
     if _looks_like_release_request(normalized):
         return Intent.RELEASE_PROJECT
 
@@ -117,3 +119,23 @@ def _looks_like_release_request(text: str) -> bool:
     if "发布" not in text and "release" not in text:
         return False
     return re.search(r"\bv?\d+\.\d+\.\d+(?:[-.][0-9a-z.-]+)?\b", text) is not None
+
+
+def _looks_like_initial_project_proposal(text: str) -> bool:
+    markers = (
+        "项目使命",
+        "目标用户",
+        "商业目标",
+        "mvp 范围",
+        "mvp范围",
+        "技术栈",
+        "当前阶段",
+        "初始 roadmap",
+        "初始 roadmap",
+        "初始 decisions",
+        "初始 decisions",
+    )
+    hits = sum(1 for marker in markers if marker in text)
+    if hits >= 2:
+        return True
+    return "项目使命" in text and any(marker in text for marker in ("目标用户", "商业目标", "技术栈", "mvp", "roadmap", "decisions"))

@@ -20,7 +20,7 @@
 - [x] Release dry-run and version/tag consistency checks
 - [x] GitHub Actions CI for Python 3.10, 3.11, and 3.12
 - [x] OSS product packaging docs
-- [x] Pytest baseline: 52 passed
+- [x] Pytest baseline: 53 passed
 
 ## Codex for Open Source Readiness
 
@@ -81,7 +81,7 @@ Goal: 验证多个项目的项目记忆价值。
 ## Sprint Secretary UX
 
 - [x] Reposition Project Copilot as the project secretary for Codex projects
-- [x] Add question-based first-use onboarding
+- [x] Add proposal-driven first-use onboarding
 - [x] Add secretary-style project status card
 - [x] Add first-impression startup screen focused on identity, status, and next actions
 - [x] Hide engineering terms from the startup screen
@@ -92,6 +92,13 @@ Goal: 验证多个项目的项目记忆价值。
 - [x] Add rule-based secretary reminders
 - [x] Add visual, list-first project review output
 - [ ] Continue softening OSS wording across secondary workflows
+
+## Sprint Proposal Driven Context
+
+- [x] Replace the default first-run questionnaire with proposal-driven onboarding
+- [x] Extract project mission, target users, business goal, MVP scope, stack, stage, roadmap, and decisions from the initial proposal
+- [x] Ask follow-up questions only when key information is missing
+- [x] Generate `PROJECT_CONTEXT.md`, `STATUS.md`, `ROADMAP.md`, and `DECISIONS.md` from the proposal
 
 ## Sprint Validation
 

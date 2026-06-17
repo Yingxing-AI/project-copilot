@@ -6,11 +6,11 @@
 
 当前状态：
 
-- 版本：`0.3.0a7`
+- 版本：`0.3.0a8`
 - 分支：`main`
-- 最新提交：`428779d chore: prepare release v0.3.0-alpha.7`
+- 最新提交：`bde4a8d fix bug`
 - 最新标签：`v0.3.0-alpha.7`
-- 测试基线：`pytest -q` 通过，52 passed。
+- 测试基线：`pytest -q` 通过，53 passed。
 - 项目健康度：100/100
 
 已完成功能：
@@ -21,14 +21,8 @@
 - 项目初始化和已有项目接管。
 - Codex Native 主流程：`project-copilot init/adopt` 生成 `.ai/`、`AGENTS.md` 和 `docs/CODEX_WORKFLOW.md`。
 - `AGENTS.md` 生成 Codex 维护 `.ai` 项目记忆的规则。
-- `AGENTS.md` 强化项目使命优先级、MVP 守护、目标用户守护、历史决策冲突处理和项目复盘触发机制。
-- `docs/CODEX_WORKFLOW.md` 重构为面向用户的 Project Copilot 与 Codex 使用指南。
-- `.ai` 模板更新为最终职责结构。
-- 问答式首次项目档案生成。
-- 启动第一屏秘书式介绍和项目状态卡片。
-- 健康度数值转换为“进展良好 / 需要关注 / 存在风险”。
-- 无参数交互模式使用 `项目秘书>` 提示符。
-- 非交互环境提供可执行的中文命令建议。
+- `docs/CODEX_WORKFLOW.md` 面向用户说明 Project Copilot 与 Codex 的日常协作方式。
+- 多项目验证体系：`docs/case-studies/`、case study 模板和 `docs/validation-report.md`。
 - 项目复盘、项目时间轴、项目偏航检查、记录决策和查看路线图。
 - 项目状态分析和健康度评分。
 - `.ai/KNOWLEDGE.md`、`.ai/metrics.md` 和 `.ai/history/`。
@@ -43,12 +37,10 @@
 - GitHub Actions CI 覆盖 Python 3.10、3.11、3.12。
 - Release dry-run 和版本/tag 一致性检查。
 - 面向普通用户的一行安装脚本。
-- 多项目验证体系：`docs/case-studies/`、case study 模板和 `docs/validation-report.md`。
-- Codex for Open Source readiness 文档、安装脚本版本同步、保留已有 `AGENTS.md` 的安全合并策略。
 
 当前验证重点：
 
-- 验证 Project Copilot 是否能在多个真实项目中持续维护项目记忆。
+- 验证 Project Copilot 是否能作为 Codex 项目的记忆层安装器，而不是抢占日常入口。
 - 验证 `.ai` 中的工作日志、决策和知识沉淀是否能成为跨项目价值指标。
 - 验证用户是否可以只打开 Codex 并通过 `.ai` 获得连续项目上下文。
 - 验证价值优先，不新增复杂 AI 能力、不接外部 AI API、不开发 Web UI。
@@ -59,4 +51,4 @@
 
 下一步任务：
 
-- 继续补充真实开源项目验证，并准备更完整的 Codex for Open Source 申请材料。
+- 根据路线图选择最高优先级任务继续开发。

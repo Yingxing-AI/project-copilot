@@ -31,7 +31,7 @@ class WorkflowEngineTest(unittest.TestCase):
             init_result = run_text_workflow(root, "初始化项目")
             check_result = run_text_workflow(root, "检查项目")
 
-            self.assertIn("已完成项目档案初始化", init_result)
+            self.assertIn("项目方案还需要补充", init_result)
             self.assertIn("项目健康度", check_result)
 
     def test_prepare_oss_creates_open_source_files_without_overwriting(self) -> None:

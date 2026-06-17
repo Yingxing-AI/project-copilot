@@ -34,6 +34,8 @@ project-copilot init
 codex
 ```
 
+先贴完整项目方案。Project Copilot 会先提取关键字段，只有在信息缺失时才追问。
+
 After this, work directly in Codex:
 
 ```text

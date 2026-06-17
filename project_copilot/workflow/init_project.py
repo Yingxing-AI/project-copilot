@@ -1,10 +1,17 @@
 from __future__ import annotations
 
-from datetime import datetime
-
 from project_copilot.gitops import init_git_if_needed
 from project_copilot.memory import MemoryStore
 from project_copilot.workflow.codex_native import ensure_codex_native_files
+from project_copilot.workflow.project_proposal import (
+    ProjectProposal,
+    build_decisions,
+    build_project_context,
+    build_roadmap,
+    build_status,
+    parse_project_proposal,
+    project_proposal_prompt,
+)
 from project_copilot.workflow.types import WorkflowContext, WorkflowResult
 
 
@@ -30,64 +37,60 @@ def run(context: WorkflowContext) -> WorkflowResult:
 
     created.extend(str(path.relative_to(root)) for path in memory.ensure())
     created.extend(str(path.relative_to(root)) for path in ensure_codex_native_files(root))
-    project_context = build_project_context(
-        project_name=root.name,
-        project_description=_extract_description(context.text),
-        target_users="待确认",
-        mvp="待确认",
-    )
-    context_path = memory.ai_dir / "PROJECT_CONTEXT.md"
-    if _is_placeholder_context(context_path.read_text(encoding="utf-8")):
-        context_path.write_text(project_context, encoding="utf-8")
+    proposal = parse_project_proposal(context.text, root.name)
+    created.extend(_write_initial_memory(memory, proposal))
     git_initialized = init_git_if_needed(root)
     memory.append_memory(f"收到初始化意图：{context.text.strip()}")
 
+    status = "success"
+    title = "已完成项目档案初始化。"
+    summary = "我已经根据项目方案生成了项目记忆、状态、路线图和决策记录。"
+    if proposal.missing_fields:
+        status = "needs_input"
+        title = "项目方案还需要补充。"
+        summary = "我先根据已给内容完成初始化，缺失项仍需要你补充。"
+
     return WorkflowResult(
         intent_name=context.intent_name,
-        status="success",
-        title="已完成项目档案初始化。",
-        summary="我已经准备好项目档案、状态记录、路线图、决策记录、工作日志和知识库。",
+        status=status,
+        title=title,
+        summary=summary,
         details={
             "创建文件": created,
             "保存进度记录": "已建立" if git_initialized else "已存在或暂不可用",
+            "已识别项目使命": proposal.mission or "未识别",
+            "已识别目标用户": proposal.target_users or "未识别",
+            "已识别商业目标": proposal.business_goal or "未识别",
+            "已识别 MVP 范围": proposal.mvp_scope or "未识别",
+            "已识别技术栈": proposal.tech_stack or "未识别",
+            "当前阶段": proposal.current_stage or "方案确认中",
+            "初始 Roadmap": list(proposal.roadmap_items) or ["待补充"],
+            "初始 Decisions": list(proposal.decision_items) or ["待补充"],
+            "待补充信息": list(proposal.missing_fields),
         },
-        next_steps=["打开 Codex：codex", "对 Codex 说“继续开发这个项目”。"],
+        next_steps=_next_steps(proposal),
     )
 
 
-def build_project_context(project_name: str, project_description: str, target_users: str, mvp: str) -> str:
-    today = datetime.now().strftime("%Y-%m-%d")
-    return "\n".join(
-        [
-            "# Project Context",
-            "",
-            f"项目名称：{project_name}",
-            "",
-            f"项目使命：{project_description or '待确认。'}",
-            "",
-            f"目标用户：{target_users or '待确认。'}",
-            "",
-            "商业目标：待确认。",
-            "",
-            f"MVP 范围：{mvp or '待确认。'}",
-            "",
-            "技术栈：待确认。",
-            "",
-            "说明：这里记录长期稳定背景，极少修改；不要写临时状态。",
-            "",
-            f"创建日期：{today}",
-            "",
-        ]
-    )
+def _write_initial_memory(memory: MemoryStore, proposal: ProjectProposal) -> list[str]:
+    context_path = memory.ai_dir / "PROJECT_CONTEXT.md"
+    status_path = memory.ai_dir / "STATUS.md"
+    roadmap_path = memory.ai_dir / "ROADMAP.md"
+    decisions_path = memory.ai_dir / "DECISIONS.md"
+    context_path.write_text(build_project_context(memory.root.name, proposal), encoding="utf-8")
+    status_path.write_text(build_status(memory.root.name, proposal), encoding="utf-8")
+    roadmap_path.write_text(build_roadmap(proposal), encoding="utf-8")
+    decisions_path.write_text(build_decisions(proposal), encoding="utf-8")
+    return [
+        ".ai/PROJECT_CONTEXT.md",
+        ".ai/STATUS.md",
+        ".ai/ROADMAP.md",
+        ".ai/DECISIONS.md",
+    ]
 
 
-def _extract_description(text: str) -> str:
-    cleaned = text.strip()
-    for phrase in ("请初始化项目", "初始化项目", "初始化", "开始一个新项目"):
-        cleaned = cleaned.replace(phrase, "")
-    cleaned = cleaned.strip(" ，,。")
-    return cleaned
-
-
-def _is_placeholder_context(text: str) -> bool:
-    return "待确认" in text or "待补充" in text
+def _next_steps(proposal: ProjectProposal) -> list[str]:
+    steps = ["打开 Codex：codex", "对 Codex 说“继续开发这个项目”。"]
+    if proposal.missing_fields:
+        steps.insert(0, project_proposal_prompt(proposal.missing_fields))
+    return steps

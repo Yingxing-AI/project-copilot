@@ -14,7 +14,8 @@ from project_copilot.secretary import (
     render_secretary_intro,
     render_status_card,
 )
-from project_copilot.workflow.init_project import build_project_context
+from project_copilot.workflow.init_project import _write_initial_memory
+from project_copilot.workflow.project_proposal import parse_project_proposal, project_proposal_prompt
 from project_copilot.workflow import run_text_workflow
 
 
@@ -88,20 +89,25 @@ def _run_onboarding(
     input_func: Callable[[str], str],
     output_func: Callable[[str], None],
 ) -> None:
-    output_func("我会帮你记录项目历史、保存重要决策、提醒项目风险、防止项目跑偏。")
-    output_func("先了解一下项目。")
-    project_description = input_func("问题1：这个项目是做什么的？\n> ").strip()
-    target_users = input_func("问题2：主要给谁使用？\n> ").strip()
-    mvp = input_func("问题3：最小可交付版本（MVP）是什么？\n> ").strip()
+    output_func("我会先分析你给出的完整项目方案，再只追问缺失项。")
+    output_func("请尽量一次性贴出项目使命、目标用户、商业目标、MVP 范围、技术栈、当前阶段、初始 Roadmap 和初始 Decisions。")
+    proposal_text = input_func("请直接输入完整项目方案：\n> ").strip()
+    proposal = parse_project_proposal(proposal_text, root.name)
+    while proposal.missing_fields:
+        output_func(project_proposal_prompt(proposal.missing_fields))
+        extra = input_func("> ").strip()
+        if not extra:
+            break
+        proposal_text = "\n".join(part for part in (proposal_text, extra) if part.strip())
+        proposal = parse_project_proposal(proposal_text, root.name)
 
     memory = MemoryStore(root)
     memory.ensure()
-    (memory.ai_dir / "PROJECT_CONTEXT.md").write_text(
-        build_project_context(root.name, project_description, target_users, mvp),
-        encoding="utf-8",
-    )
-    memory.append_memory("完成首次问答式项目档案。")
-    output_func("已生成 PROJECT_CONTEXT.md。")
+    _write_initial_memory(memory, proposal)
+    memory.append_memory("完成首次方案驱动项目档案。")
+    output_func("已生成 PROJECT_CONTEXT.md、STATUS.md、ROADMAP.md 和 DECISIONS.md。")
+    if proposal.missing_fields:
+        output_func(f"仍有待补充信息：{'、'.join(proposal.missing_fields)}")
 
 
 if __name__ == "__main__":
