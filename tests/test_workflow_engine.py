@@ -66,6 +66,16 @@ class WorkflowEngineTest(unittest.TestCase):
             self.assertIn("项目名称：", result)
             self.assertIn("云端工具", result)
             self.assertIn("云端登录", result)
+            self.assertNotIn("GitHub CLI", result)
+
+    def test_prepare_oss_uses_softened_follow_up_text(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+
+            result = run_text_workflow(root, "准备开源")
+
+            self.assertIn("仓库主题", result)
+            self.assertNotIn("GitHub topics", result)
 
     def test_unknown_intent_returns_suggestions(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

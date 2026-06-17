@@ -172,5 +172,5 @@ def run(context: WorkflowContext) -> WorkflowResult:
         title="已完成开源准备文件检查。",
         summary=f"OSS Readiness Score：{readiness.score}/100",
         details={"创建文件": created, "保留已有文件": kept, "仍缺失": readiness.missing},
-        next_steps=["确认 README、LICENSE 和 GitHub topics 后创建公开仓库。"],
+        next_steps=["确认 README、LICENSE 和仓库主题后创建公开仓库。"],
     )

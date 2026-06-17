@@ -91,7 +91,7 @@ Goal: 验证多个项目的项目记忆价值。
 - [x] Add `.ai/KNOWLEDGE.md`, `.ai/metrics.md`, and `.ai/history/`
 - [x] Add rule-based secretary reminders
 - [x] Add visual, list-first project review output
-- [ ] Continue softening OSS wording across secondary workflows
+- [x] Continue softening OSS wording across secondary workflows
 
 ## Sprint Proposal Driven Context
 

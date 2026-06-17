@@ -10,7 +10,7 @@
 - 分支：`main`
 - 最新提交：`dbf54fb chore: prepare release v0.3.0-alpha.8`
 - 最新标签：`v0.3.0-alpha.8`
-- 测试基线：`pytest -q` 通过，56 passed。
+- 测试基线：`pytest -q` 通过，58 passed。
 - 项目健康度：100/100
 
 已完成功能：
@@ -30,7 +30,9 @@
 - 继续开发、结束工作和工作日志流程。
 - 复盘归档使用月文件格式，关键决策仅保留最近 3 条。
 - OSS readiness 检查和开源准备文件生成。
+- OSS 次级工作流文案继续软化用户交互，但保留文档里的必要 GitHub 语境和技术精度。
 - GitHub public/private 同步计划和前置条件检查。
+- 多项目验证体系已登记第二个样本入口 `dashboard`，但尚未接入真实运行数据，且接入时应保持非侵入式读取边界。
 - 无参数交互式 CLI 和 command mode。
 - unknown intent 中文建议。
 - 可编辑安装、`--version` 和 `doctor` 诊断命令。
