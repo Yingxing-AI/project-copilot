@@ -19,7 +19,7 @@
 - [x] One-command GitHub push, tag, and release workflow
 - [x] Release dry-run and version/tag consistency checks
 - [x] GitHub Actions CI for Python 3.10, 3.11, and 3.12
-- [x] Pytest baseline: 53 passed
+- [x] Pytest baseline: 58 passed
 
 ## Validation System
 

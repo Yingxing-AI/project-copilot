@@ -41,12 +41,12 @@ class ReleaseProjectTest(unittest.TestCase):
                     return _ok(" M README.md\n")
                 return _ok("")
 
-            outcome = release_project(root, "v0.3.0-alpha.8", runner=runner)
+            outcome = release_project(root, "v0.3.0-alpha.9", runner=runner)
 
             self.assertEqual(outcome.status, "success")
             self.assertIn(["git", "push", "origin", "main"], calls)
-            self.assertIn(["git", "tag", "-a", "v0.3.0-alpha.8", "-m", "Project Copilot v0.3.0-alpha.8"], calls)
-            self.assertIn(["git", "push", "origin", "v0.3.0-alpha.8"], calls)
+            self.assertIn(["git", "tag", "-a", "v0.3.0-alpha.9", "-m", "Project Copilot v0.3.0-alpha.9"], calls)
+            self.assertIn(["git", "push", "origin", "v0.3.0-alpha.9"], calls)
             self.assertTrue(any(call[:3] == ["gh", "release", "create"] for call in calls))
 
     def test_release_notes_include_changes_since_previous_tag(self) -> None:
@@ -66,7 +66,7 @@ class ReleaseProjectTest(unittest.TestCase):
                     return _ok("main\n")
                 if args[:3] == ["git", "remote", "get-url"]:
                     return _ok("https://github.com/example/project.git\n")
-                if args == ["git", "tag", "--list", "v0.3.0-alpha.8"]:
+                if args == ["git", "tag", "--list", "v0.3.0-alpha.9"]:
                     return _ok("")
                 if args == ["git", "tag", "--sort=-version:refname"]:
                     return _ok("v0.3.0-alpha.4\nv0.3.0-alpha.3\nproject-copilot\n")
@@ -80,7 +80,7 @@ class ReleaseProjectTest(unittest.TestCase):
                     return _ok(" M README.md\n")
                 return _ok("")
 
-            outcome = release_project(root, "v0.3.0-alpha.8", runner=runner)
+            outcome = release_project(root, "v0.3.0-alpha.9", runner=runner)
 
             self.assertEqual(outcome.status, "success")
             self.assertIsNotNone(outcome.release_notes)
@@ -108,7 +108,7 @@ class ReleaseProjectTest(unittest.TestCase):
                     return _ok("Logged in\n")
                 return _ok("")
 
-            outcome = release_project(root, "v0.3.0-alpha.8", runner=runner, dry_run=True)
+            outcome = release_project(root, "v0.3.0-alpha.9", runner=runner, dry_run=True)
 
             self.assertEqual(outcome.status, "success")
             self.assertTrue(outcome.dry_run)
