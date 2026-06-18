@@ -113,7 +113,7 @@ Goal: 验证多个项目的项目记忆价值。
 - [x] Keep `record_decision` out of `MEMORY.md`
 - [x] Rephrase documentation around layered memory boundaries
 - [x] Normalize `AGENTS.md`, README, Usage, and Codex workflow terminology
-- [x] Update the project-state baseline to `pytest -q` passing, 58 passed
+- [x] Update the project-state baseline to `pytest -q` passing, 59 passed
 - [x] Normalize `.ai/history/` to monthly archive files
 - [x] Limit review archives to the recent 3 decisions
 - [x] Standardize `timeline_project` into fixed sections

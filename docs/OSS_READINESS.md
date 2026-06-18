@@ -27,6 +27,7 @@ The current implementation is local-first, rule-driven, and readable Python, whi
 Current strengths:
 
 - MIT License.
+- Tagged Beta release: `v0.3.0-beta.1`.
 - README with quick start, usage, and architecture summary.
 - Contributing guide.
 - Code of conduct.
@@ -37,7 +38,7 @@ Current strengths:
 - Pull request template.
 - Local test suite.
 - No required external AI API.
-- Current test baseline: `pytest -q` passes with 58 tests.
+- Current test baseline: `pytest -q` passes with 59 tests.
 
 Current gaps:
 

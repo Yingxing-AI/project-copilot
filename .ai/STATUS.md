@@ -8,8 +8,8 @@
 
 - 版本：`0.3.0b1`
 - 分支：`main`
-- 最新提交：`fee569d chore: sync release state v0.3.0-alpha.9`
-- 最新标签：`v0.3.0-alpha.9`
+- 最新提交：`7c69427 chore: prepare release v0.3.0-beta.1`
+- 最新标签：`v0.3.0-beta.1`
 - 测试基线：`pytest -q` 通过，59 passed。
 - 项目健康度：100/100
 

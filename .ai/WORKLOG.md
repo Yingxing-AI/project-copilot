@@ -189,3 +189,9 @@
 - 重新运行测试，`pytest -q` 通过，59 passed。
 - 遇到问题：如果继续直接使用 cwd，跨项目验证时很容易把记忆文件写到错误层级。
 - 明日计划：继续观察在多项目场景下的根目录识别是否稳定。
+
+## 2026-06-18 Architecture Review Cleanup
+
+- 完成内容：同步 beta 发布后的项目状态，更新最新提交、最新标签和测试基线；补齐 `docs/OSS_READINESS.md`、`docs/CODEX_FOR_OPEN_SOURCE.md`、`README.md`、`.ai/ROADMAP.md` 和 `.ai/metrics.md` 的版本口径；启用 `.ai/HYPOTHESES.md` 作为未确认内容缓冲层；给发布流程补上发布后同步步骤。
+- 遇到问题：`STATUS.md` 和 `metrics.md` 在发布后仍停留在 alpha.9 / 58 passed，说明发布流程只做了发布前同步，状态层会漂移；`HYPOTHESES.md` 之前长期空置，未确认内容缺少落点。
+- 明日计划：继续观察 post-release sync 是否能稳定消除状态漂移，并把 dashboard 接入后形成的真实验证结论写回案例与验证报告。

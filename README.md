@@ -172,7 +172,7 @@ project-copilot 检查秘书配置
 
 ## Validation
 
-Project Copilot 正在多个真实项目中验证，重点观察 `.ai/` 项目记忆是否能长期保持可读、可维护、可复盘。
+Project Copilot 正在真实项目中验证，当前以 `ai-recruitment` 为主，`dashboard` 仍待接入，重点观察 `.ai/` 项目记忆是否能长期保持可读、可维护、可复盘。
 
 - [Validation Report](docs/validation-report.md)
 - [Case Studies](docs/case-studies/)

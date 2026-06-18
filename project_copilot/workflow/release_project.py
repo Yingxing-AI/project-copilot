@@ -117,6 +117,21 @@ def release_project(root: Path, tag: str, runner: Runner | None = None, dry_run:
         outcome.blockers.append(_command_error("gh release create", release))
         return outcome
     outcome.actions.append("gh release create")
+
+    post_sync = sync_project_state(root)
+    if post_sync.updated_files:
+        outcome.actions.append("发布后同步项目状态")
+        if _has_changes(root, runner):
+            for args, label in (
+                (["git", "add", "."], "git add ."),
+                (["git", "commit", "-m", f"chore: sync release state {tag}"], f"git commit -m chore: sync release state {tag}"),
+                (["git", "push", "origin", "main"], "git push origin main"),
+            ):
+                result = runner(root, args)
+                if result.returncode != 0:
+                    outcome.blockers.append(_command_error(label, result))
+                    return outcome
+                outcome.actions.append(label)
     outcome.status = "success"
     return outcome
 

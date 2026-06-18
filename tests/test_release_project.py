@@ -1,3 +1,4 @@
+import importlib
 import subprocess
 import tempfile
 import unittest
@@ -23,6 +24,7 @@ class ReleaseProjectTest(unittest.TestCase):
             (root / "CHANGELOG.md").write_text("# Changelog\n\n## v0.3 Alpha\n\n### Added\n\n### Verified\n\n- Current baseline: 25 passed.\n", encoding="utf-8")
             (root / "AGENTS.md").write_text("# Agents\n", encoding="utf-8")
             calls: list[list[str]] = []
+            released = {"value": False}
 
             def runner(_root: Path, args: list[str]) -> subprocess.CompletedProcess[str]:
                 calls.append(args)
@@ -34,21 +36,42 @@ class ReleaseProjectTest(unittest.TestCase):
                     return _ok("https://github.com/example/project.git\n")
                 if args[:3] == ["git", "tag", "--list"]:
                     return _ok("")
+                if args == ["git", "log", "-1", "--pretty=%h %s"]:
+                    if released["value"]:
+                        return _ok("7c69427 chore: prepare release v0.3.0-beta.1\n")
+                    return _ok("fee569d chore: sync release state v0.3.0-alpha.9\n")
+                if args == ["git", "describe", "--tags", "--abbrev=0"]:
+                    if released["value"]:
+                        return _ok("v0.3.0-beta.1\n")
+                    return _ok("v0.3.0-alpha.9\n")
                 if args[:2] == ["gh", "auth"]:
                     return _ok("Logged in\n")
                 if args == ["pytest", "-q"]:
                     return _ok("25 passed in 0.01s\n")
                 if args[:3] == ["git", "status", "--short"]:
                     return _ok(" M README.md\n")
+                if args[:3] == ["gh", "release", "create"]:
+                    released["value"] = True
                 return _ok("")
 
-            outcome = release_project(root, "v0.3.0-beta.1", runner=runner)
+            release_module = importlib.import_module("project_copilot.workflow.release_project")
+            original_sync = release_module.sync_project_state
+
+            def fake_sync(_root: Path):
+                return type("Sync", (), {"updated_files": [".ai/STATUS.md"]})()
+
+            release_module.sync_project_state = fake_sync
+            try:
+                outcome = release_module.release_project(root, "v0.3.0-beta.1", runner=runner)
+            finally:
+                release_module.sync_project_state = original_sync
 
             self.assertEqual(outcome.status, "success")
             self.assertIn(["git", "push", "origin", "main"], calls)
             self.assertIn(["git", "tag", "-a", "v0.3.0-beta.1", "-m", "Project Copilot v0.3.0-beta.1"], calls)
             self.assertIn(["git", "push", "origin", "v0.3.0-beta.1"], calls)
             self.assertTrue(any(call[:3] == ["gh", "release", "create"] for call in calls))
+            self.assertIn(["git", "commit", "-m", "chore: sync release state v0.3.0-beta.1"], calls)
 
     def test_release_notes_include_changes_since_previous_tag(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
