@@ -1,16 +1,16 @@
 # Status
 
-更新日期：2026-06-17
+更新日期：2026-06-18
 
 当前阶段：可持续开发
 
 当前状态：
 
-- 版本：`0.3.0a9`
+- 版本：`0.3.0b1`
 - 分支：`main`
-- 最新提交：`2455692 chore: prepare release v0.3.0-alpha.9`
+- 最新提交：`fee569d chore: sync release state v0.3.0-alpha.9`
 - 最新标签：`v0.3.0-alpha.9`
-- 测试基线：`pytest -q` 通过，58 passed。
+- 测试基线：`pytest -q` 通过，59 passed。
 - 项目健康度：100/100
 
 已完成功能：
@@ -25,7 +25,7 @@
 - 多项目验证体系：`docs/case-studies/`、case study 模板和 `docs/validation-report.md`。
 - 项目复盘、项目时间轴、项目偏航检查、记录决策和查看路线图。
 - 项目状态分析和健康度评分。
-- `.ai/KNOWLEDGE.md`、`.ai/metrics.md` 和 `.ai/history/`。
+- `.ai/KNOWLEDGE.md`、`.ai/history/`，以及辅助指标 `.ai/metrics.md`。
 - 继续开发、结束工作和工作日志流程。
 - OSS readiness 检查和开源准备文件生成。
 - GitHub public/private 同步计划和前置条件检查。
@@ -37,7 +37,6 @@
 - GitHub Actions CI 覆盖 Python 3.10、3.11、3.12。
 - Release dry-run 和版本/tag 一致性检查。
 - 面向普通用户的一行安装脚本。
-- 完成 `v0.3.0-alpha.9` 发布，版本号、安装脚本、发布说明和 release tag 已同步。
 
 当前验证重点：
 

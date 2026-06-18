@@ -21,6 +21,7 @@ from project_copilot.workflow import (
     sync_project_state,
     timeline_project,
 )
+from project_copilot.workflow.root import resolve_project_root
 from project_copilot.workflow.types import WorkflowContext, WorkflowResult
 
 WorkflowHandler = Callable[[WorkflowContext], WorkflowResult]
@@ -49,6 +50,7 @@ class WorkflowEngine:
         self._registry[intent_name] = handler
 
     def dispatch(self, root: Path, text: str, intent_name: str) -> WorkflowResult:
+        root = resolve_project_root(root)
         context = WorkflowContext(root=root, text=text, intent_name=intent_name)
         if intent_name == "unknown":
             return _unknown_intent_result(context)
@@ -56,6 +58,7 @@ class WorkflowEngine:
         return handler(context)
 
     def run(self, root: Path, text: str) -> WorkflowResult:
+        root = resolve_project_root(root)
         intent_name = classify_intent_name(text)
         return self.dispatch(root=root, text=text, intent_name=intent_name)
 
@@ -91,6 +94,6 @@ def _unknown_intent_result(context: WorkflowContext) -> WorkflowResult:
             "记录决策",
             "备份到云端",
             "同步项目状态",
-            "发布版本 v0.3.0-alpha.2",
+            "发布版本 v0.3.0-beta.1",
         ],
     )

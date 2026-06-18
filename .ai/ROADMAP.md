@@ -20,7 +20,7 @@
 - [x] Release dry-run and version/tag consistency checks
 - [x] GitHub Actions CI for Python 3.10, 3.11, and 3.12
 - [x] OSS product packaging docs
-- [x] Pytest baseline: 58 passed
+- [x] Pytest baseline: 59 passed
 
 ## Codex for Open Source Readiness
 
@@ -113,10 +113,13 @@ Goal: 验证多个项目的项目记忆价值。
 - [x] Keep `record_decision` out of `MEMORY.md`
 - [x] Rephrase documentation around layered memory boundaries
 - [x] Normalize `AGENTS.md`, README, Usage, and Codex workflow terminology
-- [x] Update the project-state baseline to `pytest -q` passing, 56 passed
+- [x] Update the project-state baseline to `pytest -q` passing, 58 passed
 - [x] Normalize `.ai/history/` to monthly archive files
 - [x] Limit review archives to the recent 3 decisions
 - [x] Standardize `timeline_project` into fixed sections
+- [x] Remove legacy `.ai/WORKFLOW.md` and `.ai/USER_PROFILE.md` from the active memory surface
+- [x] Reclassify `metrics.md` as an auxiliary snapshot instead of a core fact source
+- [x] Reconcile Python version and validation evidence across docs and project memory
 
 ## Sprint Validation
 

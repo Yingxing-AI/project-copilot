@@ -132,7 +132,7 @@ def _render_status(today, analysis, pytest_baseline: str, latest_commit: str, la
             "- 多项目验证体系：`docs/case-studies/`、case study 模板和 `docs/validation-report.md`。",
             "- 项目复盘、项目时间轴、项目偏航检查、记录决策和查看路线图。",
             "- 项目状态分析和健康度评分。",
-            "- `.ai/KNOWLEDGE.md`、`.ai/metrics.md` 和 `.ai/history/`。",
+            "- `.ai/KNOWLEDGE.md`、`.ai/history/`，以及辅助指标 `.ai/metrics.md`。",
             "- 继续开发、结束工作和工作日志流程。",
             "- OSS readiness 检查和开源准备文件生成。",
             "- GitHub public/private 同步计划和前置条件检查。",

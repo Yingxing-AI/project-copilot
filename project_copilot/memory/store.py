@@ -14,9 +14,7 @@ MEMORY_FILES = {
     "DECISIONS.md": "# Decisions\n\n## 决策记录\n\n暂无关键决策。\n\n说明：只追加，不覆盖历史。\n",
     "WORKLOG.md": "# Worklog\n\n说明：按日期追加，记录今日完成、问题和明日计划；不要覆盖历史。\n\n暂无工作记录。\n",
     "KNOWLEDGE.md": "# Knowledge\n\n## 学到的最佳实践\n\n暂无。\n\n## 参考的开源项目\n\n暂无。\n\n## 产品认知\n\n暂无。\n\n## 社区反馈\n\n暂无。\n\n## 重要经验\n\n暂无。\n",
-    "metrics.md": "# Metrics\n\n项目创建时间：待确认。\n\n已运行天数：待分析。\n\n决策数量：0\n\n里程碑数量：0\n\n健康度变化：暂无。\n\n偏航指数：待分析。\n",
-    "WORKFLOW.md": "# Workflow\n\nProject Copilot 负责记录、提醒、复盘和归档；Codex 负责开发实现。\n",
-    "USER_PROFILE.md": "# User Profile\n\n- 用户不需要掌握命令行细节。\n- 优先自然语言。\n- 优先中文。\n- 优先秘书式提醒。\n",
+    "metrics.md": "# Metrics\n\n项目创建时间：待确认。\n\n已运行天数：待分析。\n\n决策数量：0\n\n里程碑数量：0\n\n健康度变化：暂无。\n\n偏航指数：待分析。\n\n说明：这是辅助指标快照，优先由状态与历史文件派生，不要把它当作事实源。\n",
 }
 
 

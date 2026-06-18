@@ -161,3 +161,31 @@
 - 完成内容：完成 `v0.3.0-alpha.9` 发布，版本号、安装脚本、发布说明和 release tag 已同步。
 - 遇到问题：发布前测试断言曾短暂停留在旧基线，已修正后重新完成发布。
 - 明日计划：继续观察发布后的仓库状态与后续验证样本推进情况。
+
+## 2026-06-17 21:55
+
+- 已更新项目状态。
+- 当前阶段：可持续开发
+- 项目健康度：100/100
+
+## 2026-06-18
+
+- 完成 `.ai` 分层收敛：删除未形成稳定消费面的 `.ai/WORKFLOW.md` 和 `.ai/USER_PROFILE.md`，并将 `metrics.md` 降级为辅助指标快照。
+- 统一 README、Usage、Architecture、OSS Readiness、Validation Report、CODEX Open Source 文档与 `.ai` 事实层口径，收敛 Python 版本和测试基线表述。
+- 更新 `PROJECT_CONTEXT.md`、`ROADMAP.md`、`STATUS.md`、`DECISIONS.md`、`MEMORY.md`、`KNOWLEDGE.md` 和 `metrics.md`，确保结构与说明一致。
+- 遇到问题：`metrics.md` 原本被写成接近核心事实层的快照，容易和真实记忆层抢职责；验证样本仍偏少，dashboard 还在待接入状态。
+- 明日计划：继续补真实项目验证样本，并观察当前“核心层 + 辅助指标”边界是否足够清晰。
+
+## 2026-06-18 Doctor Alignment
+
+- 将 `project-copilot doctor` 调整为展示核心记忆文件和辅助指标文件两组输出，和新的 `.ai` 分层结构一致。
+- 重新运行测试，`pytest -q` 通过，58 passed。
+- 遇到问题：如果只保留辅助快照而不提示核心文件缺失，doctor 的诊断价值会下降。
+- 明日计划：继续观察新的 doctor 输出是否足够清晰，必要时再微调提示文案。
+
+## 2026-06-18 Root Isolation
+
+- 为 workflow 入口增加项目根目录归一化，优先使用 Git 仓库顶层作为写入根，减少子目录或错误工作目录导致的 `.ai` 污染。
+- 重新运行测试，`pytest -q` 通过，59 passed。
+- 遇到问题：如果继续直接使用 cwd，跨项目验证时很容易把记忆文件写到错误层级。
+- 明日计划：继续观察在多项目场景下的根目录识别是否稳定。

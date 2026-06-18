@@ -2,7 +2,7 @@
 
 ## Mission
 
-Project Copilot helps developers operate AI Coding projects through natural-language workflows. It turns project maintenance actions such as checking status, continuing development, ending the day, and preparing for open source into repeatable CLI workflows.
+Project Copilot helps developers operate AI Coding projects through natural-language workflows. It installs a local Project Memory Layer and turns project maintenance actions such as checking status, continuing development, ending the day, and preparing for open source into repeatable CLI workflows.
 
 ## Target Users
 
@@ -37,6 +37,7 @@ Current strengths:
 - Pull request template.
 - Local test suite.
 - No required external AI API.
+- Current test baseline: `pytest -q` passes with 58 tests.
 
 Current gaps:
 
@@ -45,6 +46,7 @@ Current gaps:
 - No optional AI Provider interface yet.
 - Project analysis is still basic.
 - Existing-project adoption reports can be richer.
+- Validation evidence still centers on one active project and one queued project.
 
 ## Community Plan
 
@@ -90,7 +92,7 @@ Potential categories:
 
 Before applying, the project should have:
 
-- A tagged Alpha release.
+- A tagged Beta release.
 - Installation instructions verified from a clean environment.
 - A short demo script.
 - A clear list of contribution opportunities.

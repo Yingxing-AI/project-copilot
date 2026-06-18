@@ -1,6 +1,6 @@
 # Usage
 
-Project Copilot installs a layered project memory set for Codex.
+Project Copilot installs and maintains a layered project memory set for Codex.
 
 用户只和 Codex 对话。Project Copilot 负责初始化 `.ai/` 分层项目记忆、生成 `AGENTS.md` 规则和 `docs/CODEX_WORKFLOW.md`，让 Codex 在日常开发中区分事实、假设、计划和决策。
 
@@ -42,7 +42,7 @@ After this, work directly in Codex:
 继续开发这个项目
 ```
 
-Project memory gives Codex the context it needs for later conversations, while keeping facts, hypotheses, decisions, and work logs separate.
+Project memory gives Codex the context it needs for later conversations, while keeping facts, hypotheses, decisions, work logs, and optional metrics separate.
 
 ## Low-Frequency Tools
 
@@ -78,7 +78,7 @@ Project Copilot generates:
 - `DECISIONS.md`
 - `WORKLOG.md`
 - `KNOWLEDGE.md`
-- `metrics.md`
+- `metrics.md` 作为辅助快照，不作为事实源
 - `history/`
 
 ## Codex Daily Use

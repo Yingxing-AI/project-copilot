@@ -16,13 +16,14 @@ from project_copilot.secretary import (
 )
 from project_copilot.workflow.init_project import _write_initial_memory
 from project_copilot.workflow.project_proposal import parse_project_proposal, project_proposal_prompt
+from project_copilot.workflow.root import resolve_project_root
 from project_copilot.workflow import run_text_workflow
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="project-copilot", description="Natural-language project workflow runner.")
     parser.add_argument("text", nargs="*", help="自然语言项目意图，例如：检查项目")
-    parser.add_argument("--root", default=".", help="项目根目录，默认当前目录")
+    parser.add_argument("--root", default=None, help="项目根目录，默认当前目录")
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     return parser
 
@@ -30,7 +31,7 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
-    root = Path(args.root).resolve()
+    root = resolve_project_root(Path(args.root).resolve() if args.root else Path.cwd())
     text = " ".join(args.text).strip()
     if text.lower() == "doctor" or text == "检查秘书配置":
         print(render_doctor(root))

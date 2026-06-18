@@ -2,15 +2,15 @@
 
 Layered project memory for Codex.
 
-Project Copilot installs a layered project memory set for Codex.
+Project Copilot installs and maintains a layered project memory set for Codex.
 
 用户只和 Codex 对话。Project Copilot 负责安装和维护 `.ai/` 分层项目记忆规范、生成 `AGENTS.md` 规则，并告诉 Codex 如何区分事实、假设、计划和决策，提醒项目风险和防止项目跑偏。
 
-当前版本是 v0.3.0a9：规则驱动、本地运行、不依赖外部 AI API。
+当前版本是 v0.3.0b1：规则驱动、本地运行、不依赖外部 AI API。
 
-## Alpha Notice
+## Beta Notice
 
-Project Copilot is currently an Alpha release. It is suitable for trial use, project workflow experiments, and developer feedback. Use it carefully for production or business-critical workflows.
+Project Copilot is currently a Beta release. It is suitable for trial use, project workflow experiments, and developer feedback. Use it carefully for production or business-critical workflows.
 
 ## Available Today
 
@@ -51,7 +51,7 @@ curl -LsSf https://raw.githubusercontent.com/Yingxing-AI/project-copilot/main/in
 
 This installer is for macOS, Linux, and WSL. Native Windows PowerShell installation will be added later. See [Windows Install Notes](docs/INSTALL_WINDOWS.md).
 
-The installer pins the current alpha release tag. You can inspect [install.sh](install.sh) before running it, or install from a local checkout with `pip install -e .`.
+The installer pins the current beta release tag. You can inspect [install.sh](install.sh) before running it, or install from a local checkout with `pip install -e .`.
 
 Verify the installed CLI:
 
@@ -163,7 +163,7 @@ project-copilot 检查秘书配置
 - `DECISIONS.md`: product, architecture, technical choices, and tradeoffs
 - `WORKLOG.md`: dated work log for completed work only
 - `KNOWLEDGE.md`: best practices, references, product learning, community feedback
-- `metrics.md`: project age, decision count, milestones, health changes, drift index
+- `metrics.md`: auxiliary project metrics snapshot, preferably derived from the core memory files
 - `history/`: monthly history files such as `YYYY-MM.md`
 
 `AGENTS.md` tells Codex to read and maintain `.ai`.
@@ -194,8 +194,8 @@ project-copilot 今天结束工作
 project-copilot 检查 OSS 准备度
 project-copilot 准备开源
 project-copilot 备份到云端
-project-copilot 发布版本 v0.3.0-alpha.9
-project-copilot 发布版本 v0.3.0-alpha.9 dry-run
+project-copilot 发布版本 v0.3.0-beta.1
+project-copilot 发布版本 v0.3.0-beta.1 dry-run
 ```
 
 Run against another project root:
@@ -260,7 +260,7 @@ Current memory files:
 - `.ai/DECISIONS.md`: 产品决策、架构决策、技术选型和取舍原因
 - `.ai/WORKLOG.md`: 日期、今日完成、问题、明日计划，仅记录实际完成工作
 - `.ai/KNOWLEDGE.md`: 最佳实践、参考项目、产品认知、社区反馈和重要经验
-- `.ai/metrics.md`: 项目创建时间、已运行天数、决策数量、里程碑数量、健康度变化、偏航指数
+- `.ai/metrics.md`: 辅助指标快照，优先由核心记忆文件派生
 - `.ai/history/`: 按月保存的历史归档，例如 `YYYY-MM.md`
 
 The memory system is local Markdown. It is designed to be readable, reviewable, and easy to save with the project.
@@ -286,7 +286,7 @@ pytest -q
 Current baseline:
 
 ```text
-58 passed
+59 passed
 ```
 
 ## Contributing

@@ -9,13 +9,19 @@ from project_copilot.gitops import inspect_git
 def render_doctor(root: Path) -> str:
     git = inspect_git(root)
     ai_dir = root / ".ai"
-    memory_files = [
+    core_memory_files = [
         "PROJECT_CONTEXT.md",
         "STATUS.md",
         "ROADMAP.md",
         "MEMORY.md",
+        "HYPOTHESES.md",
+        "DECISIONS.md",
+        "WORKLOG.md",
+        "KNOWLEDGE.md",
     ]
-    existing_memory = [name for name in memory_files if (ai_dir / name).exists()]
+    auxiliary_files = ["metrics.md"]
+    existing_core = [name for name in core_memory_files if (ai_dir / name).exists()]
+    existing_auxiliary = [name for name in auxiliary_files if (ai_dir / name).exists()]
 
     lines = [
         "Project Copilot Doctor",
@@ -26,10 +32,14 @@ def render_doctor(root: Path) -> str:
     ]
     if git.initialized:
         lines.append(f"Git 分支：{git.branch or 'unknown'}")
-    if existing_memory:
-        lines.append(".ai 记忆文件：" + ", ".join(existing_memory))
+    if existing_core:
+        lines.append(".ai 核心记忆文件：" + ", ".join(existing_core))
     elif ai_dir.is_dir():
-        lines.append(".ai 记忆文件：missing core files")
-    else:
+        lines.append(".ai 核心记忆文件：missing core files")
+
+    if existing_auxiliary:
+        lines.append(".ai 辅助文件：" + ", ".join(existing_auxiliary))
+
+    if not ai_dir.is_dir():
         lines.append("建议：运行 `project-copilot 初始化项目` 或 `project-copilot 接管这个已有项目`。")
     return "\n".join(lines)

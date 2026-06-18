@@ -28,7 +28,6 @@ REQUIRED_PATHS = [
     ".ai/DECISIONS.md",
     ".ai/WORKLOG.md",
     ".ai/KNOWLEDGE.md",
-    ".ai/metrics.md",
 ]
 
 

@@ -16,7 +16,7 @@
 
 技术栈：
 
-- Python 3.11+
+- Python 3.10+
 - setuptools packaging
 - pytest
 - 规则驱动 intent classifier

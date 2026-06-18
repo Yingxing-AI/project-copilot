@@ -32,8 +32,8 @@ def run(context: WorkflowContext) -> WorkflowResult:
             intent_name=context.intent_name,
             status="blocked",
             title="发布被阻止。",
-            summary="请提供明确版本标记，例如：project-copilot 发布版本 v0.3.0-alpha.2",
-            next_steps=["输入 `project-copilot 发布版本 v0.3.0-alpha.2`。"],
+            summary="请提供明确版本标记，例如：project-copilot 发布版本 v0.3.0-beta.1",
+            next_steps=["输入 `project-copilot 发布版本 v0.3.0-beta.1`。"],
         )
 
     dry_run = _is_dry_run(context.text)
@@ -154,9 +154,10 @@ def _preflight(root: Path, tag: str, runner: Runner, require_gh_auth: bool = Tru
 
 def _tag_to_pep440_version(tag: str) -> str | None:
     normalized = tag[1:] if tag.startswith("v") else tag
-    match = re.fullmatch(r"(\d+\.\d+\.\d+)-alpha\.(\d+)", normalized)
+    match = re.fullmatch(r"(\d+\.\d+\.\d+)-(alpha|beta)\.(\d+)", normalized)
     if match:
-        return f"{match.group(1)}a{match.group(2)}"
+        suffix = "a" if match.group(2) == "alpha" else "b"
+        return f"{match.group(1)}{suffix}{match.group(3)}"
     return normalized if re.fullmatch(r"\d+\.\d+\.\d+(?:a\d+)?", normalized) else None
 
 

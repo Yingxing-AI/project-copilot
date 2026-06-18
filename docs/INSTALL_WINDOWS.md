@@ -1,6 +1,6 @@
 # Windows Install Notes
 
-Project Copilot v0.3 Alpha currently supports the official one-command installer on macOS, Linux, and WSL.
+Project Copilot v0.3 Beta currently supports the official one-command installer on macOS, Linux, and WSL.
 
 ## Recommended Today
 

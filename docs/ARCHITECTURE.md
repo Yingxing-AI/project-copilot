@@ -1,6 +1,6 @@
 # Architecture
 
-Project Copilot is a local-first workflow CLI. It maps natural-language project requests to deterministic Python workflows and renders a concise result for the user.
+Project Copilot is a local-first workflow CLI and Project Memory Layer installer. It maps natural-language project requests to deterministic Python workflows and renders a concise result for the user.
 
 Current implementation is rule-driven and does not depend on external AI APIs.
 
@@ -71,8 +71,11 @@ Current files:
 - `ROADMAP.md`: local development roadmap
 - `MEMORY.md`: chronological project events
 - `DECISIONS.md`: decisions and ADR-style notes
-- `WORKFLOW.md`: workflow conventions
-- `USER_PROFILE.md`: user collaboration preferences
+- `HYPOTHESES.md`: unconfirmed judgments and low-confidence conclusions
+- `WORKLOG.md`: dated work log for completed work only
+- `KNOWLEDGE.md`: best practices, references, product learning, community feedback
+- `metrics.md`: auxiliary project metrics snapshot derived from the core memory files
+- `history/`: monthly review archives
 
 The memory system is intentionally Markdown-based so users can review, edit, diff, and commit it.
 
@@ -87,7 +90,7 @@ The memory system is intentionally Markdown-based so users can review, edit, dif
 `project_copilot/intent/`
 
 - Classifies natural-language input into standard intent names.
-- Uses local keyword rules in the current Alpha.
+- Uses local keyword rules in the current release line.
 
 `project_copilot/workflow/`
 
@@ -97,7 +100,7 @@ The memory system is intentionally Markdown-based so users can review, edit, dif
 
 `project_copilot/memory/`
 
-- Creates and updates `.ai/` project memory files.
+- Creates and updates the core `.ai/` project memory files and auxiliary snapshots.
 
 `project_copilot/analyzer/`
 
@@ -116,7 +119,7 @@ The memory system is intentionally Markdown-based so users can review, edit, dif
 
 - Inspects Git status, remotes, and GitHub sync prerequisites.
 
-## Rule-Driven Alpha
+## Rule-Driven Beta
 
 The current system is deterministic:
 
@@ -125,7 +128,7 @@ The current system is deterministic:
 - No Web UI.
 - No hidden remote state.
 
-This keeps the Alpha easy to run, test, and reason about.
+This keeps the Beta easy to run, test, and reason about.
 
 ## Future Provider Direction
 

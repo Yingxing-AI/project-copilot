@@ -1,5 +1,6 @@
 import tempfile
 import unittest
+import subprocess
 from pathlib import Path
 
 from project_copilot.planner import run_workflow
@@ -25,6 +26,18 @@ class WorkflowTest(unittest.TestCase):
             self.assertTrue((tmp_path / ".ai" / "history").is_dir())
             self.assertIn("完成首次方案驱动项目档案初始化。", (tmp_path / ".ai" / "MEMORY.md").read_text(encoding="utf-8"))
             self.assertNotIn(proposal, (tmp_path / ".ai" / "MEMORY.md").read_text(encoding="utf-8"))
+
+    def test_run_workflow_uses_git_toplevel_as_project_root(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            tmp_path = Path(directory)
+            subprocess.run(["git", "init"], cwd=tmp_path, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            nested = tmp_path / "apps" / "dashboard"
+            nested.mkdir(parents=True)
+
+            run_workflow(nested, "初始化项目")
+
+            self.assertTrue((tmp_path / ".ai" / "PROJECT_CONTEXT.md").exists())
+            self.assertFalse((nested / ".ai").exists())
 
     def test_check_project_reports_health_score(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

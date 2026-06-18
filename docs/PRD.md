@@ -79,7 +79,7 @@ Project Copilot 在启动、检查项目和偏航检查时主动提醒：
 - 扫描技术栈、目录结构、测试、文档和 Git 状态
 - 生成 `.ai/PROJECT_CONTEXT.md`
 - 生成 `.ai/STATUS.md`
-- 在 `.ai/MEMORY.md` 记录接管事件
+- 在 `.ai/MEMORY.md` 记录接管事件摘要
 - 将不确定信息标记为待确认
 
 ## 与 Codex 的边界

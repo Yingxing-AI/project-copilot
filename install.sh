@@ -2,7 +2,7 @@
 set -eu
 
 REPO_URL="${PROJECT_COPILOT_REPO_URL:-https://github.com/Yingxing-AI/project-copilot.git}"
-REF="${PROJECT_COPILOT_REF:-v0.3.0-alpha.9}"
+REF="${PROJECT_COPILOT_REF:-v0.3.0-beta.1}"
 PACKAGE_SPEC="git+${REPO_URL}@${REF}"
 
 say() {

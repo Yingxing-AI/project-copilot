@@ -199,7 +199,7 @@ def test_repository_agents_md_is_hardened() -> None:
     assert "必要时" not in text
     assert "如果合适" not in text
     assert "可能需要" not in text
-    assert "当前基线：58 passed" in text
+    assert "当前基线：59 passed" in text
 
 
 def test_readme_promotes_codex_native_flow() -> None:
@@ -218,7 +218,7 @@ def test_open_source_readiness_docs_and_install_are_current() -> None:
     contributing = Path("CONTRIBUTING.md").read_text(encoding="utf-8")
     readiness = Path("docs/CODEX_FOR_OPEN_SOURCE.md").read_text(encoding="utf-8")
 
-    assert 'REF="${PROJECT_COPILOT_REF:-v0.3.0-alpha.9}"' in install
+    assert 'REF="${PROJECT_COPILOT_REF:-v0.3.0-beta.1}"' in install
     assert "pytest -q" in contributing
     assert "python3 -m unittest discover" not in contributing
     assert "Existing `AGENTS.md` content is preserved" in readiness

@@ -1,6 +1,6 @@
 # Codex for Open Source Readiness
 
-Project Copilot helps open-source maintainers use Codex without losing project context.
+Project Copilot helps open-source maintainers use Codex without losing project context. It installs a local Project Memory Layer for Codex projects.
 
 ## Fit
 
@@ -28,13 +28,14 @@ Project Copilot helps open-source maintainers use Codex without losing project c
 ## Current Evidence
 
 - CI runs on Python 3.10, 3.11, and 3.12.
-- Current test baseline: `pytest -q` passes with 49 tests.
+- Current test baseline: `pytest -q` passes with 58 tests.
 - Validation report: [validation-report.md](validation-report.md).
 - Case studies: [case-studies/](case-studies/).
 
 ## Gaps Before Wider Outreach
 
 - Add more real open-source project case studies.
+- Turn validation evidence from one active project plus one queued project into a stronger cross-project sample set.
 - Publish a PyPI package in addition to the GitHub install path.
 - Keep release notes and installer tags in sync.
 - Continue measuring work logs, decisions, and knowledge entries across projects.
