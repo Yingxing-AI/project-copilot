@@ -8,8 +8,8 @@
 
 - 版本：`0.3.0b2`
 - 分支：`main`
-- 最新提交：`682493a chore: fix release state drift`
-- 最新标签：`v0.3.0-beta.1`
+- 最新提交：`cd63b2d chore: prepare release v0.3.0-beta.2`
+- 最新标签：`v0.3.0-beta.2`
 - 测试基线：`pytest -q` 通过，63 passed。
 - 项目健康度：100/100
 
