@@ -27,7 +27,7 @@ Project Copilot helps open-source maintainers use Codex without losing project c
 
 ## Current Evidence
 
-- Tagged Beta release: `v0.3.0-beta.1`.
+- Tagged Beta release: `v0.3.0-beta.2`.
 - CI runs on Python 3.10, 3.11, and 3.12.
 - Current test baseline: `pytest -q` passes with 59 tests.
 - Validation report: [validation-report.md](validation-report.md).

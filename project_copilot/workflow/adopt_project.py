@@ -3,6 +3,7 @@ from __future__ import annotations
 from project_copilot.analyzer import analyze_project
 from project_copilot.memory import MemoryStore
 from project_copilot.workflow.codex_native import ensure_codex_native_files
+from project_copilot.validation.report import refresh_validation_report as refresh_validation_report_file
 from project_copilot.workflow.types import WorkflowContext, WorkflowResult
 from project_copilot.workflow.utils import as_bullets
 
@@ -64,6 +65,7 @@ def run(context: WorkflowContext) -> WorkflowResult:
         encoding="utf-8",
     )
     memory.append_memory("完成已有项目接管。")
+    validation_report_path, _ = refresh_validation_report_file(root)
 
     return WorkflowResult(
         intent_name=context.intent_name,
@@ -72,6 +74,7 @@ def run(context: WorkflowContext) -> WorkflowResult:
         summary="处理方式：未覆盖现有 README、LICENSE 或源码；已生成 Codex 项目记忆规则。",
         details={
             "已更新": [".ai/PROJECT_CONTEXT.md", ".ai/STATUS.md", ".ai/MEMORY.md", "AGENTS.md", "docs/CODEX_WORKFLOW.md"],
+            "验证汇总": str(validation_report_path.relative_to(root)) if validation_report_path.is_relative_to(root) else str(validation_report_path),
             "识别技术栈": profile["tech_stack"],
             "项目线索": profile["signals"][:8],
         },

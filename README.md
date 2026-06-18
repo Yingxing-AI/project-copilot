@@ -6,7 +6,7 @@ Project Copilot installs and maintains a layered project memory set for Codex.
 
 用户只和 Codex 对话。Project Copilot 负责安装和维护 `.ai/` 分层项目记忆规范、生成 `AGENTS.md` 规则，并告诉 Codex 如何区分事实、假设、计划和决策，提醒项目风险和防止项目跑偏。
 
-当前版本是 v0.3.0b1：规则驱动、本地运行、不依赖外部 AI API。
+当前版本是 v0.3.0b2：规则驱动、本地运行、不依赖外部 AI API。
 
 ## Beta Notice
 
@@ -172,7 +172,12 @@ project-copilot 检查秘书配置
 
 ## Validation
 
-Project Copilot 正在真实项目中验证，当前以 `ai-recruitment` 为主，`dashboard` 仍待接入，重点观察 `.ai/` 项目记忆是否能长期保持可读、可维护、可复盘。
+Project Copilot 正在真实项目中验证，真实项目可以通过 `.ai/validation.json` 快照接入并自动刷新汇总。初始化、接管、记录决策、结束工作和同步状态时会自动收集当前项目记忆，重点观察 `.ai/` 项目记忆是否能长期保持可读、可维护、可复盘。
+
+可用命令：
+
+- `project-copilot 导出验证快照`
+- `project-copilot 刷新验证报告`
 
 - [Validation Report](docs/validation-report.md)
 - [Case Studies](docs/case-studies/)
@@ -194,8 +199,8 @@ project-copilot 今天结束工作
 project-copilot 检查 OSS 准备度
 project-copilot 准备开源
 project-copilot 备份到云端
-project-copilot 发布版本 v0.3.0-beta.1
-project-copilot 发布版本 v0.3.0-beta.1 dry-run
+project-copilot 发布版本 v0.3.0-beta.2
+project-copilot 发布版本 v0.3.0-beta.2 dry-run
 ```
 
 Run against another project root:
@@ -286,7 +291,7 @@ pytest -q
 Current baseline:
 
 ```text
-59 passed
+63 passed
 ```
 
 ## Contributing

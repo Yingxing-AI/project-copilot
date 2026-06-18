@@ -20,6 +20,8 @@ class Intent(str, Enum):
     NEXT_STEP = "next_step"
     SUMMARIZE_PROJECT = "summarize_project"
     SYNC_PROJECT_STATE = "sync_project_state"
+    REFRESH_VALIDATION_REPORT = "refresh_validation_report"
+    EXPORT_VALIDATION_SNAPSHOT = "export_validation_snapshot"
     REVIEW_PROJECT = "review_project"
     TIMELINE_PROJECT = "timeline_project"
     DRIFT_CHECK = "drift_check"
@@ -90,6 +92,25 @@ KEYWORDS: list[tuple[Intent, tuple[str, ...]]] = [
             "同步 changelog",
             "sync project state",
             "sync docs",
+        ),
+    ),
+    (
+        Intent.REFRESH_VALIDATION_REPORT,
+        (
+            "刷新验证报告",
+            "同步验证报告",
+            "更新验证报告",
+            "刷新验证汇总",
+            "refresh validation report",
+        ),
+    ),
+    (
+        Intent.EXPORT_VALIDATION_SNAPSHOT,
+        (
+            "导出验证快照",
+            "刷新验证快照",
+            "生成验证快照",
+            "export validation snapshot",
         ),
     ),
     (Intent.CHECK_PROJECT, ("检查项目", "项目状态", "项目怎么样", "健康度", "check project", "status")),

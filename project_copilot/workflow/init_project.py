@@ -12,6 +12,7 @@ from project_copilot.workflow.project_proposal import (
     parse_project_proposal,
     project_proposal_prompt,
 )
+from project_copilot.validation.report import refresh_validation_report as refresh_validation_report_file
 from project_copilot.workflow.types import WorkflowContext, WorkflowResult
 
 
@@ -41,6 +42,7 @@ def run(context: WorkflowContext) -> WorkflowResult:
     created.extend(_write_initial_memory(memory, proposal))
     git_initialized = init_git_if_needed(root)
     memory.append_memory("完成首次方案驱动项目档案初始化。")
+    validation_report_path, _ = refresh_validation_report_file(root)
 
     status = "success"
     title = "已完成项目档案初始化。"
@@ -57,6 +59,7 @@ def run(context: WorkflowContext) -> WorkflowResult:
         summary=summary,
         details={
             "创建文件": created,
+            "验证汇总": str(validation_report_path.relative_to(root)) if validation_report_path.is_relative_to(root) else str(validation_report_path),
             "保存进度记录": "已建立" if git_initialized else "已存在或暂不可用",
             "已识别项目使命": proposal.mission or "未识别",
             "已识别目标用户": proposal.target_users or "未识别",

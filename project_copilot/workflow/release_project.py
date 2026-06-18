@@ -32,8 +32,8 @@ def run(context: WorkflowContext) -> WorkflowResult:
             intent_name=context.intent_name,
             status="blocked",
             title="发布被阻止。",
-            summary="请提供明确版本标记，例如：project-copilot 发布版本 v0.3.0-beta.1",
-            next_steps=["输入 `project-copilot 发布版本 v0.3.0-beta.1`。"],
+            summary="请提供明确版本标记，例如：project-copilot 发布版本 v0.3.0-beta.2",
+            next_steps=["输入 `project-copilot 发布版本 v0.3.0-beta.2`。"],
         )
 
     dry_run = _is_dry_run(context.text)

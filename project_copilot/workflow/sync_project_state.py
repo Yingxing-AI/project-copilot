@@ -9,6 +9,7 @@ from pathlib import Path
 from project_copilot import __version__
 from project_copilot.analyzer import analyze_project
 from project_copilot.memory import MemoryStore
+from project_copilot.validation.report import refresh_validation_report as refresh_validation_report_file
 from project_copilot.workflow.types import WorkflowContext, WorkflowResult
 
 
@@ -92,6 +93,12 @@ def sync_project_state(root: Path) -> ProjectStateSync:
             updated_files,
             "AGENTS.md",
         )
+
+    validation_report_path, _ = refresh_validation_report_file(root)
+    if validation_report_path.exists():
+        label = str(validation_report_path.relative_to(root)) if validation_report_path.is_relative_to(root) else str(validation_report_path)
+        if label not in updated_files:
+            updated_files.append(label)
 
     return ProjectStateSync(
         updated_files=updated_files,

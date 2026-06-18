@@ -88,6 +88,8 @@ def render_recommended_commands() -> str:
             "项目偏航检查",
             "记录决策",
             "查看路线图",
+            "刷新验证报告",
+            "导出验证快照",
             "",
             "输入 退出 结束。",
         ]
@@ -108,6 +110,8 @@ def render_noninteractive_help() -> str:
             "project-copilot 项目时间轴",
             "",
             "project-copilot 项目偏航检查",
+            "",
+            "project-copilot 刷新验证报告",
         ]
     )
 

@@ -27,7 +27,7 @@ The current implementation is local-first, rule-driven, and readable Python, whi
 Current strengths:
 
 - MIT License.
-- Tagged Beta release: `v0.3.0-beta.1`.
+- Tagged Beta release: `v0.3.0-beta.2`.
 - README with quick start, usage, and architecture summary.
 - Contributing guide.
 - Code of conduct.

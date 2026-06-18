@@ -4,6 +4,7 @@ from datetime import datetime
 
 from project_copilot.memory import MemoryStore
 from project_copilot.workflow.hypothesis_utils import looks_uncertain
+from project_copilot.validation.report import refresh_validation_report as refresh_validation_report_file
 from project_copilot.workflow.types import WorkflowContext, WorkflowResult
 
 
@@ -37,11 +38,17 @@ def run(context: WorkflowContext) -> WorkflowResult:
         handle.write(f"- 决策：{decision}\n")
         handle.write("- 原因：待补充。\n")
         handle.write("- 影响：后续需求以此为边界。\n")
+    validation_report_path, _ = refresh_validation_report_file(context.root)
     return WorkflowResult(
         intent_name=context.intent_name,
         status="success",
         title="已记录决策。",
         summary=decision,
+        details={
+            "验证汇总": str(validation_report_path.relative_to(context.root))
+            if validation_report_path.is_relative_to(context.root)
+            else str(validation_report_path),
+        },
         next_steps=["后续如方向变化，先运行“项目偏航检查”。"],
     )
 

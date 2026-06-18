@@ -10,7 +10,7 @@ from project_copilot.workflow.release_project import extract_tag, release_projec
 class ReleaseProjectTest(unittest.TestCase):
     def test_extracts_release_tag(self) -> None:
         self.assertEqual(extract_tag("发布 v0.3.0-alpha.2"), "v0.3.0-alpha.2")
-        self.assertEqual(extract_tag("发布 v0.3.0-beta.1"), "v0.3.0-beta.1")
+        self.assertEqual(extract_tag("发布 v0.3.0-beta.2"), "v0.3.0-beta.2")
         self.assertEqual(extract_tag("release 1.2.3"), "1.2.3")
         self.assertIsNone(extract_tag("发布 Alpha"))
 
@@ -38,11 +38,11 @@ class ReleaseProjectTest(unittest.TestCase):
                     return _ok("")
                 if args == ["git", "log", "-1", "--pretty=%h %s"]:
                     if released["value"]:
-                        return _ok("7c69427 chore: prepare release v0.3.0-beta.1\n")
+                        return _ok("7c69427 chore: prepare release v0.3.0-beta.2\n")
                     return _ok("fee569d chore: sync release state v0.3.0-alpha.9\n")
                 if args == ["git", "describe", "--tags", "--abbrev=0"]:
                     if released["value"]:
-                        return _ok("v0.3.0-beta.1\n")
+                        return _ok("v0.3.0-beta.2\n")
                     return _ok("v0.3.0-alpha.9\n")
                 if args[:2] == ["gh", "auth"]:
                     return _ok("Logged in\n")
@@ -62,16 +62,16 @@ class ReleaseProjectTest(unittest.TestCase):
 
             release_module.sync_project_state = fake_sync
             try:
-                outcome = release_module.release_project(root, "v0.3.0-beta.1", runner=runner)
+                outcome = release_module.release_project(root, "v0.3.0-beta.2", runner=runner)
             finally:
                 release_module.sync_project_state = original_sync
 
             self.assertEqual(outcome.status, "success")
             self.assertIn(["git", "push", "origin", "main"], calls)
-            self.assertIn(["git", "tag", "-a", "v0.3.0-beta.1", "-m", "Project Copilot v0.3.0-beta.1"], calls)
-            self.assertIn(["git", "push", "origin", "v0.3.0-beta.1"], calls)
+            self.assertIn(["git", "tag", "-a", "v0.3.0-beta.2", "-m", "Project Copilot v0.3.0-beta.2"], calls)
+            self.assertIn(["git", "push", "origin", "v0.3.0-beta.2"], calls)
             self.assertTrue(any(call[:3] == ["gh", "release", "create"] for call in calls))
-            self.assertIn(["git", "commit", "-m", "chore: sync release state v0.3.0-beta.1"], calls)
+            self.assertIn(["git", "commit", "-m", "chore: sync release state v0.3.0-beta.2"], calls)
 
     def test_release_notes_include_changes_since_previous_tag(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -90,7 +90,7 @@ class ReleaseProjectTest(unittest.TestCase):
                     return _ok("main\n")
                 if args[:3] == ["git", "remote", "get-url"]:
                     return _ok("https://github.com/example/project.git\n")
-                if args == ["git", "tag", "--list", "v0.3.0-beta.1"]:
+                if args == ["git", "tag", "--list", "v0.3.0-beta.2"]:
                     return _ok("")
                 if args == ["git", "tag", "--sort=-version:refname"]:
                     return _ok("v0.3.0-alpha.4\nv0.3.0-alpha.3\nproject-copilot\n")
@@ -104,7 +104,7 @@ class ReleaseProjectTest(unittest.TestCase):
                     return _ok(" M README.md\n")
                 return _ok("")
 
-            outcome = release_project(root, "v0.3.0-beta.1", runner=runner)
+            outcome = release_project(root, "v0.3.0-beta.2", runner=runner)
 
             self.assertEqual(outcome.status, "success")
             self.assertIsNotNone(outcome.release_notes)
@@ -132,7 +132,7 @@ class ReleaseProjectTest(unittest.TestCase):
                     return _ok("Logged in\n")
                 return _ok("")
 
-            outcome = release_project(root, "v0.3.0-beta.1", runner=runner, dry_run=True)
+            outcome = release_project(root, "v0.3.0-beta.2", runner=runner, dry_run=True)
 
             self.assertEqual(outcome.status, "success")
             self.assertTrue(outcome.dry_run)
@@ -157,7 +157,7 @@ class ReleaseProjectTest(unittest.TestCase):
                     return _ok("")
                 return _ok("")
 
-            outcome = release_project(root, "v0.3.0-beta.2", runner=runner, dry_run=True)
+            outcome = release_project(root, "v0.3.0-beta.3", runner=runner, dry_run=True)
 
             self.assertEqual(outcome.status, "blocked")
             self.assertTrue(any("版本不匹配" in blocker for blocker in outcome.blockers))

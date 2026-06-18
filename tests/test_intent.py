@@ -24,6 +24,8 @@ class IntentClassifierTest(unittest.TestCase):
         self.assertEqual(classify_intent("项目偏航检查 新增商城模块"), Intent.DRIFT_CHECK)
         self.assertEqual(classify_intent("记录决策 MVP 先做简历导入"), Intent.RECORD_DECISION)
         self.assertEqual(classify_intent("查看路线图"), Intent.SHOW_ROADMAP)
+        self.assertEqual(classify_intent("刷新验证报告"), Intent.REFRESH_VALIDATION_REPORT)
+        self.assertEqual(classify_intent("导出验证快照"), Intent.EXPORT_VALIDATION_SNAPSHOT)
 
     def test_outputs_standard_intent_name(self) -> None:
         self.assertEqual(classify_intent_name("继续开发项目"), "continue_development")
@@ -34,6 +36,8 @@ class IntentClassifierTest(unittest.TestCase):
         self.assertEqual(classify_intent_name("创建 GitHub Release v0.3.0-alpha.2"), "release_project")
         self.assertEqual(classify_intent_name("同步文档"), "sync_project_state")
         self.assertEqual(classify_intent_name("项目复盘"), "review_project")
+        self.assertEqual(classify_intent_name("刷新验证报告"), "refresh_validation_report")
+        self.assertEqual(classify_intent_name("导出验证快照"), "export_validation_snapshot")
 
     def test_unknown_intent_is_explicit(self) -> None:
         self.assertEqual(classify_intent("随便说点无法识别的话"), Intent.UNKNOWN)
