@@ -32,7 +32,7 @@ class WorkflowEngineTest(unittest.TestCase):
             check_result = run_text_workflow(root, "检查项目")
 
             self.assertIn("项目方案还需要补充", init_result)
-            self.assertIn("项目健康度", check_result)
+            self.assertIn("Memory Health Summary", check_result)
 
     def test_unknown_intent_returns_suggestions(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -121,8 +121,8 @@ class WorkflowEngineTest(unittest.TestCase):
 
             self.assertIn("已刷新验证报告", result)
             report = (root / "docs" / "validation-report.md").read_text(encoding="utf-8")
-            self.assertIn("| dashboard | 2026-06-17 | 3 | 5 | 2 | 1 | 验证中 |", report)
-            self.assertNotIn("| dashboard | 2026-06-17 | 0 | 0 | 0 | 0 | 待接入 |", report)
+            self.assertIn("| dashboard | 2026-06-17 | 3 | 待记录 | 2 | 待记录 | 待记录 | 待记录 | 验证中 |", report)
+            self.assertNotIn("待接入", report)
             self.assertIn("自动刷新", report)
 
     def test_refresh_validation_report_prefers_live_ai_over_stale_snapshot(self) -> None:
@@ -202,8 +202,8 @@ class WorkflowEngineTest(unittest.TestCase):
 
             self.assertIn("已刷新验证报告", result)
             report = (root / "docs" / "validation-report.md").read_text(encoding="utf-8")
-            self.assertIn("| 制造业利润管理系统 V1.0 | 2026-06-17 | 2 | 1 | 1 | 1 | 可持续开发 |", report)
-            self.assertNotIn("| 制造业利润管理系统 V1.0 | 2026-06-17 | 2 | 0 | 0 | 0 | 可持续开发 |", report)
+            self.assertIn("| 制造业利润管理系统 V1.0 | 2026-06-17 | 2 | 缺失 | 0 | 0 | 0 | 存在 | 需要补齐记忆层 |", report)
+            self.assertNotIn("| 制造业利润管理系统 V1.0 | 2026-06-17 | 2 | 待记录 | 0", report)
 
     def test_export_validation_snapshot_writes_ai_snapshot_and_refreshes_report(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -237,6 +237,8 @@ class WorkflowEngineTest(unittest.TestCase):
             self.assertIn('"worklog_count": 3', payload)
             self.assertIn('"decision_count": 2', payload)
             self.assertIn('"knowledge_count": 2', payload)
+            self.assertIn('"adr_count": 0', payload)
+            self.assertTrue((root / ".ai" / "derived" / "metrics.json").exists())
             report = root / "docs" / "validation-report.md"
             self.assertTrue(report.exists())
             self.assertIn("| dashboard |", report.read_text(encoding="utf-8"))

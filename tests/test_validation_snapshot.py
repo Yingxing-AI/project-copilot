@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from project_copilot.memory.health import inspect_memory_health
 from project_copilot.validation.snapshot import collect_validation_snapshot
 
 
@@ -68,11 +69,26 @@ def test_collect_validation_snapshot_accepts_legacy_ai_formats(tmp_path: Path) -
         encoding="utf-8",
     )
     (ai_dir / "ROADMAP.md").write_text("# Roadmap\n", encoding="utf-8")
+    (ai_dir / "sessions" / "current.md").parent.mkdir(parents=True, exist_ok=True)
+    (ai_dir / "sessions" / "current.md").write_text(
+        "# Current Session\n\n## 候选事件\n\n- 2026-06-19 09:00 [Milestone Candidate] 完成 Session Archive 设计。\n",
+        encoding="utf-8",
+    )
+    (ai_dir / "sessions" / "archive" / "2026-06").mkdir(parents=True, exist_ok=True)
+    (ai_dir / "sessions" / "archive" / "2026-06" / "2026-06-18.md").write_text(
+        "# Session Archive\n\n## 09:00\n\n- 完成 Session Archive 设计。\n",
+        encoding="utf-8",
+    )
 
     snapshot = collect_validation_snapshot(tmp_path)
+    health = inspect_memory_health(tmp_path)
 
     assert snapshot is not None
     assert snapshot.project_name == "legacy-project"
     assert snapshot.worklog_count == 2
     assert snapshot.decision_count == 2
     assert snapshot.knowledge_count == 3
+    assert snapshot.session_archive_count == 1
+    assert snapshot.active_candidate_count == 1
+    assert health.session_archive_count == 1
+    assert health.active_candidate_count == 1

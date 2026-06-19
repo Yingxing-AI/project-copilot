@@ -6,7 +6,7 @@ from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
 
-from project_copilot.analyzer import analyze_project
+from project_copilot.memory.health import inspect_memory_health
 
 
 @dataclass(frozen=True)
@@ -18,6 +18,12 @@ class ValidationSnapshot:
     worklog_count: int | None = None
     decision_count: int | None = None
     knowledge_count: int | None = None
+    adr_count: int | None = None
+    session_archive_count: int | None = None
+    active_candidate_count: int | None = None
+    charter_present: bool | None = None
+    roadmap_present: bool | None = None
+    memory_health_status: str | None = None
     project_health: int | None = None
     roadmap_state: str | None = None
     source: str = "project-copilot validation snapshot"
@@ -36,6 +42,12 @@ def load_validation_snapshot(path: Path) -> ValidationSnapshot | None:
         worklog_count=_maybe_int(data.get("worklog_count")),
         decision_count=_maybe_int(data.get("decision_count")),
         knowledge_count=_maybe_int(data.get("knowledge_count")),
+        adr_count=_maybe_int(data.get("adr_count")),
+        session_archive_count=_maybe_int(data.get("session_archive_count")),
+        active_candidate_count=_maybe_int(data.get("active_candidate_count")),
+        charter_present=_maybe_bool(data.get("charter_present")),
+        roadmap_present=_maybe_bool(data.get("roadmap_present")),
+        memory_health_status=str(data.get("memory_health_status", "")).strip() or None,
         project_health=_maybe_int(data.get("project_health")),
         roadmap_state=str(data.get("roadmap_state", "")).strip() or None,
         source=str(data.get("source", "project-copilot validation snapshot")).strip(),
@@ -61,7 +73,7 @@ def collect_validation_snapshot(root: Path) -> ValidationSnapshot | None:
         decision_count = _count_decisions(ai_dir)
         knowledge_count = _count_knowledge_entries(ai_dir / "KNOWLEDGE.md")
         roadmap_state = _roadmap_state(ai_dir / "ROADMAP.md")
-        project_health = analyze_project(root).health_score
+        memory_health = inspect_memory_health(root)
     except OSError:
         return None
 
@@ -73,7 +85,12 @@ def collect_validation_snapshot(root: Path) -> ValidationSnapshot | None:
         worklog_count=worklog_count,
         decision_count=decision_count,
         knowledge_count=knowledge_count,
-        project_health=project_health,
+        adr_count=memory_health.adr_count,
+        session_archive_count=memory_health.session_archive_count,
+        active_candidate_count=memory_health.active_candidate_count,
+        charter_present=memory_health.charter_present,
+        roadmap_present=memory_health.roadmap_present,
+        memory_health_status=memory_health.status,
         roadmap_state=roadmap_state,
         source="auto_collected_from_ai",
     )
@@ -86,7 +103,26 @@ def export_validation_snapshot(root: Path, snapshot: ValidationSnapshot) -> Path
     payload["updated_at"] = snapshot.updated_at or datetime.now().isoformat(timespec="seconds")
     path = ai_dir / "validation.json"
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    _export_derived_metrics(ai_dir, payload)
     return path
+
+
+def _export_derived_metrics(ai_dir: Path, payload: dict[str, object]) -> None:
+    derived_dir = ai_dir / "derived"
+    derived_dir.mkdir(exist_ok=True)
+    metrics = {
+        "project_name": payload.get("project_name"),
+        "usage_days": payload.get("usage_days"),
+        "adr_count": payload.get("adr_count"),
+        "session_archive_count": payload.get("session_archive_count"),
+        "active_candidate_count": payload.get("active_candidate_count"),
+        "charter_present": payload.get("charter_present"),
+        "roadmap_present": payload.get("roadmap_present"),
+        "memory_health_status": payload.get("memory_health_status"),
+        "updated_at": payload.get("updated_at"),
+        "source": "derived_from_validation_snapshot",
+    }
+    (derived_dir / "metrics.json").write_text(json.dumps(metrics, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 def _maybe_int(value: object) -> int | None:
@@ -96,6 +132,20 @@ def _maybe_int(value: object) -> int | None:
         return int(value)  # type: ignore[arg-type]
     except (TypeError, ValueError):
         return None
+
+
+def _maybe_bool(value: object) -> bool | None:
+    if value in (None, ""):
+        return None
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        normalized = value.strip().lower()
+        if normalized in {"true", "1", "yes", "y"}:
+            return True
+        if normalized in {"false", "0", "no", "n"}:
+            return False
+    return None
 
 
 def _extract_field(path: Path, field_name: str) -> str:
@@ -123,6 +173,8 @@ def _started_at_from_ai(ai_dir: Path) -> str:
         ai_dir / "DECISIONS.md",
         ai_dir / "WORKLOG.md",
         ai_dir / "KNOWLEDGE.md",
+        ai_dir / "adr" / "index.md",
+        ai_dir / "sessions" / "current.md",
     ]
     mtimes = []
     for path in candidates:

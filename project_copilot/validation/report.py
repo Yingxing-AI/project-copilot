@@ -20,6 +20,12 @@ class ValidationRecord:
     worklog_count: int | None = None
     decision_count: int | None = None
     knowledge_count: int | None = None
+    adr_count: int | None = None
+    session_archive_count: int | None = None
+    active_candidate_count: int | None = None
+    charter_present: bool | None = None
+    roadmap_present: bool | None = None
+    memory_health_status: str | None = None
     source: str = "snapshot"
     source_path: str | None = None
 
@@ -58,6 +64,7 @@ def build_validation_records(root: Path) -> list[ValidationRecord]:
 def _has_live_memory_files(root: Path) -> bool:
     ai_dir = root / ".ai"
     for name in (
+        "PROJECT_CHARTER.md",
         "PROJECT_CONTEXT.md",
         "STATUS.md",
         "MEMORY.md",
@@ -73,6 +80,12 @@ def _has_live_memory_files(root: Path) -> bool:
                 return True
         except OSError:
             continue
+    for directory in (ai_dir / "adr", ai_dir / "sessions"):
+        try:
+            if directory.exists():
+                return True
+        except OSError:
+            continue
     return False
 
 
@@ -80,6 +93,11 @@ def render_validation_report(records: list[ValidationRecord]) -> str:
     total_worklogs = sum(record.worklog_count or 0 for record in records)
     total_decisions = sum(record.decision_count or 0 for record in records)
     total_knowledge = sum(record.knowledge_count or 0 for record in records)
+    total_adrs = sum(record.adr_count or 0 for record in records)
+    total_session_archives = sum(record.session_archive_count or 0 for record in records)
+    total_active_candidates = sum(record.active_candidate_count or 0 for record in records)
+    charter_count = sum(1 for record in records if record.charter_present)
+    roadmap_count = sum(1 for record in records if record.roadmap_present)
 
     lines = [
         "# Validation Report",
@@ -92,19 +110,21 @@ def render_validation_report(records: list[ValidationRecord]) -> str:
         "",
         "## 项目列表",
         "",
-        "| 项目名称 | 开始时间 | 使用天数 | 工作日志 | 决策 | 知识沉淀 | 状态 |",
-        "| --- | --- | ---: | ---: | ---: | ---: | --- |",
+        "| 项目名称 | 开始时间 | 使用天数 | Charter | ADR | Session Archive | Active Candidates | Roadmap | 记忆状态 |",
+        "| --- | --- | ---: | --- | ---: | ---: | ---: | --- | --- |",
     ]
     for record in records:
         lines.append(
-            "| {name} | {started} | {days} | {worklogs} | {decisions} | {knowledge} | {status} |".format(
+            "| {name} | {started} | {days} | {charter} | {adrs} | {sessions} | {candidates} | {roadmap} | {memory_status} |".format(
                 name=record.project_name,
                 started=record.started_at or "待记录",
                 days=_fmt_int(record.usage_days),
-                worklogs=_fmt_int(record.worklog_count),
-                decisions=_fmt_int(record.decision_count),
-                knowledge=_fmt_int(record.knowledge_count),
-                status=record.status or "待记录",
+                charter=_fmt_bool(record.charter_present),
+                adrs=_fmt_int(record.adr_count if record.adr_count is not None else record.decision_count),
+                sessions=_fmt_int(record.session_archive_count),
+                candidates=_fmt_int(record.active_candidate_count),
+                roadmap=_fmt_bool(record.roadmap_present),
+                memory_status=record.memory_health_status or record.status or "待记录",
             )
         )
 
@@ -121,6 +141,16 @@ def render_validation_report(records: list[ValidationRecord]) -> str:
             "",
             f"总决策：{total_decisions}",
             "",
+            f"总 ADR：{total_adrs}",
+            "",
+            f"总 Session Archive：{total_session_archives}",
+            "",
+            f"总 Active Candidates：{total_active_candidates}",
+            "",
+            f"存在 Charter 的项目：{charter_count}",
+            "",
+            f"存在 Roadmap 的项目：{roadmap_count}",
+            "",
             f"总知识沉淀：{total_knowledge}",
             "",
             "---",
@@ -128,7 +158,7 @@ def render_validation_report(records: list[ValidationRecord]) -> str:
             "## 关键发现",
             "",
             "- Project Copilot 已能在真实项目中形成可审阅的 `.ai/` 项目记忆。",
-            "- ADR、Session 摘要、决策和知识沉淀可以作为多项目验证的基础指标。",
+            "- ADR、Session Archive、候选事件、Charter 和 Roadmap 可以作为记忆质量验证的基础指标。",
         ]
     )
     if any(record.source == "snapshot" for record in records):
@@ -143,7 +173,7 @@ def render_validation_report(records: list[ValidationRecord]) -> str:
             "",
             "- 纳入更多真实项目的 `.ai/validation.json`。",
             "- 从真实 `.ai` 自动刷新统计汇总。",
-            "- 对比不同项目中的 ADR、Session 摘要、决策和知识沉淀质量。",
+            "- 对比不同项目中的 ADR、Session Archive、候选事件和长期知识质量。",
             "- 继续减少人工维护的验证文档，避免验证体系漂移。",
             "",
         ]
@@ -160,6 +190,12 @@ def _snapshot_to_record(snapshot: ValidationSnapshot, path: Path) -> ValidationR
         worklog_count=snapshot.worklog_count,
         decision_count=snapshot.decision_count,
         knowledge_count=snapshot.knowledge_count,
+        adr_count=snapshot.adr_count,
+        session_archive_count=snapshot.session_archive_count,
+        active_candidate_count=snapshot.active_candidate_count,
+        charter_present=snapshot.charter_present,
+        roadmap_present=snapshot.roadmap_present,
+        memory_health_status=snapshot.memory_health_status,
         source="snapshot",
         source_path=str(path),
     )
@@ -181,6 +217,12 @@ def iter_validation_project_roots(root: Path) -> list[Path]:
 
 def _fmt_int(value: int | None) -> str:
     return str(value) if value is not None else "待记录"
+
+
+def _fmt_bool(value: bool | None) -> str:
+    if value is None:
+        return "待记录"
+    return "存在" if value else "缺失"
 
 
 def _safe_exists(path: Path) -> bool:

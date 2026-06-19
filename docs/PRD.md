@@ -119,7 +119,7 @@ Python 3.10+，当前版本使用规则驱动和本地分析，不依赖外部 A
 - `timeline_project`
 - `drift_check`
 - `record_decision`
-- `show_roadmap`
+- `show_roadmap`（兼容别名，实际进入 Memory Health）
 - `export_validation_snapshot`
 - `refresh_validation_report`
 
@@ -133,5 +133,11 @@ P0 边界：
 
 - `sync_project_state` 不运行测试、不读取 Git、不同步 Changelog。
 - `record_decision` 写 ADR，不再把新决策只追加到 `DECISIONS.md`。
+
+P1 边界：
+
+- `check_project` 输出 Memory Health Summary，不再输出 Project Health Score。
+- `timeline_project` 优先展示 ADR、history 和 Session Archive。
+- `show_roadmap` 不再作为独立路线图读取 workflow。
 - `review_project` 是只读派生视图，不自动写归档。
 - `init_project` 不自动初始化 Git。

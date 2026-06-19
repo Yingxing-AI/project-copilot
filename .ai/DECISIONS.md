@@ -77,3 +77,11 @@
 原因：测试、Git、Release、Changelog 和普通项目管理总结属于 Codex/Git；Project Copilot 应只维护长期项目记忆和派生验证。
 
 影响：`init_project` 不再自动 `git init`；`record_decision` 写入 `.ai/adr/`；未确认决策进入 `.ai/sessions/current.md`；`review_project` 不再写 `history/`；`sync_project_state` 不再运行测试或同步 README/Roadmap/Changelog/AGENTS。
+
+日期：2026-06-19
+
+决策：执行 P1 Memory View 收敛，将 `check_project` 改为 Memory Health，`show_roadmap` 降级为兼容别名，`timeline_project` 改为 ADR/history/session 派生视图，并将指标改为 derived metrics。
+
+原因：剩余 workflow 仍带有旧 Secretary UX、项目健康度和工作日志时间轴叙事，容易与 Codex 原生开发能力和 Git 记录职责重叠。
+
+影响：详见 ADR 0006：`.ai/adr/0006-memory-view-convergence.md`。本文件仅保留兼容索引。

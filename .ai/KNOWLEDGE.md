@@ -43,3 +43,4 @@
 - ADR 比单一决策流水更适合 AI Coding，因为它能把背景、原因、取舍和影响拆成可引用的小记录。
 - Validation 应跟随长期记忆写入自动刷新；Session 候选和未确认假设不应触发派生报告更新。
 - P0 级边界收敛应优先移除与 Codex/Git 重合的自动化动作，再优化用户可见体验。
+- Memory View 的价值不在于包装读取单个 Markdown 文件，而在于把 Charter、ADR、Status、Roadmap、Session 和 drift signals 组合成可判断的记忆健康视图。

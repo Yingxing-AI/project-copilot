@@ -3,6 +3,7 @@ import unittest
 import subprocess
 from pathlib import Path
 
+from project_copilot.memory import MemoryStore
 from project_copilot.planner import run_workflow
 
 
@@ -25,7 +26,7 @@ class WorkflowTest(unittest.TestCase):
             self.assertTrue((tmp_path / ".ai" / "adr" / "index.md").exists())
             self.assertTrue((tmp_path / ".ai" / "sessions" / "current.md").exists())
             self.assertTrue((tmp_path / ".ai" / "KNOWLEDGE.md").exists())
-            self.assertTrue((tmp_path / ".ai" / "metrics.md").exists())
+            self.assertTrue((tmp_path / ".ai" / "derived").is_dir())
             self.assertTrue((tmp_path / ".ai" / "history").is_dir())
             self.assertIn("完成首次方案驱动项目档案初始化。", (tmp_path / ".ai" / "MEMORY.md").read_text(encoding="utf-8"))
             self.assertNotIn(proposal, (tmp_path / ".ai" / "MEMORY.md").read_text(encoding="utf-8"))
@@ -42,14 +43,15 @@ class WorkflowTest(unittest.TestCase):
             self.assertTrue((tmp_path / ".ai" / "PROJECT_CONTEXT.md").exists())
             self.assertFalse((nested / ".ai").exists())
 
-    def test_check_project_reports_health_score(self) -> None:
+    def test_check_project_reports_memory_health(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             tmp_path = Path(directory)
             run_workflow(tmp_path, "初始化项目")
             result = run_workflow(tmp_path, "检查项目")
 
-            self.assertIn("项目健康度", result)
-            self.assertIn("当前阶段", result)
+            self.assertIn("Memory Health Summary", result)
+            self.assertIn("记忆层状态", result)
+            self.assertIn("Project Charter", result)
             self.assertIn("下一步建议", result)
 
     def test_adopt_existing_project_does_not_overwrite_existing_files(self) -> None:
@@ -78,11 +80,14 @@ class WorkflowTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             tmp_path = Path(directory)
             run_workflow(tmp_path, "初始化项目")
+            memory = MemoryStore(tmp_path)
+            memory.append_session_candidate("Milestone Candidate", "今天完成 Session Archive 链路。")
             result = run_workflow(tmp_path, "今天结束工作")
 
-            self.assertIn("已进入收工确认", result)
-            self.assertIn("候选事件", result)
-            self.assertIn("Session Memory", result)
+            self.assertIn("已生成 Session Archive", result)
+            self.assertIn("Session Archive", result)
+            self.assertTrue(list((tmp_path / ".ai" / "sessions" / "archive").rglob("*.md")))
+            self.assertTrue((tmp_path / ".ai" / "sessions" / "current.md").exists())
 
     def test_secretary_review_timeline_decision_and_drift_check(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -102,12 +107,13 @@ class WorkflowTest(unittest.TestCase):
             self.assertIn("项目健康度", review)
             self.assertFalse((tmp_path / ".ai" / "history" / "2026-06.md").exists())
             self.assertEqual(before_memory, (tmp_path / ".ai" / "MEMORY.md").read_text(encoding="utf-8"))
-            self.assertIn("项目时间轴", timeline)
-            self.assertIn("最近里程碑：", timeline)
-            self.assertIn("近期工作：", timeline)
-            self.assertIn("关键决策：", timeline)
+            self.assertIn("项目决策与里程碑时间轴", timeline)
+            self.assertIn("ADR 决策：", timeline)
+            self.assertIn("里程碑归档：", timeline)
+            self.assertIn("Session Archive：", timeline)
             self.assertIn("可能不在 MVP 范围内", drift)
-            self.assertIn("项目路线图", roadmap)
+            self.assertIn("Memory Health Summary", roadmap)
+            self.assertIn("Roadmap 派生视图", roadmap)
 
     def test_review_project_limits_key_decisions_to_recent_three(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

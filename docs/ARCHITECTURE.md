@@ -39,7 +39,7 @@ The classifier returns a standard intent name such as:
 - `timeline_project`
 - `drift_check`
 - `record_decision`
-- `show_roadmap`
+- `show_roadmap` compatibility alias to `check_project`
 - `export_validation_snapshot`
 - `refresh_validation_report`
 - `unknown`
@@ -64,7 +64,8 @@ Current files:
 - `sessions/archive/`: confirmed major session summaries
 - `WORKLOG.md`: legacy worklog compatibility
 - `KNOWLEDGE.md`: long-term practices, product learning, and feedback
-- `metrics.md`: auxiliary derived snapshot
+- `derived/metrics.json`: generated memory metrics
+- `metrics.md`: legacy metrics snapshot, not created for new projects
 - `validation.json`: validation data derived from `.ai`
 - `history/`: monthly review archives
 
@@ -103,16 +104,18 @@ The write model is intentionally conservative:
 
 - Creates and reads the core `.ai/` project memory files.
 - Creates ADR and Session Memory directories.
+- Computes Memory Health from `.ai` structure and drift signals.
 
 `project_copilot/analyzer/`
 
 - Inspects project files and Git state.
-- Produces project health, risks, missing files, and next steps.
+- Legacy compatibility helper for workflows that still need local project file inspection.
 
 `project_copilot/validation/`
 
 - Collects validation snapshots from real `.ai` files.
 - Refreshes validation reports from derived data.
+- Writes generated `.ai/derived/metrics.json`.
 
 `project_copilot/gitops/`
 

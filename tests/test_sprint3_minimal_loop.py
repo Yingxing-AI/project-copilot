@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from project_copilot.memory import MemoryStore
 from project_copilot.intent import classify_intent_name
 from project_copilot.workflow import run_structured_workflow
 
@@ -17,7 +18,7 @@ def test_init_project_workflow(tmp_path: Path) -> None:
     assert (tmp_path / ".ai" / "DECISIONS.md").exists()
     assert (tmp_path / ".ai" / "WORKLOG.md").exists()
     assert (tmp_path / ".ai" / "KNOWLEDGE.md").exists()
-    assert (tmp_path / ".ai" / "metrics.md").exists()
+    assert (tmp_path / ".ai" / "derived").is_dir()
     assert (tmp_path / ".ai" / "adr" / "index.md").exists()
     assert (tmp_path / ".ai" / "sessions" / "current.md").exists()
     assert (tmp_path / ".ai" / "history").is_dir()
@@ -30,9 +31,9 @@ def test_check_project_workflow(tmp_path: Path) -> None:
 
     assert result.intent_name == "check_project"
     assert result.status == "success"
-    assert "项目健康度" in result.summary
-    assert result.details["当前阶段"]
-    assert "当前风险" in result.details
+    assert "记忆层状态" in result.summary
+    assert result.details["Project Charter"]
+    assert "记忆漂移" in result.details
     assert result.next_steps
 
 
@@ -66,15 +67,25 @@ def test_continue_development_does_not_create_memory_layer(tmp_path: Path) -> No
 
 def test_close_day_workflow(tmp_path: Path) -> None:
     run_structured_workflow(tmp_path, "初始化项目")
+    memory = MemoryStore(tmp_path)
+    memory.append_session_candidate("ADR Candidate", "今天确认先做简历导入。")
+    memory.append_session_candidate("Risk Candidate", "当前存在范围膨胀风险。")
+    before_worklog = (tmp_path / ".ai" / "WORKLOG.md").read_text(encoding="utf-8")
 
     result = run_structured_workflow(tmp_path, "今天结束工作")
 
     assert result.intent_name == "close_day"
-    assert result.status == "needs_input"
-    assert (tmp_path / ".ai" / "STATUS.md").exists()
-    assert (tmp_path / ".ai" / "WORKLOG.md").exists()
-    assert "Session Memory" in result.summary
-    assert "候选事件" in result.details
+    assert result.status == "success"
+    assert "Session Archive" in result.title
+    archive_files = list((tmp_path / ".ai" / "sessions" / "archive").rglob("*.md"))
+    assert archive_files
+    archive_text = archive_files[0].read_text(encoding="utf-8")
+    assert "今天确认先做简历导入" in archive_text
+    assert "当前存在范围膨胀风险" in archive_text
+    current_text = (tmp_path / ".ai" / "sessions" / "current.md").read_text(encoding="utf-8")
+    assert current_text.strip().startswith("# Current Session")
+    assert "今天确认先做简历导入" not in current_text
+    assert before_worklog == (tmp_path / ".ai" / "WORKLOG.md").read_text(encoding="utf-8")
 
 
 def test_record_decision_routes_uncertain_input_to_hypotheses(tmp_path: Path) -> None:

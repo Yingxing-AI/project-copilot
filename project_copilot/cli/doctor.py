@@ -19,7 +19,7 @@ def render_doctor(root: Path) -> str:
         "WORKLOG.md",
         "KNOWLEDGE.md",
     ]
-    auxiliary_files = ["metrics.md"]
+    auxiliary_files = ["derived/metrics.json", "metrics.md"]
     existing_core = [name for name in core_memory_files if (ai_dir / name).exists()]
     existing_auxiliary = [name for name in auxiliary_files if (ai_dir / name).exists()]
 

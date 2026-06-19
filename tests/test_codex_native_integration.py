@@ -93,9 +93,9 @@ def test_ai_memory_structure(tmp_path: Path) -> None:
         "DECISIONS.md",
         "WORKLOG.md",
         "KNOWLEDGE.md",
-        "metrics.md",
     ):
         assert (ai_dir / name).exists()
+    assert (ai_dir / "derived").is_dir()
     assert (ai_dir / "history").is_dir()
     assert (ai_dir / "adr" / "index.md").exists()
     assert (ai_dir / "sessions" / "current.md").exists()

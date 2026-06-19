@@ -7,3 +7,4 @@
 - [ADR 0003: 将决策记录升级为 ADR 体系](0003-adr-first-decisions.md)
 - [ADR 0004: 验证报告跟随长期记忆写入自动刷新](0004-validation-refresh-policy.md)
 - [ADR 0005: 执行 P0 记忆架构收敛](0005-p0-memory-architecture-review.md)
+- [ADR 0006: 收敛 Memory View 工作流](0006-memory-view-convergence.md)

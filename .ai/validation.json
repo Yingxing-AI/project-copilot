@@ -1,13 +1,19 @@
 {
   "project_name": "Project Copilot",
-  "started_at": "2026-06-18",
+  "started_at": "2026-06-19",
   "status": "可持续开发",
-  "usage_days": 1,
+  "usage_days": 0,
   "worklog_count": 4,
-  "decision_count": 5,
-  "knowledge_count": 28,
-  "project_health": 92,
+  "decision_count": 6,
+  "knowledge_count": 29,
+  "adr_count": 6,
+  "session_archive_count": 1,
+  "active_candidate_count": 0,
+  "charter_present": true,
+  "roadmap_present": true,
+  "memory_health_status": "需要收敛记忆漂移",
+  "project_health": null,
   "roadmap_state": null,
   "source": "auto_collected_from_ai",
-  "updated_at": "2026-06-19T18:42:13"
+  "updated_at": "2026-06-19T19:29:31"
 }

@@ -70,6 +70,7 @@ Project Copilot generates:
 
 `.ai/` contains:
 
+- `PROJECT_CHARTER.md`
 - `PROJECT_CONTEXT.md`
 - `STATUS.md`
 - `ROADMAP.md`
@@ -81,7 +82,8 @@ Project Copilot generates:
 - `sessions/archive/`
 - `WORKLOG.md`
 - `KNOWLEDGE.md`
-- `metrics.md` 作为辅助快照，不作为事实源
+- `derived/metrics.json` 作为自动派生指标
+- `metrics.md` 仅作为旧版兼容快照，不再为新项目主动创建
 - `history/`
 
 ## Codex Daily Use

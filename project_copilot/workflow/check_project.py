@@ -1,32 +1,26 @@
 from __future__ import annotations
 
-from project_copilot.secretary import inspect_secretary_status
+from project_copilot.memory.health import inspect_memory_health
 from project_copilot.workflow.types import WorkflowContext, WorkflowResult
 
 
 def run(context: WorkflowContext) -> WorkflowResult:
-    secretary_status = inspect_secretary_status(context.root)
-    analysis = secretary_status.analysis
+    health = inspect_memory_health(context.root)
     return WorkflowResult(
         intent_name=context.intent_name,
         status="success",
-        title="项目状态卡片",
-        summary=f"项目健康度：{analysis.health_score}/100",
+        title="Memory Health Summary",
+        summary=f"记忆层状态：{health.status}",
         details={
-            "当前阶段": analysis.stage,
-            "距离上次复盘": _format_days(secretary_status.days_since_review),
-            "路线图更新": _format_days(secretary_status.days_since_roadmap_update),
-            "待补齐项目档案": analysis.missing,
-            "当前风险": analysis.risks,
-            "提醒": secretary_status.reminders,
+            "Project Charter": "存在" if health.charter_present else "缺失",
+            "ADR 数": health.adr_count,
+            "当前 STATUS": "存在" if health.status_present else "缺失",
+            "Roadmap": "存在" if health.roadmap_present else "缺失",
+            "Session Archive 数": health.session_archive_count,
+            "Active Candidates 数": health.active_candidate_count,
+            "Roadmap 派生视图": health.roadmap_items,
+            "缺失项": health.missing,
+            "记忆漂移": health.drift_signals or ["未发现明显记忆漂移。"],
         },
-        next_steps=analysis.next_steps,
+        next_steps=health.next_steps,
     )
-
-
-def _format_days(days: int | None) -> str:
-    if days is None:
-        return "暂无记录"
-    if days == 0:
-        return "今天"
-    return f"{days}天"

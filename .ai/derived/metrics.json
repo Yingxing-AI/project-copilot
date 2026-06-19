@@ -1,0 +1,12 @@
+{
+  "project_name": "Project Copilot",
+  "usage_days": 0,
+  "adr_count": 6,
+  "session_archive_count": 1,
+  "active_candidate_count": 0,
+  "charter_present": true,
+  "roadmap_present": true,
+  "memory_health_status": "需要收敛记忆漂移",
+  "updated_at": "2026-06-19T19:29:31",
+  "source": "derived_from_validation_snapshot"
+}

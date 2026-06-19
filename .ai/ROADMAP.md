@@ -21,6 +21,10 @@ Project Copilot is the project memory layer for Codex.
 
 ## v0.4 Memory Quality
 
+- [x] Converge `check_project` into Memory Health Summary
+- [x] Merge `show_roadmap` into `check_project` as a compatibility alias
+- [x] Rebuild `timeline_project` around ADR, history, and Session Archive
+- [x] Generate derived memory metrics in `.ai/derived/metrics.json`
 - [ ] Migrate important historical `DECISIONS.md` entries into ADR files
 - [ ] Reduce `ROADMAP.md`, `WORKLOG.md`, and `MEMORY.md` noise in generated templates
 - [ ] Improve session candidate extraction rules

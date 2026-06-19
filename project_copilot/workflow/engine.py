@@ -14,7 +14,6 @@ from project_copilot.workflow.init_project import run as init_project
 from project_copilot.workflow.record_decision import run as record_decision
 from project_copilot.workflow.refresh_validation_report import run as refresh_validation_report
 from project_copilot.workflow.review_project import run as review_project
-from project_copilot.workflow.show_roadmap import run as show_roadmap
 from project_copilot.workflow.sync_project_state import run as sync_project_state
 from project_copilot.workflow.timeline_project import run as timeline_project
 from project_copilot.workflow.root import resolve_project_root
@@ -38,7 +37,7 @@ class WorkflowEngine:
         self.register("export_validation_snapshot", export_validation_snapshot)
         self.register("drift_check", drift_check)
         self.register("record_decision", record_decision)
-        self.register("show_roadmap", show_roadmap)
+        self.register("show_roadmap", check_project)
 
     def register(self, intent_name: str, handler: WorkflowHandler) -> None:
         self._registry[intent_name] = handler

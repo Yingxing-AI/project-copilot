@@ -1,5 +1,7 @@
 # Worklog
 
+说明：legacy worklog compatibility。Session Memory 模式下，普通开发流水不再自动写入；重要会话摘要归档到 `.ai/sessions/archive/`，本文件不再作为核心活跃层。
+
 ## 2026-06-16 15:41
 
 - 已执行收工流程并更新项目状态。
@@ -216,3 +218,10 @@
 - 完成内容：完成 P0 架构收敛：新增 `PROJECT_CHARTER.md`，移除初始化时自动 Git 初始化，`record_decision` 改为 ADR-first，未确认决策进入 Session 候选，`review_project` 改为只读预览，`sync_project_state` 降级为只刷新 validation 派生数据。
 - 遇到问题：旧测试和旧解析逻辑默认复盘会写 `history/`、决策只从 `DECISIONS.md` 按旧块格式读取、默认 Charter 的“待确认”会覆盖旧 `PROJECT_CONTEXT.md` 项目名。
 - 明日计划：继续推进 P1：弱化 `show_roadmap`、将 `timeline_project` 改为 ADR/history/session 派生视图，并把 `check_project` 收敛为 Memory Health。
+
+## 2026-06-19 P1 Memory View
+
+- 日期：2026-06-19
+- 完成内容：将 `check_project` 改为 Memory Health Summary；删除独立 `show_roadmap` workflow 并保留兼容别名；将 `timeline_project` 改为 ADR、history 和 Session Archive 派生视图；新增 `.ai/derived/metrics.json` 自动派生指标；增强 validation 记忆质量字段。
+- 遇到问题：旧项目的 `HYPOTHESES.md`、`WORKLOG.md` 和 `metrics.md` 仍会触发记忆漂移信号，不能直接删除，需要后续迁移策略。
+- 明日计划：等待 P1 验收确认；如确认通过，再提交并进入后续 Session Archive/legacy 迁移设计。

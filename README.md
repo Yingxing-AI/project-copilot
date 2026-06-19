@@ -124,7 +124,8 @@ Project Copilot uses a read-once, write-once memory rhythm:
 - `sessions/archive/`: confirmed major session summaries
 - `WORKLOG.md`: legacy worklog compatibility only
 - `KNOWLEDGE.md`: long-term practices, product learning, and feedback
-- `metrics.md`: auxiliary derived snapshot
+- `derived/metrics.json`: generated memory metrics
+- `metrics.md`: legacy metrics snapshot, not created for new projects
 - `validation.json`: validation data derived from `.ai`
 
 ## Primary Flow
@@ -172,6 +173,7 @@ project-copilot 刷新验证报告
 ```
 
 Validation focuses on whether project memory remains readable, maintainable, and useful after time passes.
+It tracks memory quality signals such as Charter presence, ADR count, Session Archive count, active candidates, Roadmap presence, and memory drift.
 
 ## Compatibility
 
