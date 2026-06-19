@@ -91,7 +91,7 @@ def _run_onboarding(
     output_func: Callable[[str], None],
 ) -> None:
     output_func("我会先分析你给出的完整项目方案，再只追问缺失项。")
-    output_func("请尽量一次性贴出项目使命、目标用户、商业目标、MVP 范围、技术栈、当前阶段、初始 Roadmap 和初始 Decisions。")
+    output_func("请尽量一次性贴出项目使命、目标用户、商业目标、MVP 范围、技术栈、当前阶段、初始 Roadmap 和初始 Decisions/ADR。")
     proposal_text = input_func("请直接输入完整项目方案：\n> ").strip()
     proposal = parse_project_proposal(proposal_text, root.name)
     while proposal.missing_fields:
@@ -106,7 +106,7 @@ def _run_onboarding(
     memory.ensure()
     _write_initial_memory(memory, proposal)
     memory.append_memory("完成首次方案驱动项目档案。")
-    output_func("已生成 PROJECT_CONTEXT.md、STATUS.md、HYPOTHESES.md、ROADMAP.md 和 DECISIONS.md。")
+    output_func("已生成 PROJECT_CHARTER.md、PROJECT_CONTEXT.md、STATUS.md、ROADMAP.md、DECISIONS.md、adr/ 和 sessions/。")
     if proposal.missing_fields:
         output_func(f"仍有待补充信息：{'、'.join(proposal.missing_fields)}")
 

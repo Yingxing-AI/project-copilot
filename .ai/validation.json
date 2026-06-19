@@ -2,12 +2,12 @@
   "project_name": "Project Copilot",
   "started_at": "2026-06-18",
   "status": "可持续开发",
-  "usage_days": 0,
+  "usage_days": 1,
   "worklog_count": 4,
-  "decision_count": 9,
-  "knowledge_count": 23,
+  "decision_count": 5,
+  "knowledge_count": 28,
   "project_health": 92,
   "roadmap_state": null,
   "source": "auto_collected_from_ai",
-  "updated_at": "2026-06-18T20:48:43"
+  "updated_at": "2026-06-19T18:42:13"
 }

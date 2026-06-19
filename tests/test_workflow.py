@@ -18,9 +18,12 @@ class WorkflowTest(unittest.TestCase):
             self.assertTrue((tmp_path / "LICENSE").exists())
             self.assertTrue((tmp_path / "AGENTS.md").exists())
             self.assertTrue((tmp_path / "docs").is_dir())
+            self.assertTrue((tmp_path / ".ai" / "PROJECT_CHARTER.md").exists())
             self.assertTrue((tmp_path / ".ai" / "PROJECT_CONTEXT.md").exists())
             self.assertTrue((tmp_path / ".ai" / "MEMORY.md").exists())
             self.assertTrue((tmp_path / ".ai" / "HYPOTHESES.md").exists())
+            self.assertTrue((tmp_path / ".ai" / "adr" / "index.md").exists())
+            self.assertTrue((tmp_path / ".ai" / "sessions" / "current.md").exists())
             self.assertTrue((tmp_path / ".ai" / "KNOWLEDGE.md").exists())
             self.assertTrue((tmp_path / ".ai" / "metrics.md").exists())
             self.assertTrue((tmp_path / ".ai" / "history").is_dir())
@@ -62,6 +65,7 @@ class WorkflowTest(unittest.TestCase):
             self.assertIn("已接管已有项目", result)
             self.assertIn("Node.js", result)
             self.assertEqual(readme.read_text(encoding="utf-8"), "# Existing App\n")
+            self.assertTrue((tmp_path / ".ai" / "PROJECT_CHARTER.md").exists())
             self.assertTrue((tmp_path / ".ai" / "PROJECT_CONTEXT.md").exists())
             self.assertIn(
                 "package.json",
@@ -70,23 +74,15 @@ class WorkflowTest(unittest.TestCase):
             self.assertIn("完成已有项目接管。", (tmp_path / ".ai" / "MEMORY.md").read_text(encoding="utf-8"))
             self.assertNotIn("接管这个已有项目", (tmp_path / ".ai" / "MEMORY.md").read_text(encoding="utf-8"))
 
-    def test_oss_readiness_reports_missing_items(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
-            tmp_path = Path(directory)
-            run_workflow(tmp_path, "初始化项目")
-            result = run_workflow(tmp_path, "检查 OSS 准备度")
-
-            self.assertIn("OSS Readiness Score", result)
-            self.assertIn("缺失", result)
-
     def test_end_work_updates_status(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             tmp_path = Path(directory)
             run_workflow(tmp_path, "初始化项目")
             result = run_workflow(tmp_path, "今天结束工作")
 
-            self.assertIn("已更新项目状态", result)
-            self.assertIn("更新日期", (tmp_path / ".ai" / "STATUS.md").read_text(encoding="utf-8"))
+            self.assertIn("已进入收工确认", result)
+            self.assertIn("候选事件", result)
+            self.assertIn("Session Memory", result)
 
     def test_secretary_review_timeline_decision_and_drift_check(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -100,13 +96,11 @@ class WorkflowTest(unittest.TestCase):
             drift = run_workflow(tmp_path, "项目偏航检查 新增商城模块")
             roadmap = run_workflow(tmp_path, "查看路线图")
 
-            self.assertIn("已记录决策", decision)
+            self.assertIn("已记录 ADR", decision)
             self.assertIn("MVP 先做简历导入", (tmp_path / ".ai" / "DECISIONS.md").read_text(encoding="utf-8"))
+            self.assertIn("MVP 先做简历导入", (tmp_path / ".ai" / "adr" / "index.md").read_text(encoding="utf-8"))
             self.assertIn("项目健康度", review)
-            self.assertTrue((tmp_path / ".ai" / "history" / "2026-06.md").exists())
-            self.assertIn("# History 2026-06", (tmp_path / ".ai" / "history" / "2026-06.md").read_text(encoding="utf-8"))
-            self.assertIn("项目健康度：", (tmp_path / ".ai" / "history" / "2026-06.md").read_text(encoding="utf-8"))
-            self.assertIn("下一步：", (tmp_path / ".ai" / "history" / "2026-06.md").read_text(encoding="utf-8"))
+            self.assertFalse((tmp_path / ".ai" / "history" / "2026-06.md").exists())
             self.assertEqual(before_memory, (tmp_path / ".ai" / "MEMORY.md").read_text(encoding="utf-8"))
             self.assertIn("项目时间轴", timeline)
             self.assertIn("最近里程碑：", timeline)
@@ -142,5 +136,5 @@ class WorkflowTest(unittest.TestCase):
             result = run_workflow(tmp_path, "记录决策 可能先做简历导入")
 
             self.assertIn("假设", result)
-            self.assertIn("可能先做简历导入", (tmp_path / ".ai" / "HYPOTHESES.md").read_text(encoding="utf-8"))
+            self.assertIn("可能先做简历导入", (tmp_path / ".ai" / "sessions" / "current.md").read_text(encoding="utf-8"))
             self.assertNotIn("可能先做简历导入", (tmp_path / ".ai" / "DECISIONS.md").read_text(encoding="utf-8"))

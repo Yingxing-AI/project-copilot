@@ -108,6 +108,34 @@ def build_project_context(project_name: str, proposal: ProjectProposal) -> str:
     )
 
 
+def build_project_charter(project_name: str, proposal: ProjectProposal) -> str:
+    today = datetime.now().strftime("%Y-%m-%d")
+    return "\n".join(
+        [
+            "# Project Charter",
+            "",
+            f"项目名称：{project_name}",
+            "",
+            f"项目使命：{_or_placeholder(proposal.mission)}",
+            "",
+            f"目标用户：{_or_placeholder(proposal.target_users)}",
+            "",
+            f"商业目标：{_or_placeholder(proposal.business_goal)}",
+            "",
+            f"MVP 范围：{_or_placeholder(proposal.mvp_scope)}",
+            "",
+            "非目标：待确认。",
+            "",
+            f"技术栈：{_or_placeholder(proposal.tech_stack)}",
+            "",
+            "说明：这里记录长期稳定边界，极少修改；不要写临时状态。",
+            "",
+            f"创建日期：{today}",
+            "",
+        ]
+    )
+
+
 def build_status(project_name: str, proposal: ProjectProposal) -> str:
     focus = proposal.mvp_scope or "完善项目方案"
     risks = _compact_risk_list(proposal.missing_fields)

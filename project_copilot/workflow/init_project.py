@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from project_copilot.gitops import init_git_if_needed
 from project_copilot.memory import MemoryStore
 from project_copilot.workflow.codex_native import ensure_codex_native_files
 from project_copilot.workflow.project_proposal import (
     ProjectProposal,
+    build_project_charter,
     build_decisions,
     build_project_context,
     build_roadmap,
@@ -22,7 +22,7 @@ def run(context: WorkflowContext) -> WorkflowResult:
     memory = MemoryStore(root)
     created: list[str] = []
     defaults = {
-        "README.md": "# Project\n\n由 Codex 负责开发，由 Project Copilot 记录项目历史和关键决策。\n",
+        "README.md": "# Project\n\n由 Codex 负责开发，由 Git 负责版本管理，由 Project Copilot 记录项目记忆和关键决策原因。\n",
         "LICENSE": "MIT License\n\nCopyright (c) 2026 Project Copilot Contributors\n",
     }
     for name, content in defaults.items():
@@ -40,7 +40,6 @@ def run(context: WorkflowContext) -> WorkflowResult:
     created.extend(str(path.relative_to(root)) for path in ensure_codex_native_files(root))
     proposal = parse_project_proposal(context.text, root.name)
     created.extend(_write_initial_memory(memory, proposal))
-    git_initialized = init_git_if_needed(root)
     memory.append_memory("完成首次方案驱动项目档案初始化。")
     validation_report_path, _ = refresh_validation_report_file(root)
 
@@ -60,7 +59,6 @@ def run(context: WorkflowContext) -> WorkflowResult:
         details={
             "创建文件": created,
             "验证汇总": str(validation_report_path.relative_to(root)) if validation_report_path.is_relative_to(root) else str(validation_report_path),
-            "保存进度记录": "已建立" if git_initialized else "已存在或暂不可用",
             "已识别项目使命": proposal.mission or "未识别",
             "已识别目标用户": proposal.target_users or "未识别",
             "已识别商业目标": proposal.business_goal or "未识别",
@@ -76,15 +74,18 @@ def run(context: WorkflowContext) -> WorkflowResult:
 
 
 def _write_initial_memory(memory: MemoryStore, proposal: ProjectProposal) -> list[str]:
+    charter_path = memory.ai_dir / "PROJECT_CHARTER.md"
     context_path = memory.ai_dir / "PROJECT_CONTEXT.md"
     status_path = memory.ai_dir / "STATUS.md"
     roadmap_path = memory.ai_dir / "ROADMAP.md"
     decisions_path = memory.ai_dir / "DECISIONS.md"
+    charter_path.write_text(build_project_charter(memory.root.name, proposal), encoding="utf-8")
     context_path.write_text(build_project_context(memory.root.name, proposal), encoding="utf-8")
     status_path.write_text(build_status(memory.root.name, proposal), encoding="utf-8")
     roadmap_path.write_text(build_roadmap(proposal), encoding="utf-8")
     decisions_path.write_text(build_decisions(proposal), encoding="utf-8")
     return [
+        ".ai/PROJECT_CHARTER.md",
         ".ai/PROJECT_CONTEXT.md",
         ".ai/STATUS.md",
         ".ai/ROADMAP.md",

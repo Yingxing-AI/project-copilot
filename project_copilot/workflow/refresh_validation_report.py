@@ -16,5 +16,5 @@ def run(context: WorkflowContext) -> WorkflowResult:
             "项目数量": len(records),
             "数据源": [record.project_name for record in records],
         },
-        next_steps=["如果有新的项目记忆变更，系统会自动刷新；也可以手动重新运行“刷新验证报告”。"],
+        next_steps=["通常不需要手动刷新；长期记忆或验证快照写入后会自动刷新。"],
     )

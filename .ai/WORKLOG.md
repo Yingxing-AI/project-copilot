@@ -195,3 +195,24 @@
 - 完成内容：同步 beta 发布后的项目状态，更新最新提交、最新标签和测试基线；补齐 `docs/OSS_READINESS.md`、`docs/CODEX_FOR_OPEN_SOURCE.md`、`README.md`、`.ai/ROADMAP.md` 和 `.ai/metrics.md` 的版本口径；启用 `.ai/HYPOTHESES.md` 作为未确认内容缓冲层；给发布流程补上发布后同步步骤。
 - 遇到问题：`STATUS.md` 和 `metrics.md` 在发布后仍停留在 alpha.9 / 58 passed，说明发布流程只做了发布前同步，状态层会漂移；`HYPOTHESES.md` 之前长期空置，未确认内容缺少落点。
 - 明日计划：继续观察 post-release sync 是否能稳定消除状态漂移，并把 dashboard 接入后形成的真实验证结论写回案例与验证报告。
+
+## 2026-06-19 Direction Convergence
+
+- 日期：2026-06-19
+- 完成内容：确认 Project Copilot 收敛为 Codex 项目记忆层，停止 GitHub sync、release、OSS 准备等执行型工作流方向；新增 `.ai/adr/` 和 `.ai/sessions/`，将新决策优先写入 ADR，并把结束工作调整为 Session Memory 候选确认。
+- 遇到问题：历史文档、测试和状态生成器中仍有 command system、GitHub/release/OSS workflow、WORKLOG 自动扩写等旧叙事，需要同步清理。
+- 明日计划：继续观察 Session Memory 的实际使用效果，并按真实项目 `.ai` 自动生成验证数据。
+
+## 2026-06-19 Validation Refresh Policy
+
+- 日期：2026-06-19
+- 完成内容：统一验证刷新策略，明确长期记忆写入和验证快照导出后自动刷新报告，Session 候选、未确认假设和普通开发流水不触发刷新。
+- 遇到问题：`export_validation_snapshot` 之前只写 `.ai/validation.json`，不会同步刷新 `docs/validation-report.md`，容易让用户误以为每次都要手动刷新。
+- 明日计划：继续观察自动刷新触发点是否覆盖所有长期记忆写入入口。
+
+## 2026-06-19 P0 Memory Architecture Review
+
+- 日期：2026-06-19
+- 完成内容：完成 P0 架构收敛：新增 `PROJECT_CHARTER.md`，移除初始化时自动 Git 初始化，`record_decision` 改为 ADR-first，未确认决策进入 Session 候选，`review_project` 改为只读预览，`sync_project_state` 降级为只刷新 validation 派生数据。
+- 遇到问题：旧测试和旧解析逻辑默认复盘会写 `history/`、决策只从 `DECISIONS.md` 按旧块格式读取、默认 Charter 的“待确认”会覆盖旧 `PROJECT_CONTEXT.md` 项目名。
+- 明日计划：继续推进 P1：弱化 `show_roadmap`、将 `timeline_project` 改为 ADR/history/session 派生视图，并把 `check_project` 收敛为 Memory Health。

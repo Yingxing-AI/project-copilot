@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from datetime import datetime
-
 from project_copilot.memory import MemoryStore
 from project_copilot.secretary import inspect_secretary_status
 from project_copilot.workflow.types import WorkflowContext, WorkflowResult
@@ -34,27 +32,13 @@ def run(context: WorkflowContext) -> WorkflowResult:
             *[f"- {item}" for item in decisions],
         ]
     )
-    _archive_review(memory, summary)
     return WorkflowResult(
         intent_name=context.intent_name,
         status="success",
         title="项目复盘",
         summary=summary,
-        next_steps=["根据风险更新路线图。", "把重要取舍用“记录决策 ...”保存下来。"],
+        next_steps=["这是只读复盘预览；需要归档时，请在收工确认中把它作为重大会话摘要写入。", "重要取舍应通过“记录决策 ...”进入 ADR。"],
     )
-
-
-def _archive_review(memory: MemoryStore, summary: str) -> None:
-    now = datetime.now()
-    stamp = now.strftime("%Y-%m-%d-%H%M")
-    month = now.strftime("%Y-%m")
-    path = memory.ai_dir / "history" / f"{month}.md"
-    entry = f"## {stamp}\n\n{summary}\n"
-    if path.exists():
-        existing = path.read_text(encoding="utf-8").rstrip()
-        path.write_text(f"{existing}\n\n{entry}", encoding="utf-8")
-    else:
-        path.write_text(f"# History {month}\n\n{entry}", encoding="utf-8")
 
 
 def _recent_decisions(text: str, limit: int) -> list[str]:
@@ -71,13 +55,16 @@ def _recent_decisions(text: str, limit: int) -> list[str]:
             if stripped.startswith("- 决策："):
                 decision = stripped.removeprefix("- 决策：").strip()
                 break
+            if stripped.startswith("决策："):
+                decision = stripped.removeprefix("决策：").strip()
+                break
         if decision:
             blocks.append(decision)
         current = []
 
     for line in text.splitlines():
         stripped = line.strip()
-        if stripped.startswith("## "):
+        if stripped.startswith("## ") or stripped.startswith("日期："):
             flush()
             current = [line]
             continue

@@ -48,7 +48,7 @@ def test_init_generates_codex_workflow_doc(tmp_path: Path) -> None:
     text = workflow_doc.read_text(encoding="utf-8")
     assert "# Project Copilot 与 Codex" in text
     assert "Git 记录代码历史。" in text
-    assert "Project Copilot 记录项目历史。" in text
+    assert "Project Copilot 记录为什么。" in text
     assert "为什么需要 Project Copilot" in text
     assert "推荐工作流" in text
     assert "codex" in text
@@ -84,6 +84,7 @@ def test_ai_memory_structure(tmp_path: Path) -> None:
 
     ai_dir = tmp_path / ".ai"
     for name in (
+        "PROJECT_CHARTER.md",
         "PROJECT_CONTEXT.md",
         "STATUS.md",
         "HYPOTHESES.md",
@@ -96,6 +97,8 @@ def test_ai_memory_structure(tmp_path: Path) -> None:
     ):
         assert (ai_dir / name).exists()
     assert (ai_dir / "history").is_dir()
+    assert (ai_dir / "adr" / "index.md").exists()
+    assert (ai_dir / "sessions" / "current.md").exists()
 
     context = (ai_dir / "PROJECT_CONTEXT.md").read_text(encoding="utf-8")
     assert "项目使命：" in context
@@ -114,19 +117,17 @@ def test_agents_md_contains_codex_rules(tmp_path: Path) -> None:
     assert "必须优先阻止偏离，而不是继续实现功能。" in text
     assert "你负责开发。" in text
     assert "同时你必须维护 `.ai` 分层项目记忆" in text
-    assert "阅读 `.ai/PROJECT_CONTEXT.md`" in text
-    assert "更新 `.ai/STATUS.md`" in text
-    assert "追加 `.ai/WORKLOG.md`" in text
+    assert "阅读 `.ai/PROJECT_CHARTER.md`" in text
+    assert "如果旧项目没有 Charter，再读取 `.ai/PROJECT_CONTEXT.md`" in text
+    assert "阅读 `.ai/adr/index.md`" in text
+    assert "不自动追加 `.ai/WORKLOG.md`" in text
     assert "不要覆盖历史决策" in text
     assert "不要未经用户确认扩大 MVP 范围" in text
     assert "当前请求是否符合项目使命" in text
     assert "当前请求是否符合目标用户" in text
     assert "当前请求是否符合 MVP" in text
-    assert "`commit` = 保存进度" in text
-    assert "`push` = 备份到云端" in text
-    assert "`release` = 发布版本" in text
-    assert "`tag` = 版本标记" in text
-    assert "HYPOTHESES.md" in text
+    assert "`commit`、`push`、`release`、`tag` 都属于 Codex/Git 工作" in text
+    assert "sessions/current.md" in text
 
 
 def test_agents_md_contains_guardrail_triggers(tmp_path: Path) -> None:
@@ -141,7 +142,7 @@ def test_agents_md_contains_guardrail_triggers(tmp_path: Path) -> None:
     assert "在用户选择之前，禁止直接实现。" in text
     assert "当前目标用户是谁" in text
     assert "当前需求是否匹配该用户" in text
-    assert "引用 `.ai/DECISIONS.md` 中的相关决策" in text
+    assert "引用 `.ai/adr/` 或 `.ai/DECISIONS.md` 中的相关决策" in text
     assert "请求用户确认是否推翻旧决策" in text
 
 
@@ -165,21 +166,20 @@ def test_agents_md_contains_memory_write_rules(tmp_path: Path) -> None:
     assert "开源项目启发" in text
     assert "用户反馈总结" in text
     assert "产品认知提升" in text
-    assert "HYPOTHESES.md" in text
+    assert "Session 候选规则" in text
     assert "禁止写入：" in text
     assert "代码实现细节" in text
     assert "临时调试经验" in text
-    assert "每次开发完成后必须按时间顺序追加 `.ai/WORKLOG.md`" in text
-    assert "完成内容" in text
-    assert "遇到问题" in text
-    assert "明日计划" in text
+    assert "`WORKLOG.md` 只保留旧版兼容和重大会话摘要" in text
+    assert "普通代码修改" in text
+    assert "小型 Bug 修复" in text
 
 
 def test_agents_md_contains_review_triggers_and_no_fuzzy_words(tmp_path: Path) -> None:
     run_structured_workflow(tmp_path, "init")
 
     text = (tmp_path / "AGENTS.md").read_text(encoding="utf-8")
-    assert "连续 7 天未更新" in text
+    assert "连续 7 天没有重大会话摘要" in text
     assert "建议进行项目复盘" in text
     assert "连续 30 天未复盘" in text
     assert "生成项目周报或月报" in text
@@ -195,7 +195,8 @@ def test_repository_agents_md_is_hardened() -> None:
     assert "项目使命优先级" in text
     assert "超出 MVP" in text
     assert "与历史决策冲突" in text
-    assert "每次开发完成后必须按时间顺序追加 `.ai/WORKLOG.md`" in text
+    assert "Session Memory" in text
+    assert "ADR" in text
     assert "必要时" not in text
     assert "如果合适" not in text
     assert "可能需要" not in text
@@ -210,19 +211,19 @@ def test_readme_promotes_codex_native_flow() -> None:
     assert "project-copilot init" in text
     assert "codex" in text
     assert "用户只和 Codex 对话" in text
-    assert "Codex for Open Source Readiness" in text
+    assert "Session Memory" in text
 
 
-def test_open_source_readiness_docs_and_install_are_current() -> None:
+def test_install_and_validation_docs_are_current() -> None:
     install = Path("install.sh").read_text(encoding="utf-8")
     contributing = Path("CONTRIBUTING.md").read_text(encoding="utf-8")
-    readiness = Path("docs/CODEX_FOR_OPEN_SOURCE.md").read_text(encoding="utf-8")
+    validation = Path("docs/validation-report.md").read_text(encoding="utf-8")
 
     assert 'REF="${PROJECT_COPILOT_REF:-v0.3.0-beta.2}"' in install
     assert "pytest -q" in contributing
     assert "python3 -m unittest discover" not in contributing
-    assert "Existing `AGENTS.md` content is preserved" in readiness
-    assert "Validation report" in readiness
+    assert "Validation Report" in validation
+    assert "自动刷新" in validation
 
 
 def test_interactive_mode_not_primary() -> None:

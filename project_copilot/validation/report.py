@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -21,7 +20,7 @@ class ValidationRecord:
     worklog_count: int | None = None
     decision_count: int | None = None
     knowledge_count: int | None = None
-    source: str = "case_study"
+    source: str = "snapshot"
     source_path: str | None = None
 
 
@@ -38,15 +37,6 @@ def refresh_validation_report(root: Path) -> tuple[Path, list[ValidationRecord]]
 
 def build_validation_records(root: Path) -> list[ValidationRecord]:
     records: dict[str, ValidationRecord] = {}
-
-    case_study_dir = root / "docs" / "case-studies"
-    if case_study_dir.is_dir():
-        for path in sorted(case_study_dir.glob("*.md")):
-            if path.name == "template.md":
-                continue
-            record = load_case_study_record(path)
-            if record:
-                records[record.project_name] = record
 
     for project_root in iter_validation_project_roots(root):
         snapshot_path = project_root / ".ai" / "validation.json"
@@ -96,7 +86,7 @@ def render_validation_report(records: list[ValidationRecord]) -> str:
         "",
         "验证目标：",
         "",
-        "验证 Project Copilot 是否能持续维护项目记忆。",
+        "验证 Project Copilot 是否能从真实 `.ai` 项目记忆中形成可复盘、可比较、可自动刷新的验证数据。",
         "",
         "---",
         "",
@@ -138,7 +128,7 @@ def render_validation_report(records: list[ValidationRecord]) -> str:
             "## 关键发现",
             "",
             "- Project Copilot 已能在真实项目中形成可审阅的 `.ai/` 项目记忆。",
-            "- 工作日志、决策和知识沉淀可以作为多项目验证的基础指标。",
+            "- ADR、Session 摘要、决策和知识沉淀可以作为多项目验证的基础指标。",
         ]
     )
     if any(record.source == "snapshot" for record in records):
@@ -151,34 +141,14 @@ def render_validation_report(records: list[ValidationRecord]) -> str:
             "",
             "## 下一阶段计划",
             "",
-            "- 纳入更多真实项目。",
-            "- 每个项目使用统一 case study 模板记录。",
-            "- 每周更新统计汇总。",
-            "- 对比不同项目中的工作日志、决策和知识沉淀质量。",
+            "- 纳入更多真实项目的 `.ai/validation.json`。",
+            "- 从真实 `.ai` 自动刷新统计汇总。",
+            "- 对比不同项目中的 ADR、Session 摘要、决策和知识沉淀质量。",
+            "- 继续减少人工维护的验证文档，避免验证体系漂移。",
             "",
         ]
     )
     return "\n".join(lines)
-
-
-def load_case_study_record(path: Path) -> ValidationRecord | None:
-    text = path.read_text(encoding="utf-8")
-    project_name = _match(text, r"^项目名称：(.+)$")
-    started_at = _match(text, r"^开始使用日期：(.+)$")
-    status = _match(text, r"^当前状态：(.+)$")
-    if not project_name:
-        return None
-    return ValidationRecord(
-        project_name=project_name,
-        started_at=started_at or "待记录",
-        status=status or "待记录",
-        usage_days=_parse_int(_match(text, r"^使用天数：(.+)$")),
-        worklog_count=_parse_int(_match(text, r"^工作日志数量：(.+)$")),
-        decision_count=_parse_int(_match(text, r"^决策数量：(.+)$")),
-        knowledge_count=_parse_int(_match(text, r"^知识沉淀数量：(.+)$")),
-        source="case_study",
-        source_path=str(path),
-    )
 
 
 def _snapshot_to_record(snapshot: ValidationSnapshot, path: Path) -> ValidationRecord:
@@ -207,20 +177,6 @@ def iter_validation_project_roots(root: Path) -> list[Path]:
             except OSError:
                 continue
     return candidates
-
-
-def _match(text: str, pattern: str) -> str:
-    match = re.search(pattern, text, flags=re.MULTILINE)
-    return match.group(1).strip() if match else ""
-
-
-def _parse_int(value: str) -> int | None:
-    if not value:
-        return None
-    try:
-        return int(value)
-    except ValueError:
-        return None
 
 
 def _fmt_int(value: int | None) -> str:

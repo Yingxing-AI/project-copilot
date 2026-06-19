@@ -10,7 +10,7 @@ from project_copilot.analyzer import ProjectAnalysis, analyze_project
 @dataclass(frozen=True)
 class SecretaryStatus:
     analysis: ProjectAnalysis
-    days_since_work: int | None
+    days_since_session: int | None
     days_since_review: int | None
     days_since_roadmap_update: int | None
     reminders: list[str]
@@ -18,13 +18,13 @@ class SecretaryStatus:
 
 def inspect_secretary_status(root: Path) -> SecretaryStatus:
     analysis = analyze_project(root)
-    days_since_work = _days_since_worklog(root / ".ai" / "WORKLOG.md")
+    days_since_session = _days_since_latest_review(root / ".ai" / "sessions" / "archive")
     days_since_review = _days_since_latest_review(root / ".ai" / "history")
     days_since_roadmap_update = _days_since_file(root / ".ai" / "ROADMAP.md")
     reminders = _build_reminders(analysis, days_since_review, days_since_roadmap_update)
     return SecretaryStatus(
         analysis=analysis,
-        days_since_work=days_since_work,
+        days_since_session=days_since_session,
         days_since_review=days_since_review,
         days_since_roadmap_update=days_since_roadmap_update,
         reminders=reminders,
@@ -38,10 +38,10 @@ def render_secretary_intro() -> str:
             "",
             "我会帮你：",
             "",
-            "* 记录项目历史",
-            "* 保存重要决策",
-            "* 提醒项目风险",
-            "* 防止项目跑偏",
+        "* 记住项目背景",
+        "* 保存关键决策原因",
+        "* 提醒项目风险",
+        "* 防止项目跑偏",
             "",
             "Codex 负责开发，",
             "我负责记住。",
@@ -62,8 +62,8 @@ def render_status_card(root: Path) -> str:
         "当前阶段：",
         _friendly_stage(analysis.stage),
         "",
-        "最近一次工作：",
-        _format_days(status.days_since_work),
+        "最近一次重要会话：",
+        _format_days(status.days_since_session),
         "",
         "最近一次复盘：",
         _format_days(status.days_since_review),
@@ -153,15 +153,6 @@ def _project_name(root: Path) -> str:
                 if name:
                     return name
     return root.name
-
-
-def _days_since_worklog(path: Path) -> int | None:
-    if not path.exists():
-        return None
-    text = path.read_text(encoding="utf-8")
-    if "暂无工作记录" in text and "- " not in text:
-        return None
-    return _days_since_file(path)
 
 
 def _days_since_latest_review(history_dir: Path) -> int | None:

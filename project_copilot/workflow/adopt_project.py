@@ -17,6 +17,33 @@ def run(context: WorkflowContext) -> WorkflowResult:
     profile = _inspect_existing_project(root)
     analysis = analyze_project(root)
 
+    charter = "\n".join(
+        [
+            "# Project Charter",
+            "",
+            f"项目名称：{root.name}",
+            "",
+            "项目使命：基于已有文件自动接管，具体业务目标待确认。",
+            "",
+            "目标用户：待确认。",
+            "",
+            "商业目标：待确认。",
+            "",
+            "MVP 范围：待确认。",
+            "",
+            "非目标：待确认。",
+            "",
+            "技术栈：",
+            *as_bullets(profile["tech_stack"] or ["待确认"]),
+            "",
+            "说明：这里记录长期稳定边界，极少修改；不要写临时状态。",
+            "",
+            "现有线索：",
+            *as_bullets(profile["signals"] or ["未发现明显项目线索"]),
+            "",
+        ]
+    )
+    (memory.ai_dir / "PROJECT_CHARTER.md").write_text(charter, encoding="utf-8")
     (memory.ai_dir / "PROJECT_CONTEXT.md").write_text(
         "\n".join(
             [
@@ -73,7 +100,7 @@ def run(context: WorkflowContext) -> WorkflowResult:
         title="已接管已有项目。",
         summary="处理方式：未覆盖现有 README、LICENSE 或源码；已生成 Codex 项目记忆规则。",
         details={
-            "已更新": [".ai/PROJECT_CONTEXT.md", ".ai/STATUS.md", ".ai/MEMORY.md", "AGENTS.md", "docs/CODEX_WORKFLOW.md"],
+            "已更新": [".ai/PROJECT_CHARTER.md", ".ai/PROJECT_CONTEXT.md", ".ai/STATUS.md", ".ai/MEMORY.md", "AGENTS.md", "docs/CODEX_WORKFLOW.md"],
             "验证汇总": str(validation_report_path.relative_to(root)) if validation_report_path.is_relative_to(root) else str(validation_report_path),
             "识别技术栈": profile["tech_stack"],
             "项目线索": profile["signals"][:8],

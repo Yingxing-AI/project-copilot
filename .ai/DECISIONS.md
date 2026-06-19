@@ -53,3 +53,27 @@
 - 决策：工作流入口按 Git 仓库顶层归一化项目根目录，避免在子目录或错误工作目录下污染其他项目的 `.ai/` 文件。
 - 原因：跨项目运行时，cwd 并不总是项目根；如果直接用 cwd 写 `.ai`，很容易把记忆文件落到错误层级。
 - 影响：`project-copilot` 的 CLI 和 workflow 调度会优先将路径收敛到 `git rev-parse --show-toplevel` 返回的仓库根，再进行记忆写入。
+
+日期：2026-06-19
+
+决策：Project Copilot 收敛为 Codex 项目记忆层，停止继续发展 GitHub sync、release、OSS 准备和命令式执行工作流。
+
+原因：Codex 负责开发，Git 负责版本管理，Project Copilot 负责项目记忆；继续强化执行型工作流会与 Codex 原生能力重复。
+
+影响：新增 `.ai/adr/` 和 `.ai/sessions/`；新决策优先进入 ADR；开发过程中不自动扩写长期记忆，结束工作时统一确认候选事件。
+
+日期：2026-06-19
+
+决策：验证报告跟随长期记忆写入和验证快照导出自动刷新，手动刷新仅作为兼容和修复命令保留。
+
+原因：Validation 应是项目记忆层的自然副产品，不能要求用户额外维护，也不能让 Session 候选污染派生统计。
+
+影响：`export_validation_snapshot` 导出快照后会同步刷新 `docs/validation-report.md`；未确认假设和 Session 候选不触发刷新。
+
+日期：2026-06-19
+
+决策：执行 P0 记忆架构收敛，引入 `PROJECT_CHARTER.md`，将确认决策改为 ADR-first，将复盘改为只读，将同步状态降级为 validation 派生刷新。
+
+原因：测试、Git、Release、Changelog 和普通项目管理总结属于 Codex/Git；Project Copilot 应只维护长期项目记忆和派生验证。
+
+影响：`init_project` 不再自动 `git init`；`record_decision` 写入 `.ai/adr/`；未确认决策进入 `.ai/sessions/current.md`；`review_project` 不再写 `history/`；`sync_project_state` 不再运行测试或同步 README/Roadmap/Changelog/AGENTS。

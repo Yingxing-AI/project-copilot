@@ -9,6 +9,7 @@ def test_init_project_workflow(tmp_path: Path) -> None:
 
     assert result.intent_name == "init_project"
     assert result.status == "success"
+    assert (tmp_path / ".ai" / "PROJECT_CHARTER.md").exists()
     assert (tmp_path / ".ai" / "PROJECT_CONTEXT.md").exists()
     assert (tmp_path / ".ai" / "MEMORY.md").exists()
     assert (tmp_path / ".ai" / "HYPOTHESES.md").exists()
@@ -17,6 +18,8 @@ def test_init_project_workflow(tmp_path: Path) -> None:
     assert (tmp_path / ".ai" / "WORKLOG.md").exists()
     assert (tmp_path / ".ai" / "KNOWLEDGE.md").exists()
     assert (tmp_path / ".ai" / "metrics.md").exists()
+    assert (tmp_path / ".ai" / "adr" / "index.md").exists()
+    assert (tmp_path / ".ai" / "sessions" / "current.md").exists()
     assert (tmp_path / ".ai" / "history").is_dir()
 
 
@@ -52,18 +55,26 @@ def test_continue_development_workflow(tmp_path: Path) -> None:
         assert (tmp_path / ".ai" / name).read_text(encoding="utf-8") == content
 
 
+def test_continue_development_does_not_create_memory_layer(tmp_path: Path) -> None:
+    result = run_structured_workflow(tmp_path, "继续开发项目")
+
+    assert result.intent_name == "continue_development"
+    assert result.status == "needs_input"
+    assert "尚未安装项目记忆层" in result.title
+    assert not (tmp_path / ".ai").exists()
+
+
 def test_close_day_workflow(tmp_path: Path) -> None:
     run_structured_workflow(tmp_path, "初始化项目")
 
     result = run_structured_workflow(tmp_path, "今天结束工作")
 
     assert result.intent_name == "close_day"
-    assert result.status == "success"
+    assert result.status == "needs_input"
     assert (tmp_path / ".ai" / "STATUS.md").exists()
     assert (tmp_path / ".ai" / "WORKLOG.md").exists()
-    assert "更新日期" in (tmp_path / ".ai" / "STATUS.md").read_text(encoding="utf-8")
-    assert "已更新项目状态" in (tmp_path / ".ai" / "WORKLOG.md").read_text(encoding="utf-8")
-    assert "下一步：" not in (tmp_path / ".ai" / "WORKLOG.md").read_text(encoding="utf-8")
+    assert "Session Memory" in result.summary
+    assert "候选事件" in result.details
 
 
 def test_record_decision_routes_uncertain_input_to_hypotheses(tmp_path: Path) -> None:
@@ -74,7 +85,7 @@ def test_record_decision_routes_uncertain_input_to_hypotheses(tmp_path: Path) ->
     assert result.intent_name == "record_decision"
     assert result.status == "needs_input"
     assert "假设" in result.title
-    assert "也许先做简历导入" in (tmp_path / ".ai" / "HYPOTHESES.md").read_text(encoding="utf-8")
+    assert "也许先做简历导入" in (tmp_path / ".ai" / "sessions" / "current.md").read_text(encoding="utf-8")
     assert "也许先做简历导入" not in (tmp_path / ".ai" / "DECISIONS.md").read_text(encoding="utf-8")
 
 
@@ -87,6 +98,7 @@ def test_record_decision_does_not_duplicate_into_memory(tmp_path: Path) -> None:
     assert result.intent_name == "record_decision"
     assert result.status == "success"
     assert "MVP 先做简历导入" in (tmp_path / ".ai" / "DECISIONS.md").read_text(encoding="utf-8")
+    assert "MVP 先做简历导入" in (tmp_path / ".ai" / "adr" / "index.md").read_text(encoding="utf-8")
     assert before == (tmp_path / ".ai" / "MEMORY.md").read_text(encoding="utf-8")
 
 

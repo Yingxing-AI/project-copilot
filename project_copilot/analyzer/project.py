@@ -20,6 +20,7 @@ class ProjectAnalysis:
 REQUIRED_PATHS = [
     "README.md",
     "AGENTS.md",
+    ".ai/PROJECT_CHARTER.md",
     ".ai/PROJECT_CONTEXT.md",
     ".ai/MEMORY.md",
     ".ai/HYPOTHESES.md",
@@ -28,6 +29,8 @@ REQUIRED_PATHS = [
     ".ai/DECISIONS.md",
     ".ai/WORKLOG.md",
     ".ai/KNOWLEDGE.md",
+    ".ai/adr/index.md",
+    ".ai/sessions/current.md",
 ]
 
 
@@ -57,6 +60,6 @@ def analyze_project(root: Path) -> ProjectAnalysis:
         next_steps.append("补齐项目档案和项目记忆。")
     if not git_status.initialized:
         next_steps.append("建立保存进度记录。")
-    next_steps.append("根据路线图选择最高优先级任务继续开发。")
+    next_steps.append("开始工作时恢复项目记忆，结束工作时确认 Session 候选。")
 
     return ProjectAnalysis(score, stage, completed, missing, risks, next_steps, git_status)

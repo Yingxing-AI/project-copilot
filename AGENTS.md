@@ -12,13 +12,13 @@
 
 你是 Codex。
 你负责开发。
-同时你必须维护 `.ai` 分层项目记忆，避免把维护动作写进事实层。
+同时你必须维护 `.ai` 分层项目记忆，避免把普通开发流水写进长期记忆。
 
 ## 项目使命优先级
 
 在任何开发行为之前必须检查：
 
-1. `.ai/PROJECT_CONTEXT.md`
+1. `.ai/PROJECT_CHARTER.md`，旧项目兼容读取 `.ai/PROJECT_CONTEXT.md`
 2. 当前请求是否符合项目使命
 3. 当前请求是否符合目标用户
 4. 当前请求是否符合 MVP
@@ -50,9 +50,9 @@
 
 ### 与历史决策冲突
 
-当用户请求与 `.ai/DECISIONS.md` 冲突时，必须：
+当用户请求与 `.ai/adr/` 或 `.ai/DECISIONS.md` 冲突时，必须：
 
-- 引用 `.ai/DECISIONS.md` 中的相关决策。
+- 引用 `.ai/adr/` 或 `.ai/DECISIONS.md` 中的相关决策。
 - 明确说明冲突点。
 - 请求用户确认是否推翻旧决策。
 
@@ -60,7 +60,7 @@
 
 ## 项目记忆写入规则
 
-发生以下情况时，必须追加写入 `.ai/DECISIONS.md`：
+发生以下情况时，必须新增或更新 `.ai/adr/`，并在 `.ai/DECISIONS.md` 保留兼容摘要：
 
 - 技术栈变化
 - 架构变化
@@ -69,14 +69,22 @@
 - 引入重大依赖
 - 部署方式变化
 
-写入格式必须统一：
+ADR 写入格式必须统一：
 
-```text
-日期：
+```markdown
+# ADR 0000: 标题
+
+日期：YYYY-MM-DD
+
+状态：Proposed | Accepted | Superseded
+
+背景：
 
 决策：
 
 原因：
+
+取舍：
 
 影响：
 ```
@@ -91,7 +99,21 @@
 
 禁止向 `.ai/KNOWLEDGE.md` 写入代码实现细节或临时调试经验。
 
-每次开发完成后必须按时间顺序追加 `.ai/WORKLOG.md`，禁止覆盖历史内容。每条记录必须包含：
+Session Memory 模式下，开发过程中不得自动扩写 `.ai/ROADMAP.md`、`.ai/MEMORY.md` 或 `.ai/WORKLOG.md`。
+
+开发过程中只维护会话级候选事件：
+
+- ADR 候选
+- 里程碑候选
+- 风险候选
+- 知识候选
+- MVP 范围变化候选
+
+结束工作时必须先展示候选事件，并要求用户确认哪些内容三个月后仍重要。
+
+只有用户确认后，才允许写入 `.ai/adr/`、`.ai/MEMORY.md`、`.ai/KNOWLEDGE.md` 或 `.ai/sessions/archive/`。
+
+`WORKLOG.md` 只作为旧版兼容和重大会话摘要，不再记录普通开发流水。重大会话摘要必须包含：
 
 - 日期
 - 完成内容
@@ -100,7 +122,7 @@
 
 ## 项目复盘触发机制
 
-- 当 `.ai/WORKLOG.md` 连续 7 天未更新时，必须提醒用户：建议进行项目复盘。
+- 当 `.ai/sessions/archive/` 连续 7 天没有重大会话摘要时，必须提醒用户：建议进行项目复盘。
 - 当项目连续 30 天未复盘时，必须建议生成项目周报或月报。
 
 ## 不可违反的规则
@@ -118,15 +140,19 @@
 - 开始开发前先检查 `git status --short --branch`，确认工作区状态。
 - 优先阅读 `README.md`、`docs/PRD.md`、`ROADMAP.md` 和 `.ai/` 项目记忆。
 - 修改代码后运行相关测试；当前基线命令是 `pytest -q`。
-- 保持 `.ai/STATUS.md`、`.ai/ROADMAP.md` 和 `.ai/MEMORY.md` 与真实进度一致，不要把维护动作双写进事实层。
+- 保持 `.ai/STATUS.md`、`.ai/ROADMAP.md` 和 `.ai/MEMORY.md` 与真实进度一致；开发过程中只维护 Session 候选，结束确认后再写长期记忆。
 - 不覆盖用户已有改动，不执行破坏性 Git 操作，除非用户明确要求。
 
 ## 项目重点
 
-- v0.1 是本地规则驱动 MVP，不依赖外部 API。
+- 当前版本是本地规则驱动 MVP，不依赖外部 API。
+- Project Copilot 负责项目记忆，不负责 commit、push、release、测试或代码修改 workflow。
 - CLI 入口是 `project_copilot/cli/main.py`。
 - 自然语言意图在 `project_copilot/intent/` 识别，工作流在 `project_copilot/workflow/` 分发和执行。
 - 项目记忆由 `project_copilot/memory/store.py` 管理。
+- ADR 位于 `.ai/adr/`，Session 候选位于 `.ai/sessions/current.md`。
+- 新决策优先写入 ADR；`.ai/DECISIONS.md` 只保留兼容摘要。
+- `project-copilot 同步项目状态` 只刷新 validation 派生数据，不运行测试、不读取 Git、不同步 Changelog。
 
 <!-- project-copilot:managed:start -->
 ## Project Copilot Managed Context

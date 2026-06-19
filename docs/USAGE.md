@@ -2,7 +2,7 @@
 
 Project Copilot installs and maintains a layered project memory set for Codex.
 
-用户只和 Codex 对话。Project Copilot 负责初始化 `.ai/` 分层项目记忆、生成 `AGENTS.md` 规则和 `docs/CODEX_WORKFLOW.md`，让 Codex 在日常开发中区分事实、假设、计划和决策。
+用户只和 Codex 对话。Project Copilot 负责初始化 `.ai/` 项目记忆、生成 `AGENTS.md` 规则和 `docs/CODEX_WORKFLOW.md`，让 Codex 在日常开发中记住项目为什么这样做。
 
 ## Install
 
@@ -42,7 +42,7 @@ After this, work directly in Codex:
 继续开发这个项目
 ```
 
-Project memory gives Codex the context it needs for later conversations, while keeping facts, hypotheses, decisions, work logs, and optional metrics separate.
+Project memory gives Codex the context it needs for later conversations, while keeping project context, ADR, session candidates, long-term knowledge, and derived validation data separate.
 
 ## Low-Frequency Tools
 
@@ -76,6 +76,9 @@ Project Copilot generates:
 - `MEMORY.md`
 - `HYPOTHESES.md`
 - `DECISIONS.md`
+- `adr/`
+- `sessions/current.md`
+- `sessions/archive/`
 - `WORKLOG.md`
 - `KNOWLEDGE.md`
 - `metrics.md` 作为辅助快照，不作为事实源
@@ -101,7 +104,7 @@ Then say:
 今天结束工作
 ```
 
-This keeps project status, work logs, and memory layers fresh without mixing facts and hypotheses.
+This shows session candidates for confirmation. Ordinary code changes, tests, and small bug fixes stay in Git/Codex instead of long-term `.ai` memory.
 
 每周复盘时说：
 
@@ -140,4 +143,10 @@ Run tests:
 
 ```bash
 pytest -q
+```
+
+Validation reports are normally refreshed by memory-writing workflows. Manual refresh is only needed when repairing or re-generating derived reports:
+
+```bash
+project-copilot 刷新验证报告
 ```

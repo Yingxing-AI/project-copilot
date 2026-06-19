@@ -49,12 +49,16 @@ def collect_validation_snapshot(root: Path) -> ValidationSnapshot | None:
         if not _safe_exists(ai_dir):
             return None
 
-        project_name = _extract_field(ai_dir / "PROJECT_CONTEXT.md", "项目名称") or root.name
+        project_name = (
+            _extract_meaningful_field(ai_dir / "PROJECT_CHARTER.md", "项目名称")
+            or _extract_meaningful_field(ai_dir / "PROJECT_CONTEXT.md", "项目名称")
+            or root.name
+        )
         started_at = _started_at_from_ai(ai_dir)
         status = _extract_field(ai_dir / "STATUS.md", "当前阶段") or "待记录"
         usage_days = _usage_days(started_at)
         worklog_count = _count_worklog_entries(ai_dir / "WORKLOG.md")
-        decision_count = _count_decisions(ai_dir / "DECISIONS.md")
+        decision_count = _count_decisions(ai_dir)
         knowledge_count = _count_knowledge_entries(ai_dir / "KNOWLEDGE.md")
         roadmap_state = _roadmap_state(ai_dir / "ROADMAP.md")
         project_health = analyze_project(root).health_score
@@ -103,9 +107,15 @@ def _extract_field(path: Path, field_name: str) -> str:
     return match.group(1).strip() if match else ""
 
 
+def _extract_meaningful_field(path: Path, field_name: str) -> str:
+    value = _extract_field(path, field_name)
+    return "" if value in {"待确认", "待确认。", "待补充", "待补充。"} else value
+
+
 def _started_at_from_ai(ai_dir: Path) -> str:
     candidates = [
         ai_dir / "PROJECT_CONTEXT.md",
+        ai_dir / "PROJECT_CHARTER.md",
         ai_dir / "STATUS.md",
         ai_dir / "MEMORY.md",
         ai_dir / "HYPOTHESES.md",
@@ -151,7 +161,11 @@ def _count_worklog_entries(path: Path) -> int | None:
     return fallback_count
 
 
-def _count_decisions(path: Path) -> int | None:
+def _count_decisions(ai_dir: Path) -> int | None:
+    adr_count = _count_adr_entries(ai_dir / "adr")
+    if adr_count:
+        return adr_count
+    path = ai_dir / "DECISIONS.md"
     if not path.exists():
         return None
     text = path.read_text(encoding="utf-8")
@@ -163,6 +177,18 @@ def _count_decisions(path: Path) -> int | None:
         return legacy_count
     fallback_count = len(re.findall(r"^- 决策：", text, flags=re.MULTILINE))
     return fallback_count
+
+
+def _count_adr_entries(adr_dir: Path) -> int:
+    if not adr_dir.exists():
+        return 0
+    count = 0
+    for path in adr_dir.glob("*.md"):
+        if path.name == "index.md":
+            continue
+        if re.match(r"^\d{4}-", path.name):
+            count += 1
+    return count
 
 
 def _count_knowledge_entries(path: Path) -> int | None:
