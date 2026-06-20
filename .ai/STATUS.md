@@ -6,7 +6,7 @@
 
 当前状态：
 
-- 版本：`0.3.0b3`
+- 版本：`0.3.0`
 - 当前定位：Codex 项目记忆层
 - 当前记忆健康：需要收敛 legacy `HYPOTHESES.md`、`WORKLOG.md` 和 `metrics.md`
 - 当前测试结果：`pytest -q` 通过，59 passed
