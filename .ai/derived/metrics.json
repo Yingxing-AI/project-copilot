@@ -1,12 +1,20 @@
 {
   "project_name": "Project Copilot",
-  "usage_days": 0,
-  "adr_count": 6,
+  "usage_days": 1,
+  "adr_count": 7,
   "session_archive_count": 1,
   "active_candidate_count": 0,
   "charter_present": true,
   "roadmap_present": true,
   "memory_health_status": "需要收敛记忆漂移",
-  "updated_at": "2026-06-19T19:29:31",
+  "readme_drift_status": "存在漂移",
+  "readme_drift_issue_count": 1,
+  "adr_governance_status": "治理健康",
+  "adr_governance_issue_count": 0,
+  "session_quality_status": "质量健康",
+  "session_quality_issue_count": 0,
+  "legacy_migration_status": "迁移未完成",
+  "legacy_migration_progress": "Active 0 / Compatibility 3 / Legacy 2 / Safe To Remove 0",
+  "updated_at": "2026-06-20T19:21:02",
   "source": "derived_from_validation_snapshot"
 }

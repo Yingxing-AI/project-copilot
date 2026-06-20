@@ -2,18 +2,42 @@
   "project_name": "Project Copilot",
   "started_at": "2026-06-19",
   "status": "可持续开发",
-  "usage_days": 0,
+  "usage_days": 1,
   "worklog_count": 4,
-  "decision_count": 6,
+  "decision_count": 7,
   "knowledge_count": 29,
-  "adr_count": 6,
+  "adr_count": 7,
   "session_archive_count": 1,
   "active_candidate_count": 0,
   "charter_present": true,
   "roadmap_present": true,
   "memory_health_status": "需要收敛记忆漂移",
+  "readme_drift_status": "存在漂移",
+  "readme_drift_issues": [
+    "README 最后更新时间落后于 `.ai` 核心记忆与 validation 派生数据约 1 天。"
+  ],
+  "adr_governance_status": "治理健康",
+  "adr_governance_issues": [],
+  "session_quality_status": "质量健康",
+  "session_quality_issues": [],
+  "legacy_migration_status": "迁移未完成",
+  "legacy_migration_progress": "Active 0 / Compatibility 3 / Legacy 2 / Safe To Remove 0",
+  "legacy_migration_classifications": {
+    "PROJECT_CONTEXT.md": "Compatibility",
+    "DECISIONS.md": "Compatibility",
+    "WORKLOG.md": "Legacy",
+    "HYPOTHESES.md": "Legacy",
+    "metrics.md": "Compatibility"
+  },
+  "legacy_migration_issues": [
+    "WORKLOG.md 仍承载大量历史流水，尚未收敛为纯兼容层。",
+    "HYPOTHESES.md 仍保留活跃内容，未完全迁移到 Session 候选。",
+    "PROJECT_CONTEXT.md 已被 Charter 取代，但仍需保留兼容读取与初始化写入。",
+    "DECISIONS.md 仍作为兼容索引存在，新决策已迁移到 ADR-first。",
+    "metrics.md 仍保留兼容快照角色，真实指标已迁移到 derived/metrics.json。"
+  ],
   "project_health": null,
   "roadmap_state": null,
   "source": "auto_collected_from_ai",
-  "updated_at": "2026-06-19T19:29:31"
+  "updated_at": "2026-06-20T19:21:02"
 }

@@ -206,12 +206,13 @@ def test_repository_agents_md_is_hardened() -> None:
 def test_readme_promotes_codex_native_flow() -> None:
     text = Path("README.md").read_text(encoding="utf-8")
 
-    assert "Layered project memory for Codex." in text
+    assert "AI Native Engineering Memory Layer for Codex." in text
     assert "project-copilot adopt" in text
     assert "project-copilot init" in text
     assert "codex" in text
     assert "用户只和 Codex 对话" in text
     assert "Session Memory" in text
+    assert "README Drift Check" in text
 
 
 def test_install_and_validation_docs_are_current() -> None:
@@ -219,7 +220,7 @@ def test_install_and_validation_docs_are_current() -> None:
     contributing = Path("CONTRIBUTING.md").read_text(encoding="utf-8")
     validation = Path("docs/validation-report.md").read_text(encoding="utf-8")
 
-    assert 'REF="${PROJECT_COPILOT_REF:-v0.3.0-beta.2}"' in install
+    assert 'REF="${PROJECT_COPILOT_REF:-v0.3.0-beta.3}"' in install
     assert "pytest -q" in contributing
     assert "python3 -m unittest discover" not in contributing
     assert "Validation Report" in validation

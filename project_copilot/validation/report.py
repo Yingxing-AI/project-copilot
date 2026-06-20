@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
+from project_copilot.validation.governance import load_validation_project_roots
 from project_copilot.validation.snapshot import (
     ValidationSnapshot,
     collect_validation_snapshot,
@@ -26,6 +27,11 @@ class ValidationRecord:
     charter_present: bool | None = None
     roadmap_present: bool | None = None
     memory_health_status: str | None = None
+    readme_drift_status: str | None = None
+    adr_governance_status: str | None = None
+    session_quality_status: str | None = None
+    legacy_migration_status: str | None = None
+    legacy_migration_progress: str | None = None
     source: str = "snapshot"
     source_path: str | None = None
 
@@ -98,6 +104,10 @@ def render_validation_report(records: list[ValidationRecord]) -> str:
     total_active_candidates = sum(record.active_candidate_count or 0 for record in records)
     charter_count = sum(1 for record in records if record.charter_present)
     roadmap_count = sum(1 for record in records if record.roadmap_present)
+    readme_drift_count = sum(1 for record in records if record.readme_drift_status == "存在漂移")
+    adr_governance_count = sum(1 for record in records if record.adr_governance_status == "需要治理")
+    session_quality_count = sum(1 for record in records if record.session_quality_status == "需要治理")
+    legacy_incomplete_count = sum(1 for record in records if record.legacy_migration_status == "迁移未完成")
 
     lines = [
         "# Validation Report",
@@ -108,14 +118,14 @@ def render_validation_report(records: list[ValidationRecord]) -> str:
         "",
         "---",
         "",
-        "## 项目列表",
+        "## Unified Validation Summary",
         "",
-        "| 项目名称 | 开始时间 | 使用天数 | Charter | ADR | Session Archive | Active Candidates | Roadmap | 记忆状态 |",
-        "| --- | --- | ---: | --- | ---: | ---: | ---: | --- | --- |",
+        "| 项目名称 | 开始时间 | 使用天数 | Charter | ADR | Session Archive | Active Candidates | Roadmap | 记忆状态 | README Drift | ADR Governance | Session Quality | Legacy Migration |",
+        "| --- | --- | ---: | --- | ---: | ---: | ---: | --- | --- | --- | --- | --- | --- |",
     ]
     for record in records:
         lines.append(
-            "| {name} | {started} | {days} | {charter} | {adrs} | {sessions} | {candidates} | {roadmap} | {memory_status} |".format(
+            "| {name} | {started} | {days} | {charter} | {adrs} | {sessions} | {candidates} | {roadmap} | {memory_status} | {readme} | {adr_governance} | {session_quality} | {migration} |".format(
                 name=record.project_name,
                 started=record.started_at or "待记录",
                 days=_fmt_int(record.usage_days),
@@ -125,6 +135,10 @@ def render_validation_report(records: list[ValidationRecord]) -> str:
                 candidates=_fmt_int(record.active_candidate_count),
                 roadmap=_fmt_bool(record.roadmap_present),
                 memory_status=record.memory_health_status or record.status or "待记录",
+                readme=record.readme_drift_status or "待记录",
+                adr_governance=record.adr_governance_status or "待记录",
+                session_quality=record.session_quality_status or "待记录",
+                migration=record.legacy_migration_status or "待记录",
             )
         )
 
@@ -153,12 +167,20 @@ def render_validation_report(records: list[ValidationRecord]) -> str:
             "",
             f"总知识沉淀：{total_knowledge}",
             "",
+            f"README 存在漂移的项目：{readme_drift_count}",
+            "",
+            f"ADR Governance 需治理的项目：{adr_governance_count}",
+            "",
+            f"Session Quality 需治理的项目：{session_quality_count}",
+            "",
+            f"Legacy Migration 未完成的项目：{legacy_incomplete_count}",
+            "",
             "---",
             "",
             "## 关键发现",
             "",
             "- Project Copilot 已能在真实项目中形成可审阅的 `.ai/` 项目记忆。",
-            "- ADR、Session Archive、候选事件、Charter 和 Roadmap 可以作为记忆质量验证的基础指标。",
+            "- ADR、Session Archive、候选事件、Charter 和 Roadmap 之外，README Drift、ADR Governance、Session Quality 和 Legacy Migration 已进入统一验证口径。",
         ]
     )
     if any(record.source == "snapshot" for record in records):
@@ -171,10 +193,10 @@ def render_validation_report(records: list[ValidationRecord]) -> str:
             "",
             "## 下一阶段计划",
             "",
-            "- 纳入更多真实项目的 `.ai/validation.json`。",
-            "- 从真实 `.ai` 自动刷新统计汇总。",
-            "- 对比不同项目中的 ADR、Session Archive、候选事件和长期知识质量。",
-            "- 继续减少人工维护的验证文档，避免验证体系漂移。",
+            "- 继续纳入更多真实项目，并优先通过 `validation/sources.yaml` 维护项目列表。",
+            "- 从真实 `.ai` 自动刷新统计汇总，避免手工维护 validation report。",
+            "- 对比不同项目中的 README 漂移、ADR 治理、Session Archive 质量和 legacy 迁移进度。",
+            "- 继续减少人工维护的验证文档，避免验证体系本身漂移。",
             "",
         ]
     )
@@ -196,23 +218,18 @@ def _snapshot_to_record(snapshot: ValidationSnapshot, path: Path) -> ValidationR
         charter_present=snapshot.charter_present,
         roadmap_present=snapshot.roadmap_present,
         memory_health_status=snapshot.memory_health_status,
+        readme_drift_status=snapshot.readme_drift_status,
+        adr_governance_status=snapshot.adr_governance_status,
+        session_quality_status=snapshot.session_quality_status,
+        legacy_migration_status=snapshot.legacy_migration_status,
+        legacy_migration_progress=snapshot.legacy_migration_progress,
         source="snapshot",
         source_path=str(path),
     )
 
 
 def iter_validation_project_roots(root: Path) -> list[Path]:
-    candidates: list[Path] = [root]
-    parent = root.parent
-    if parent.exists():
-        for candidate in parent.iterdir():
-            try:
-                if not candidate.is_dir():
-                    continue
-                candidates.append(candidate)
-            except OSError:
-                continue
-    return candidates
+    return load_validation_project_roots(root)
 
 
 def _fmt_int(value: int | None) -> str:

@@ -85,3 +85,11 @@
 原因：剩余 workflow 仍带有旧 Secretary UX、项目健康度和工作日志时间轴叙事，容易与 Codex 原生开发能力和 Git 记录职责重叠。
 
 影响：详见 ADR 0006：`.ai/adr/0006-memory-view-convergence.md`。本文件仅保留兼容索引。
+
+日期：2026-06-20
+
+决策：在 Validation 链路中引入 Memory Governance 与 Drift Detection，统一派生 README Drift、ADR Governance、Session Quality、Legacy Migration 和 Multi-Project Validation。
+
+原因：仅有记忆结构还不足以证明长期价值；如果 README、ADR、Session Archive 和 legacy 文件缺少持续治理，`.ai` 会重新漂移。
+
+影响：详见 ADR 0007：`.ai/adr/0007-memory-governance-and-drift-detection.md`。Validation 从单纯统计扩展为治理视图，但不自动修改 README、不自动删除 legacy 文件，也不引入 AI 评分。

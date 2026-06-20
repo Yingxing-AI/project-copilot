@@ -1,33 +1,38 @@
 # Project Copilot
 
-Layered project memory for Codex.
+AI Native Engineering Memory Layer for Codex.
 
 Project Copilot helps Codex remember the project. It does not manage the project for Codex.
 
 用户只和 Codex 对话。Codex 负责开发，Git 负责版本管理，Project Copilot 负责安装和维护 `.ai/` 项目记忆，让 Codex 持续理解项目使命、MVP 边界、ADR、长期知识和为什么这样做。
 
-当前版本是 v0.3.0b2：规则驱动、本地运行、不依赖外部 AI API。
+当前版本是 v0.3.0b3：规则驱动、本地运行、不依赖外部 AI API。
 
 ## Available Today
 
 - Codex-native project memory installation
 - `AGENTS.md` rules for Codex
 - `docs/CODEX_WORKFLOW.md` user guide for working with Codex
-- `.ai/` layered project memory
-- `.ai/PROJECT_CHARTER.md` project definition and boundaries
-- `.ai/adr/` Architecture Decision Records
-- `.ai/sessions/` Session Memory candidates
+- `PROJECT_CHARTER` for mission, MVP, target users, and boundaries
+- `ADR` for long-lived engineering and product decisions
+- `Session Archive` for confirmed major session summaries
+- `Memory Health` for core memory-layer checks
+- `Validation` derived from real `.ai` state
 - Existing-project adoption
 - New-project initialization
 - Local doctor checks
 - Natural-language intent recognition
-- Project status card
 - Project review
 - Project timeline
 - Drift check for MVP scope
 - Decision recording
 - Continue development context recovery
 - Close-day Session Memory confirmation
+- README Drift Check
+- ADR Governance
+- Session Quality
+- Legacy Migration Report
+- Multi-Project Validation
 - Validation snapshots derived from real `.ai`
 - Pytest coverage for the current memory surface
 
@@ -108,7 +113,7 @@ Project Copilot uses a read-once, write-once memory rhythm:
 
 普通代码修改、测试增加、小型 Bug 修复和临时讨论由 Git/Codex 承载，不进入长期项目记忆。
 
-## Project Memory
+## Core Memory Structure
 
 `.ai/` stores the project memory:
 
@@ -173,7 +178,17 @@ project-copilot 刷新验证报告
 ```
 
 Validation focuses on whether project memory remains readable, maintainable, and useful after time passes.
-It tracks memory quality signals such as Charter presence, ADR count, Session Archive count, active candidates, Roadmap presence, and memory drift.
+It tracks memory quality signals such as Charter presence, ADR count, Session Archive count, active candidates, Roadmap presence, memory drift, README drift, ADR governance, session quality, and legacy migration progress.
+
+## Governance
+
+P2 adds rule-based memory governance to prove long-term value from real project usage:
+
+- `README Drift Check`: detect README drift against Charter, ADR, Session Archive, Validation, and Memory Health
+- `ADR Governance`: detect missing status, number conflicts, and broken superseded chains
+- `Session Quality`: detect archives that are too short, too long, noisy, or duplicating ADR content
+- `Legacy Migration Report`: classify old files as Active, Compatibility, Legacy, or Safe To Remove
+- `Multi-Project Validation`: aggregate multiple projects from `validation/sources.yaml` without hand-maintained reports
 
 ## Compatibility
 

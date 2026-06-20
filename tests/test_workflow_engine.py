@@ -122,6 +122,7 @@ class WorkflowEngineTest(unittest.TestCase):
             self.assertIn("已刷新验证报告", result)
             report = (root / "docs" / "validation-report.md").read_text(encoding="utf-8")
             self.assertIn("| dashboard | 2026-06-17 | 3 | 待记录 | 2 | 待记录 | 待记录 | 待记录 | 验证中 |", report)
+            self.assertIn("README Drift", report)
             self.assertNotIn("待接入", report)
             self.assertIn("自动刷新", report)
 
@@ -202,8 +203,10 @@ class WorkflowEngineTest(unittest.TestCase):
 
             self.assertIn("已刷新验证报告", result)
             report = (root / "docs" / "validation-report.md").read_text(encoding="utf-8")
-            self.assertIn("| 制造业利润管理系统 V1.0 | 2026-06-17 | 2 | 缺失 | 0 | 0 | 0 | 存在 | 需要补齐记忆层 |", report)
-            self.assertNotIn("| 制造业利润管理系统 V1.0 | 2026-06-17 | 2 | 待记录 | 0", report)
+            self.assertIn("| 制造业利润管理系统 V1.0 | 2026-06-17 |", report)
+            self.assertIn("| 缺失 | 0 | 0 | 0 | 存在 | 需要补齐记忆层 |", report)
+            self.assertNotIn("| 制造业利润管理系统 V1.0 | 2026-06-17 | 3 | 待记录 | 0", report)
+            self.assertIn("ADR Governance", report)
 
     def test_export_validation_snapshot_writes_ai_snapshot_and_refreshes_report(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -238,6 +241,8 @@ class WorkflowEngineTest(unittest.TestCase):
             self.assertIn('"decision_count": 2', payload)
             self.assertIn('"knowledge_count": 2', payload)
             self.assertIn('"adr_count": 0', payload)
+            self.assertIn('"readme_drift_status"', payload)
+            self.assertIn('"legacy_migration_status"', payload)
             self.assertTrue((root / ".ai" / "derived" / "metrics.json").exists())
             report = root / "docs" / "validation-report.md"
             self.assertTrue(report.exists())

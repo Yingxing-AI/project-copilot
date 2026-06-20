@@ -6,13 +6,13 @@
 
 ---
 
-## 项目列表
+## Unified Validation Summary
 
-| 项目名称 | 开始时间 | 使用天数 | Charter | ADR | Session Archive | Active Candidates | Roadmap | 记忆状态 |
-| --- | --- | ---: | --- | ---: | ---: | ---: | --- | --- |
-| ai-recruitment | 2026-06-17 | 2 | 缺失 | 0 | 0 | 0 | 存在 | 需要补齐记忆层 |
-| 制造业利润管理系统 V1.0 | 2026-06-17 | 2 | 缺失 | 0 | 0 | 0 | 存在 | 需要补齐记忆层 |
-| Project Copilot | 2026-06-19 | 0 | 存在 | 6 | 1 | 0 | 存在 | 需要收敛记忆漂移 |
+| 项目名称 | 开始时间 | 使用天数 | Charter | ADR | Session Archive | Active Candidates | Roadmap | 记忆状态 | README Drift | ADR Governance | Session Quality | Legacy Migration |
+| --- | --- | ---: | --- | ---: | ---: | ---: | --- | --- | --- | --- | --- | --- |
+| ai-recruitment | 2026-06-17 | 3 | 缺失 | 0 | 0 | 0 | 存在 | 需要补齐记忆层 | 存在漂移 | 缺少 ADR | 缺少 Archive | 迁移未完成 |
+| 制造业利润管理系统 V1.0 | 2026-06-17 | 3 | 缺失 | 0 | 0 | 0 | 存在 | 需要补齐记忆层 | 存在漂移 | 缺少 ADR | 缺少 Archive | 迁移未完成 |
+| Project Copilot | 2026-06-19 | 1 | 存在 | 7 | 1 | 0 | 存在 | 需要收敛记忆漂移 | 存在漂移 | 治理健康 | 质量健康 | 迁移未完成 |
 
 ---
 
@@ -22,9 +22,9 @@
 
 总工作日志：48
 
-总决策：9
+总决策：10
 
-总 ADR：6
+总 ADR：7
 
 总 Session Archive：1
 
@@ -36,12 +36,20 @@
 
 总知识沉淀：40
 
+README 存在漂移的项目：3
+
+ADR Governance 需治理的项目：0
+
+Session Quality 需治理的项目：0
+
+Legacy Migration 未完成的项目：3
+
 ---
 
 ## 关键发现
 
 - Project Copilot 已能在真实项目中形成可审阅的 `.ai/` 项目记忆。
-- ADR、Session Archive、候选事件、Charter 和 Roadmap 可以作为记忆质量验证的基础指标。
+- ADR、Session Archive、候选事件、Charter 和 Roadmap 之外，README Drift、ADR Governance、Session Quality 和 Legacy Migration 已进入统一验证口径。
 - 验证汇总现在可以从 `.ai/validation.json` 快照自动刷新，不再依赖人工抄写统计值。
 - 验证体系应优先观察项目记忆是否长期可读、可维护、可复盘，而不是继续新增功能。
 
@@ -49,7 +57,7 @@
 
 ## 下一阶段计划
 
-- 纳入更多真实项目的 `.ai/validation.json`。
-- 从真实 `.ai` 自动刷新统计汇总。
-- 对比不同项目中的 ADR、Session Archive、候选事件和长期知识质量。
-- 继续减少人工维护的验证文档，避免验证体系漂移。
+- 继续纳入更多真实项目，并优先通过 `validation/sources.yaml` 维护项目列表。
+- 从真实 `.ai` 自动刷新统计汇总，避免手工维护 validation report。
+- 对比不同项目中的 README 漂移、ADR 治理、Session Archive 质量和 legacy 迁移进度。
+- 继续减少人工维护的验证文档，避免验证体系本身漂移。

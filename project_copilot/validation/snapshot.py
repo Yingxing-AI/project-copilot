@@ -7,6 +7,12 @@ from datetime import datetime
 from pathlib import Path
 
 from project_copilot.memory.health import inspect_memory_health
+from project_copilot.validation.governance import (
+    inspect_adr_governance,
+    inspect_legacy_migration,
+    inspect_readme_drift,
+    inspect_session_quality,
+)
 
 
 @dataclass(frozen=True)
@@ -24,6 +30,16 @@ class ValidationSnapshot:
     charter_present: bool | None = None
     roadmap_present: bool | None = None
     memory_health_status: str | None = None
+    readme_drift_status: str | None = None
+    readme_drift_issues: list[str] | None = None
+    adr_governance_status: str | None = None
+    adr_governance_issues: list[str] | None = None
+    session_quality_status: str | None = None
+    session_quality_issues: list[str] | None = None
+    legacy_migration_status: str | None = None
+    legacy_migration_progress: str | None = None
+    legacy_migration_classifications: dict[str, str] | None = None
+    legacy_migration_issues: list[str] | None = None
     project_health: int | None = None
     roadmap_state: str | None = None
     source: str = "project-copilot validation snapshot"
@@ -48,6 +64,16 @@ def load_validation_snapshot(path: Path) -> ValidationSnapshot | None:
         charter_present=_maybe_bool(data.get("charter_present")),
         roadmap_present=_maybe_bool(data.get("roadmap_present")),
         memory_health_status=str(data.get("memory_health_status", "")).strip() or None,
+        readme_drift_status=str(data.get("readme_drift_status", "")).strip() or None,
+        readme_drift_issues=_maybe_str_list(data.get("readme_drift_issues")),
+        adr_governance_status=str(data.get("adr_governance_status", "")).strip() or None,
+        adr_governance_issues=_maybe_str_list(data.get("adr_governance_issues")),
+        session_quality_status=str(data.get("session_quality_status", "")).strip() or None,
+        session_quality_issues=_maybe_str_list(data.get("session_quality_issues")),
+        legacy_migration_status=str(data.get("legacy_migration_status", "")).strip() or None,
+        legacy_migration_progress=str(data.get("legacy_migration_progress", "")).strip() or None,
+        legacy_migration_classifications=_maybe_str_dict(data.get("legacy_migration_classifications")),
+        legacy_migration_issues=_maybe_str_list(data.get("legacy_migration_issues")),
         project_health=_maybe_int(data.get("project_health")),
         roadmap_state=str(data.get("roadmap_state", "")).strip() or None,
         source=str(data.get("source", "project-copilot validation snapshot")).strip(),
@@ -74,6 +100,10 @@ def collect_validation_snapshot(root: Path) -> ValidationSnapshot | None:
         knowledge_count = _count_knowledge_entries(ai_dir / "KNOWLEDGE.md")
         roadmap_state = _roadmap_state(ai_dir / "ROADMAP.md")
         memory_health = inspect_memory_health(root)
+        readme_drift = inspect_readme_drift(root)
+        adr_governance = inspect_adr_governance(root)
+        session_quality = inspect_session_quality(root)
+        legacy_migration = inspect_legacy_migration(root)
     except OSError:
         return None
 
@@ -91,6 +121,16 @@ def collect_validation_snapshot(root: Path) -> ValidationSnapshot | None:
         charter_present=memory_health.charter_present,
         roadmap_present=memory_health.roadmap_present,
         memory_health_status=memory_health.status,
+        readme_drift_status=readme_drift.status,
+        readme_drift_issues=readme_drift.issues,
+        adr_governance_status=adr_governance.status,
+        adr_governance_issues=adr_governance.issues,
+        session_quality_status=session_quality.status,
+        session_quality_issues=session_quality.issues,
+        legacy_migration_status=legacy_migration.status,
+        legacy_migration_progress=legacy_migration.progress,
+        legacy_migration_classifications=legacy_migration.classifications,
+        legacy_migration_issues=legacy_migration.issues,
         roadmap_state=roadmap_state,
         source="auto_collected_from_ai",
     )
@@ -119,6 +159,14 @@ def _export_derived_metrics(ai_dir: Path, payload: dict[str, object]) -> None:
         "charter_present": payload.get("charter_present"),
         "roadmap_present": payload.get("roadmap_present"),
         "memory_health_status": payload.get("memory_health_status"),
+        "readme_drift_status": payload.get("readme_drift_status"),
+        "readme_drift_issue_count": len(payload.get("readme_drift_issues") or []),
+        "adr_governance_status": payload.get("adr_governance_status"),
+        "adr_governance_issue_count": len(payload.get("adr_governance_issues") or []),
+        "session_quality_status": payload.get("session_quality_status"),
+        "session_quality_issue_count": len(payload.get("session_quality_issues") or []),
+        "legacy_migration_status": payload.get("legacy_migration_status"),
+        "legacy_migration_progress": payload.get("legacy_migration_progress"),
         "updated_at": payload.get("updated_at"),
         "source": "derived_from_validation_snapshot",
     }
@@ -146,6 +194,23 @@ def _maybe_bool(value: object) -> bool | None:
         if normalized in {"false", "0", "no", "n"}:
             return False
     return None
+
+
+def _maybe_str_list(value: object) -> list[str] | None:
+    if value in (None, ""):
+        return None
+    if not isinstance(value, list):
+        return None
+    return [str(item).strip() for item in value if str(item).strip()]
+
+
+def _maybe_str_dict(value: object) -> dict[str, str] | None:
+    if value in (None, ""):
+        return None
+    if not isinstance(value, dict):
+        return None
+    result = {str(key).strip(): str(item).strip() for key, item in value.items() if str(key).strip() and str(item).strip()}
+    return result or None
 
 
 def _extract_field(path: Path, field_name: str) -> str:

@@ -1,15 +1,15 @@
 # Status
 
-更新日期：2026-06-19
+更新日期：2026-06-20
 
 当前阶段：可持续开发
 
 当前状态：
 
-- 版本：`0.3.0b2`
+- 版本：`0.3.0b3`
 - 当前定位：Codex 项目记忆层
 - 当前记忆健康：需要收敛 legacy `HYPOTHESES.md`、`WORKLOG.md` 和 `metrics.md`
-- 当前测试结果：`pytest -q` 通过，54 passed
+- 当前测试结果：`pytest -q` 通过，59 passed
 
 已完成功能：
 
@@ -23,6 +23,7 @@
 - `AGENTS.md` 生成 Codex 维护 `.ai` 项目记忆的规则。
 - `docs/CODEX_WORKFLOW.md` 面向用户说明 Project Copilot 与 Codex 的日常协作方式。
 - 多项目验证体系：从真实 `.ai/validation.json` 快照自动刷新 `docs/validation-report.md`。
+- P2 治理能力：README Drift Check、ADR Governance、Session Quality、Legacy Migration Report 和 Multi-Project Validation。
 - 项目复盘、项目决策与里程碑时间轴、项目偏航检查和 ADR-first 决策记录。
 - Memory Health Summary。
 - `.ai/KNOWLEDGE.md`、`.ai/history/`，以及自动派生指标 `.ai/derived/metrics.json`。
@@ -53,8 +54,9 @@
 当前风险：
 
 - 历史文档、demo、release notes、`HYPOTHESES.md`、`WORKLOG.md` 和 `metrics.md` 中仍保留旧版叙事，需要逐步归档或标注为 legacy。
+- README Drift 的时间戳规则仍偏紧，当前会把 README 晚于 validation 派生数据的时间差也视为漂移，后续需要单独治理。
 
 下一步任务：
 
 - 继续清理历史文档中的命令系统、GitHub/release/OSS 执行型叙事。
-- 设计 Session Archive 归档格式，并迁移真正重要的历史事件。
+- 单独治理 README Drift 的时间戳判定规则。
