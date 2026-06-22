@@ -1,17 +1,29 @@
 # Code of Conduct
 
-Project Copilot aims to be a respectful and practical open source community.
+## Our Standard
 
-## Expected Behavior
+Project Copilot contributors are expected to communicate clearly, respectfully, and constructively.
 
-- Be respectful and constructive.
-- Focus feedback on the work.
-- Help make the project easier to use and contribute to.
+Examples of behavior that help create a healthy community:
 
-## Unacceptable Behavior
+- Giving actionable technical feedback
+- Respecting different experience levels
+- Focusing discussion on the code, product, or evidence
+- Assuming good intent while still being precise
 
-- Harassment, insults, or personal attacks.
-- Publishing private information without permission.
-- Repeated disruption of project discussions.
+Examples of unacceptable behavior:
 
-Maintainers may remove content or restrict participation when needed to protect the community.
+- Harassment, insults, or personal attacks
+- Bad-faith review behavior
+- Publishing private information without consent
+- Derailing technical discussion with hostility or abuse
+
+## Scope
+
+This applies in GitHub issues, pull requests, discussions, release conversations, and other public project spaces.
+
+## Enforcement
+
+Project maintainers may remove, edit, or reject comments, issues, or contributions that violate this code of conduct.
+
+Serious or repeated violations may result in temporary or permanent exclusion from project collaboration spaces.
