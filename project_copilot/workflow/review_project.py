@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import re
+from pathlib import Path
+
 from project_copilot.memory import MemoryStore
 from project_copilot.secretary import inspect_secretary_status
 from project_copilot.workflow.types import WorkflowContext, WorkflowResult
@@ -12,7 +15,10 @@ def run(context: WorkflowContext) -> WorkflowResult:
     analysis = status.analysis
     completed = analysis.completed[:6] or ["暂无明确完成项"]
     risks = status.reminders[:5] or ["暂无明显风险"]
-    decisions = _recent_decisions(memory.read("DECISIONS.md"), limit=3) or ["暂无关键决策"]
+    decisions = _recent_adr_decisions(context.root / ".ai" / "adr", limit=3) or _recent_decisions(
+        memory.read("DECISIONS.md"),
+        limit=3,
+    ) or ["暂无关键决策"]
 
     summary = "\n".join(
         [
@@ -39,6 +45,26 @@ def run(context: WorkflowContext) -> WorkflowResult:
         summary=summary,
         next_steps=["这是只读复盘预览；需要归档时，请在收工确认中把它作为重大会话摘要写入。", "重要取舍应通过“记录决策 ...”进入 ADR。"],
     )
+
+
+def _recent_adr_decisions(adr_dir: Path, limit: int) -> list[str]:
+    try:
+        paths = sorted(path for path in adr_dir.glob("*.md") if re.match(r"^\d{4}-", path.name))
+    except OSError:
+        return []
+
+    decisions: list[str] = []
+    for path in paths:
+        try:
+            text = path.read_text(encoding="utf-8")
+        except OSError:
+            continue
+        title = _first_heading(text)
+        if title.startswith("ADR "):
+            title = title.split(": ", 1)[1] if ": " in title else title
+        if title:
+            decisions.append(title)
+    return decisions[-limit:]
 
 
 def _recent_decisions(text: str, limit: int) -> list[str]:
@@ -72,3 +98,11 @@ def _recent_decisions(text: str, limit: int) -> list[str]:
             current.append(line)
     flush()
     return blocks[-limit:]
+
+
+def _first_heading(text: str) -> str:
+    for line in text.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("# "):
+            return stripped.removeprefix("# ").strip()
+    return ""

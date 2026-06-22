@@ -304,9 +304,15 @@ def _extract_items(text: str) -> list[str]:
             item = bullet_match.group(1).strip()
         else:
             item = stripped
-        if item and item not in items:
-            items.append(item)
+        for part in _split_inline_list_items(item):
+            if part and part not in items:
+                items.append(part)
     return items
+
+
+def _split_inline_list_items(text: str) -> list[str]:
+    parts = [part.strip(" ，,。；;") for part in re.split(r"[；;]\s*", text) if part.strip(" ，,。；;")]
+    return parts or [text.strip()]
 
 
 def _first_sentence(text: str) -> str:

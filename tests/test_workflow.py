@@ -102,8 +102,9 @@ class WorkflowTest(unittest.TestCase):
             roadmap = run_workflow(tmp_path, "查看路线图")
 
             self.assertIn("已记录 ADR", decision)
-            self.assertIn("MVP 先做简历导入", (tmp_path / ".ai" / "DECISIONS.md").read_text(encoding="utf-8"))
+            self.assertNotIn("MVP 先做简历导入", (tmp_path / ".ai" / "DECISIONS.md").read_text(encoding="utf-8"))
             self.assertIn("MVP 先做简历导入", (tmp_path / ".ai" / "adr" / "index.md").read_text(encoding="utf-8"))
+            self.assertIn("MVP 先做简历导入", review)
             self.assertIn("项目健康度", review)
             self.assertFalse((tmp_path / ".ai" / "history" / "2026-06.md").exists())
             self.assertEqual(before_memory, (tmp_path / ".ai" / "MEMORY.md").read_text(encoding="utf-8"))

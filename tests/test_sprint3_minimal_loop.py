@@ -108,9 +108,36 @@ def test_record_decision_does_not_duplicate_into_memory(tmp_path: Path) -> None:
 
     assert result.intent_name == "record_decision"
     assert result.status == "success"
-    assert "MVP 先做简历导入" in (tmp_path / ".ai" / "DECISIONS.md").read_text(encoding="utf-8")
+    assert "MVP 先做简历导入" not in (tmp_path / ".ai" / "DECISIONS.md").read_text(encoding="utf-8")
     assert "MVP 先做简历导入" in (tmp_path / ".ai" / "adr" / "index.md").read_text(encoding="utf-8")
     assert before == (tmp_path / ".ai" / "MEMORY.md").read_text(encoding="utf-8")
+
+
+def test_init_project_splits_and_deduplicates_initial_decisions(tmp_path: Path) -> None:
+    proposal = "\n".join(
+        [
+            "项目使命：AI 招聘系统",
+            "目标用户：招聘团队",
+            "商业目标：提高招聘筛选效率",
+            "MVP 范围：简历导入",
+            "技术栈：Python 3.11，本地规则驱动，pytest",
+            "当前阶段：Sprint Proposal Driven Context",
+            "初始 Roadmap：先做方案解析；再生成 .ai 记忆；最后补齐文档。",
+            "初始 Decisions：先支持完整方案输入；保持本地运行。",
+        ]
+    )
+
+    first = run_structured_workflow(tmp_path, proposal)
+    second = run_structured_workflow(tmp_path, proposal)
+
+    assert first.status == "success"
+    assert second.status == "success"
+    adr_files = sorted(path.name for path in (tmp_path / ".ai" / "adr").glob("*.md") if path.name != "index.md")
+    assert adr_files == ["0001-decision.md", "0002-decision.md"]
+    index_text = (tmp_path / ".ai" / "adr" / "index.md").read_text(encoding="utf-8")
+    assert "暂无 ADR" not in index_text
+    assert "先支持完整方案输入" in index_text
+    assert "保持本地运行" in index_text
 
 
 def test_natural_language_intent() -> None:

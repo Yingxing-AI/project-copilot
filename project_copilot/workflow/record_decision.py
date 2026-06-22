@@ -34,7 +34,6 @@ def run(context: WorkflowContext) -> WorkflowResult:
         )
 
     adr_path = _write_adr(memory, decision)
-    _append_legacy_decision_index(memory, decision, adr_path)
     validation_report_path, _ = refresh_validation_report_file(context.root)
     return WorkflowResult(
         intent_name=context.intent_name,
@@ -123,16 +122,6 @@ def _append_adr_index(index_path: Path, number: int, decision: str, filename: st
         index_path.write_text("# ADR Index\n\n", encoding="utf-8")
     line = f"- [ADR {number:04d}: {decision}]({filename})"
     text = index_path.read_text(encoding="utf-8")
+    text = text.replace("\n暂无 ADR。\n", "\n").replace("暂无 ADR。\n", "")
     if line not in text:
         index_path.write_text(text.rstrip() + f"\n{line}\n", encoding="utf-8")
-
-
-def _append_legacy_decision_index(memory: MemoryStore, decision: str, adr_path: Path) -> None:
-    today = datetime.now().strftime("%Y-%m-%d")
-    relative = adr_path.relative_to(memory.root)
-    path = memory.ai_dir / "DECISIONS.md"
-    with path.open("a", encoding="utf-8") as handle:
-        handle.write(f"\n日期：{today}\n\n")
-        handle.write(f"决策：{decision}\n\n")
-        handle.write("原因：详见 ADR。\n\n")
-        handle.write(f"影响：新决策已迁移到 `{relative}`，本文件仅保留兼容索引。\n")

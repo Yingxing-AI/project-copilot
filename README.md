@@ -6,7 +6,7 @@ Project Copilot helps Codex remember the project. It does not manage the project
 
 用户只和 Codex 对话。Codex 负责开发，Git 负责版本管理，Project Copilot 负责安装和维护 `.ai/` 项目记忆，让 Codex 持续理解项目使命、MVP 边界、ADR、长期知识和为什么这样做。
 
-当前版本是 v0.3.0：规则驱动、本地运行、不依赖外部 AI API。
+当前版本是 v0.3.1：规则驱动、本地运行、不依赖外部 AI API。
 
 ## Available Today
 
@@ -122,15 +122,15 @@ Project Copilot uses a read-once, write-once memory rhythm:
 - `STATUS.md`: current recovery card
 - `ROADMAP.md`: product direction and future memory work
 - `MEMORY.md`: stable project timeline and milestones
-- `HYPOTHESES.md`: legacy hypothesis layer
-- `DECISIONS.md`: legacy decision index
+- `HYPOTHESES.md`: read-only legacy hypothesis layer
+- `DECISIONS.md`: read-only legacy decision index
 - `adr/`: ADR files for long-lived decisions and tradeoffs
 - `sessions/current.md`: current session candidates
 - `sessions/archive/`: confirmed major session summaries
-- `WORKLOG.md`: legacy worklog compatibility only
+- `WORKLOG.md`: read-only legacy worklog compatibility only
 - `KNOWLEDGE.md`: long-term practices, product learning, and feedback
 - `derived/metrics.json`: generated memory metrics
-- `metrics.md`: legacy metrics snapshot, not created for new projects
+- `metrics.md`: read-only legacy metrics snapshot, not created for new projects
 - `validation.json`: validation data derived from `.ai`
 
 ## Primary Flow

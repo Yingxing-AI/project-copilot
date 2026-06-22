@@ -1,15 +1,15 @@
 # Status
 
-更新日期：2026-06-20
+更新日期：2026-06-22
 
 当前阶段：可持续开发
 
 当前状态：
 
-- 版本：`0.3.0`
+- 版本：`0.3.1`
 - 当前定位：Codex 项目记忆层
 - 当前记忆健康：需要收敛 legacy `HYPOTHESES.md`、`WORKLOG.md` 和 `metrics.md`
-- 当前测试结果：`pytest -q` 通过，59 passed
+- 当前测试结果：`pytest -q` 通过，61 passed
 
 已完成功能：
 
@@ -54,9 +54,9 @@
 当前风险：
 
 - 历史文档、demo、release notes、`HYPOTHESES.md`、`WORKLOG.md` 和 `metrics.md` 中仍保留旧版叙事，需要逐步归档或标注为 legacy。
-- README Drift 的时间戳规则仍偏紧，当前会把 README 晚于 validation 派生数据的时间差也视为漂移，后续需要单独治理。
+- 当前主要治理问题已收敛到 legacy 迁移未完成，`WORKLOG.md`、`HYPOTHESES.md` 和 `metrics.md` 仍会持续触发记忆漂移信号。
 
 下一步任务：
 
 - 继续清理历史文档中的命令系统、GitHub/release/OSS 执行型叙事。
-- 单独治理 README Drift 的时间戳判定规则。
+- 继续压缩 legacy 文件的活跃内容，推动 Legacy Migration 从“迁移未完成”收敛到纯兼容层。

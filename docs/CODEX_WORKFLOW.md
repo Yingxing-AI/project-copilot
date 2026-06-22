@@ -154,11 +154,11 @@ Project Copilot 会通过项目记忆帮助 Codex 理解：
 
 `HYPOTHESES.md`
 
-兼容旧版假设层。新会话优先使用 `sessions/current.md` 暂存候选事件。
+兼容旧版假设层。当前主流程优先使用 `sessions/current.md` 暂存和恢复候选事件。
 
 `DECISIONS.md`
 
-兼容旧版决策索引。新决策优先写入 `adr/`。
+兼容旧版决策索引。新决策只写入 `adr/`。
 
 `adr/`
 

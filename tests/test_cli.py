@@ -157,7 +157,8 @@ class CliTest(unittest.TestCase):
             self.assertIn("MVP 范围：简历导入", context)
             self.assertIn("当前阶段：Sprint Proposal Driven Context", status)
             self.assertIn("先做方案解析", roadmap)
-            self.assertIn("先支持完整方案输入", decisions)
+            self.assertNotIn("先支持完整方案输入", decisions)
+            self.assertIn("先支持完整方案输入", (tmp_path / ".ai" / "adr" / "index.md").read_text(encoding="utf-8"))
 
     def test_first_run_prompts_for_missing_fields(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

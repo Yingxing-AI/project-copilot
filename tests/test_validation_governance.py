@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from pathlib import Path
 
 from project_copilot.validation.governance import (
@@ -113,6 +114,69 @@ def test_readme_drift_and_session_quality_rules_are_rule_based(tmp_path: Path) -
     assert any("README Drift Check" in issue for issue in readme_report.issues)
     assert any("疑似重复 ADR 正文" in issue for issue in session_report.issues)
     assert any("噪音占比过高" in issue for issue in session_report.issues)
+
+
+def test_readme_drift_ignores_fresh_validation_artifacts(tmp_path: Path) -> None:
+    root = tmp_path
+    ai_dir = root / ".ai"
+    (ai_dir / "adr").mkdir(parents=True)
+    (ai_dir / "sessions" / "archive" / "2026-06").mkdir(parents=True)
+    (ai_dir / "derived").mkdir(parents=True)
+
+    readme = root / "README.md"
+    readme.write_text(
+        "\n".join(
+            [
+                "# Project Copilot",
+                "",
+                "## Available Today",
+                "",
+                "- Memory Health",
+                "- README Drift Check",
+                "- ADR Governance",
+                "- Session Quality",
+                "- Legacy Migration Report",
+                "- Multi-Project Validation",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    (ai_dir / "PROJECT_CHARTER.md").write_text("项目名称：Project Copilot\n", encoding="utf-8")
+    (ai_dir / "STATUS.md").write_text("当前阶段：可持续开发\n", encoding="utf-8")
+    (ai_dir / "ROADMAP.md").write_text("# Roadmap\n", encoding="utf-8")
+    (ai_dir / "adr" / "0001-test.md").write_text(
+        "# ADR 0001: Test\n\n日期：2026-06-19\n\n状态：Accepted\n",
+        encoding="utf-8",
+    )
+    (ai_dir / "sessions" / "archive" / "2026-06" / "2026-06-19.md").write_text(
+        "# Session Archive\n\n日期：2026-06-19\n\n## 今日关键进展\n- 完成对齐。\n",
+        encoding="utf-8",
+    )
+    (ai_dir / "validation.json").write_text("{}", encoding="utf-8")
+    (ai_dir / "derived" / "metrics.json").write_text("{}", encoding="utf-8")
+
+    base = datetime(2026, 6, 22, 10, 0, 0).timestamp()
+    newer = (datetime(2026, 6, 22, 10, 0, 0) + timedelta(hours=1)).timestamp()
+    for path in (
+        readme,
+        ai_dir / "PROJECT_CHARTER.md",
+        ai_dir / "STATUS.md",
+        ai_dir / "ROADMAP.md",
+        ai_dir / "adr" / "0001-test.md",
+        ai_dir / "sessions" / "archive" / "2026-06" / "2026-06-19.md",
+    ):
+        path.touch()
+        path.chmod(path.stat().st_mode)
+        import os
+        os.utime(path, (base, base))
+    for path in (ai_dir / "validation.json", ai_dir / "derived" / "metrics.json"):
+        import os
+        os.utime(path, (newer, newer))
+
+    report = inspect_readme_drift(root)
+
+    assert report.status == "已对齐"
+    assert not any("核心记忆约" in issue for issue in report.issues)
 
 
 def test_adr_governance_detects_missing_status_and_broken_superseded_chain(tmp_path: Path) -> None:

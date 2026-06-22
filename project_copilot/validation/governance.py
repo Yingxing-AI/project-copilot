@@ -76,17 +76,9 @@ def inspect_readme_drift(root: Path) -> ReadmeDriftReport:
     if "Project status card" in readme and "Memory Health" not in readme:
         issues.append("README 对外仍沿用旧状态卡叙事，与 ADR 0006 的 Memory View 收敛决策冲突。")
 
-    drift_days = _mtime_drift_days(
-        readme_path,
-        [
-            root / ".ai" / "validation.json",
-            root / ".ai" / "derived" / "metrics.json",
-            *(root / ".ai" / "adr").glob("*.md"),
-            *(root / ".ai" / "sessions" / "archive").rglob("*.md"),
-        ],
-    )
+    drift_days = _mtime_drift_days(readme_path, _readme_drift_candidates(root))
     if drift_days is not None and drift_days >= 1:
-        issues.append(f"README 最后更新时间落后于 `.ai` 核心记忆与 validation 派生数据约 {drift_days} 天。")
+        issues.append(f"README 最后更新时间落后于 `.ai` 核心记忆约 {drift_days} 天。")
 
     if health.status == "需要收敛记忆漂移" and "memory drift" not in normalized:
         issues.append("README 未解释当前记忆漂移治理面，难以说明 validation 与 memory health 的真实用途。")
@@ -289,6 +281,24 @@ def _parse_project_list(text: str) -> list[str]:
         elif re.match(r"^[A-Za-z_]", line):
             break
     return [item for item in projects if item]
+
+
+def _readme_drift_candidates(root: Path) -> list[Path]:
+    ai_dir = root / ".ai"
+    candidates = [
+        ai_dir / "PROJECT_CHARTER.md",
+        ai_dir / "PROJECT_CONTEXT.md",
+        ai_dir / "STATUS.md",
+        ai_dir / "ROADMAP.md",
+        ai_dir / "MEMORY.md",
+        ai_dir / "KNOWLEDGE.md",
+        ai_dir / "DECISIONS.md",
+        ai_dir / "WORKLOG.md",
+        ai_dir / "HYPOTHESES.md",
+    ]
+    candidates.extend((ai_dir / "adr").glob("*.md"))
+    candidates.extend((ai_dir / "sessions" / "archive").rglob("*.md"))
+    return candidates
 
 
 def _section_lines(text: str, heading: str) -> list[str]:

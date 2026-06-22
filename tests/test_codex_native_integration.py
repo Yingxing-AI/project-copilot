@@ -220,7 +220,7 @@ def test_install_and_validation_docs_are_current() -> None:
     contributing = Path("CONTRIBUTING.md").read_text(encoding="utf-8")
     validation = Path("docs/validation-report.md").read_text(encoding="utf-8")
 
-    assert 'REF="${PROJECT_COPILOT_REF:-v0.3.0}"' in install
+    assert 'REF="${PROJECT_COPILOT_REF:-v0.3.1}"' in install
     assert "pytest -q" in contributing
     assert "python3 -m unittest discover" not in contributing
     assert "Validation Report" in validation
