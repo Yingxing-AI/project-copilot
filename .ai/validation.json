@@ -2,18 +2,20 @@
   "project_name": "Project Copilot",
   "started_at": "2026-06-19",
   "status": "可持续开发",
-  "usage_days": 3,
+  "usage_days": 4,
   "worklog_count": 4,
-  "decision_count": 7,
+  "decision_count": 8,
   "knowledge_count": 29,
-  "adr_count": 7,
-  "session_archive_count": 1,
+  "adr_count": 8,
+  "session_archive_count": 2,
   "active_candidate_count": 0,
   "charter_present": true,
   "roadmap_present": true,
   "memory_health_status": "需要收敛记忆漂移",
-  "readme_drift_status": "已对齐",
-  "readme_drift_issues": [],
+  "readme_drift_status": "存在漂移",
+  "readme_drift_issues": [
+    "README 最后更新时间落后于 `.ai` 核心记忆约 1 天。"
+  ],
   "adr_governance_status": "治理健康",
   "adr_governance_issues": [],
   "session_quality_status": "质量健康",
@@ -37,5 +39,5 @@
   "project_health": null,
   "roadmap_state": null,
   "source": "auto_collected_from_ai",
-  "updated_at": "2026-06-22T20:07:50"
+  "updated_at": "2026-06-23T15:35:58"
 }
