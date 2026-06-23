@@ -9,3 +9,4 @@
 - [ADR 0005: 执行 P0 记忆架构收敛](0005-p0-memory-architecture-review.md)
 - [ADR 0006: 收敛 Memory View 工作流](0006-memory-view-convergence.md)
 - [ADR 0007: 引入 Memory Governance 与 Drift Detection](0007-memory-governance-and-drift-detection.md)
+- [ADR 0008: 定义 Validation Snapshot 生命周期](0008-validation-snapshot-lifecycle.md)

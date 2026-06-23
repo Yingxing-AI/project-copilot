@@ -51,11 +51,13 @@ These belong to Codex, Git, or the hosting platform:
 
 ## Quick Start
 
-Install with one command:
+Stable install with one command:
 
 ```bash
 curl -LsSf https://raw.githubusercontent.com/Yingxing-AI/project-copilot/main/install.sh | sh
 ```
+
+The install script defaults to the latest stable ref, currently `v0.3.1`.
 
 Verify the installed CLI:
 
@@ -69,6 +71,12 @@ For development, install from a local checkout:
 
 ```bash
 pip install -e .
+```
+
+To contribute, prefer the development extras:
+
+```bash
+pip install -e ".[dev]"
 ```
 
 Adopt an existing project:
@@ -158,6 +166,16 @@ Daily natural-language examples:
 ```
 
 The user should not need to think in commands. Project Copilot maps intent to the right memory workflow internally.
+
+## First Contribution Path
+
+For a first contribution, the shortest path is:
+
+1. Install development dependencies with `pip install -e ".[dev]"`.
+2. Run `pytest -q`.
+3. Pick one workflow in `project_copilot/workflow/`.
+4. Update the matching docs if the user-facing behavior changes.
+5. Re-run `pytest -q --cov=project_copilot --cov-report=term-missing` before opening a PR.
 
 ## Validation
 

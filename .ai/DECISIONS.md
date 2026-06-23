@@ -93,3 +93,11 @@
 原因：仅有记忆结构还不足以证明长期价值；如果 README、ADR、Session Archive 和 legacy 文件缺少持续治理，`.ai` 会重新漂移。
 
 影响：详见 ADR 0007：`.ai/adr/0007-memory-governance-and-drift-detection.md`。Validation 从单纯统计扩展为治理视图，但不自动修改 README、不自动删除 legacy 文件，也不引入 AI 评分。
+
+日期：2026-06-23
+
+决策：将 `.ai/validation.json` 明确定义为可覆盖的 Validation Snapshot，并约束 `derived/metrics.json` 与 `docs/validation-report.md` 的单向派生关系。
+
+原因：beta.3 已形成 Validation 派生链路，但仍缺少 snapshot 生命周期治理，容易把 report 或快照误当成事实来源。
+
+影响：详见 ADR 0008：`.ai/adr/0008-validation-snapshot-lifecycle.md`。允许刷新与禁止刷新的触发条件被显式化；`validation.json` 不是长期记忆源，report 也不得反向修改真实 `.ai`。

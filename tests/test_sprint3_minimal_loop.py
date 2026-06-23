@@ -56,6 +56,17 @@ def test_continue_development_workflow(tmp_path: Path) -> None:
         assert (tmp_path / ".ai" / name).read_text(encoding="utf-8") == content
 
 
+def test_session_candidate_updates_do_not_refresh_validation_snapshot(tmp_path: Path) -> None:
+    run_structured_workflow(tmp_path, "初始化项目")
+    validation_path = tmp_path / ".ai" / "validation.json"
+    before = validation_path.read_text(encoding="utf-8")
+
+    memory = MemoryStore(tmp_path)
+    memory.append_session_candidate("ADR Candidate", "今天先观察真实用户反馈。")
+
+    assert validation_path.read_text(encoding="utf-8") == before
+
+
 def test_continue_development_does_not_create_memory_layer(tmp_path: Path) -> None:
     result = run_structured_workflow(tmp_path, "继续开发项目")
 
@@ -71,6 +82,7 @@ def test_close_day_workflow(tmp_path: Path) -> None:
     memory.append_session_candidate("ADR Candidate", "今天确认先做简历导入。")
     memory.append_session_candidate("Risk Candidate", "当前存在范围膨胀风险。")
     before_worklog = (tmp_path / ".ai" / "WORKLOG.md").read_text(encoding="utf-8")
+    before_validation = (tmp_path / ".ai" / "validation.json").read_text(encoding="utf-8")
 
     result = run_structured_workflow(tmp_path, "今天结束工作")
 
@@ -86,6 +98,8 @@ def test_close_day_workflow(tmp_path: Path) -> None:
     assert current_text.strip().startswith("# Current Session")
     assert "今天确认先做简历导入" not in current_text
     assert before_worklog == (tmp_path / ".ai" / "WORKLOG.md").read_text(encoding="utf-8")
+    assert (tmp_path / ".ai" / "validation.json").read_text(encoding="utf-8") != before_validation
+    assert (tmp_path / ".ai" / "derived" / "metrics.json").exists()
 
 
 def test_record_decision_routes_uncertain_input_to_hypotheses(tmp_path: Path) -> None:

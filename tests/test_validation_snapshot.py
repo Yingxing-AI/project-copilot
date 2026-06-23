@@ -1,7 +1,8 @@
 from pathlib import Path
 
 from project_copilot.memory.health import inspect_memory_health
-from project_copilot.validation.snapshot import collect_validation_snapshot
+from project_copilot.validation.report import build_validation_records
+from project_copilot.validation.snapshot import collect_validation_snapshot, export_validation_snapshot
 
 
 def test_collect_validation_snapshot_accepts_legacy_ai_formats(tmp_path: Path) -> None:
@@ -92,3 +93,55 @@ def test_collect_validation_snapshot_accepts_legacy_ai_formats(tmp_path: Path) -
     assert snapshot.active_candidate_count == 1
     assert health.session_archive_count == 1
     assert health.active_candidate_count == 1
+
+
+def test_export_validation_snapshot_writes_snapshot_and_metrics_in_same_batch(tmp_path: Path) -> None:
+    ai_dir = tmp_path / ".ai"
+    ai_dir.mkdir()
+    (ai_dir / "PROJECT_CHARTER.md").write_text("项目名称：project-copilot\n", encoding="utf-8")
+    (ai_dir / "STATUS.md").write_text("当前阶段：可持续开发\n", encoding="utf-8")
+    (ai_dir / "ROADMAP.md").write_text("# Roadmap\n", encoding="utf-8")
+
+    snapshot = collect_validation_snapshot(tmp_path)
+
+    assert snapshot is not None
+    export_validation_snapshot(tmp_path, snapshot)
+
+    validation_path = ai_dir / "validation.json"
+    metrics_path = ai_dir / "derived" / "metrics.json"
+    assert validation_path.exists()
+    assert metrics_path.exists()
+    validation_text = validation_path.read_text(encoding="utf-8")
+    metrics_text = metrics_path.read_text(encoding="utf-8")
+    assert '"source": "auto_collected_from_ai"' in validation_text
+    assert '"source": "derived_from_validation_snapshot"' in metrics_text
+
+
+def test_validation_report_prefers_live_ai_over_snapshot_content(tmp_path: Path) -> None:
+    root = tmp_path / "project-copilot"
+    root.mkdir()
+    (root / "validation").mkdir()
+    (root / "validation" / "sources.yaml").write_text("projects:\n  - project-copilot\n", encoding="utf-8")
+    ai_dir = root / ".ai"
+    ai_dir.mkdir()
+    (ai_dir / "PROJECT_CHARTER.md").write_text("项目名称：project-copilot\n", encoding="utf-8")
+    (ai_dir / "STATUS.md").write_text("当前阶段：可持续开发\n", encoding="utf-8")
+    (ai_dir / "ROADMAP.md").write_text("# Roadmap\n", encoding="utf-8")
+    (ai_dir / "validation.json").write_text(
+        "\n".join(
+            [
+                "{",
+                '  "project_name": "stale-snapshot",',
+                '  "started_at": "2026-06-01",',
+                '  "status": "过期状态"',
+                "}",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    records = build_validation_records(root)
+
+    assert len(records) == 1
+    assert records[0].project_name == "project-copilot"
+    assert records[0].status == "可持续开发"

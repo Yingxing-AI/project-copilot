@@ -101,6 +101,8 @@ ADR 写入格式必须统一：
 
 Session Memory 模式下，开发过程中不得自动扩写 `.ai/ROADMAP.md`、`.ai/MEMORY.md` 或 `.ai/WORKLOG.md`。
 
+`validation.json` 是从真实 `.ai` 记忆派生的可覆盖快照，不是长期记忆源；`derived/metrics.json` 必须与其同批刷新，`docs/validation-report.md` 只是可重建视图，不得反向成为事实来源。
+
 开发过程中只维护会话级候选事件：
 
 - ADR 候选
@@ -112,6 +114,10 @@ Session Memory 模式下，开发过程中不得自动扩写 `.ai/ROADMAP.md`、
 结束工作时必须先展示候选事件，并要求用户确认哪些内容三个月后仍重要。
 
 只有用户确认后，才允许写入 `.ai/adr/`、`.ai/MEMORY.md`、`.ai/KNOWLEDGE.md` 或 `.ai/sessions/archive/`。
+
+触发条件：只有 `init_project`、`adopt_project`、已确认 ADR 写入后、结束工作且已确认写入 Session Archive 或长期记忆后、`project-copilot 同步项目状态`、导出验证快照、刷新验证报告（兼容/修复）允许刷新 `validation.json`。判断标准：真实 `.ai` 记忆发生了确认写入，或用户显式执行 Validation 派生命令。执行动作：刷新 `.ai/validation.json`、`.ai/derived/metrics.json`，并按需重建 `docs/validation-report.md`。
+
+触发条件：只修改 Session 候选、出现未确认假设、执行 `continue_development`、进行普通代码/测试/文档修改、发生未改变真实 `.ai` 记忆语义的开发流水，或结束工作但没有确认长期写入。判断标准：没有新的真实 `.ai` 长期记忆或 Archive 被确认写入。执行动作：禁止刷新 `validation.json`，保持现有派生快照不变。
 
 `WORKLOG.md` 只作为旧版兼容和重大会话摘要，不再记录普通开发流水。重大会话摘要必须包含：
 

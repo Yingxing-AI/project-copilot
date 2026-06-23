@@ -185,7 +185,9 @@ Project Copilot 会通过项目记忆帮助 Codex 理解：
 - 结束工作时统一确认并写入
 - 重要决策进入 ADR
 - MVP 变更前先确认影响
-- 长期记忆写入后自动刷新验证报告，候选事件阶段不刷新
+- 长期记忆或 Session Archive 确认写入后才刷新 Validation Snapshot
+- `validation.json` 是可覆盖快照，不是长期事实；`derived/metrics.json` 与其同批刷新
+- `docs/validation-report.md` 只是可重建视图，不能反向作为真实记忆来源
 
 ## 项目秘书理念
 

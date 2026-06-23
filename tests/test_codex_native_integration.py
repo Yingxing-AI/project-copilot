@@ -222,9 +222,20 @@ def test_install_and_validation_docs_are_current() -> None:
 
     assert 'REF="${PROJECT_COPILOT_REF:-v0.3.1}"' in install
     assert "pytest -q" in contributing
+    assert '--cov=project_copilot' in contributing
     assert "python3 -m unittest discover" not in contributing
     assert "Validation Report" in validation
     assert "自动刷新" in validation
+
+
+def test_oss_governance_docs_exist() -> None:
+    code_of_conduct = Path("CODE_OF_CONDUCT.md").read_text(encoding="utf-8")
+    security = Path("SECURITY.md").read_text(encoding="utf-8")
+
+    assert "Code of Conduct" in code_of_conduct
+    assert "unacceptable behavior" in code_of_conduct
+    assert "Security Policy" in security
+    assert "supported line is" in security
 
 
 def test_interactive_mode_not_primary() -> None:
@@ -233,4 +244,6 @@ def test_interactive_mode_not_primary() -> None:
 
     assert "Interactive mode is kept for compatibility" in readme
     assert "not the primary daily workflow" in readme
+    assert "The install script defaults to the latest stable ref" in readme
+    assert "First Contribution Path" in readme
     assert "Prefer `project-copilot adopt` or `project-copilot init`, then `codex`." in usage

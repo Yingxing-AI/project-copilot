@@ -12,8 +12,22 @@ license = { text = "MIT" }
 authors = [{ name = "Project Copilot Contributors" }]
 dependencies = []
 
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "pytest-cov>=5.0",
+]
+
 [project.scripts]
 project-copilot = "project_copilot.cli.main:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["project_copilot"]
+
+[tool.coverage.run]
+branch = true
+source = ["project_copilot"]
+
+[tool.coverage.report]
+show_missing = true
+skip_empty = true
