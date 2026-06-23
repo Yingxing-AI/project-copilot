@@ -8,11 +8,11 @@
 
 - README 完整度较高，项目定位、安装方式、核心能力、边界、主流程和验证体系都讲清楚了。
 - LICENSE 明确，使用标准 MIT License，开源分发没有明显法律阻碍。
-- 已有稳定版发布节奏，`v0.3.1`、release note、版本号和安装引用已对齐。
+- 已有稳定版发布节奏，`v0.3.2`、release note、版本号和安装引用已对齐。
 - ROADMAP 清晰，当前方向、下一阶段和明确暂停项都有记录，产品边界稳定。
 - GitHub Actions 简洁有效，覆盖 Python 3.10、3.11、3.12，并执行 CLI smoke test 和 `pytest -q`。
 - GitHub Actions 现在也包含覆盖率入口，CI 可直接运行 `pytest -q --cov=project_copilot --cov-report=term-missing`。
-- 测试基线稳定，当前 `62 passed`，覆盖了 workflow、validation、CLI、intent 和集成文档一致性。
+- 测试基线稳定，当前 `65 passed`，覆盖了 workflow、validation、CLI、intent 和集成文档一致性。
 - 已补齐 `CODE_OF_CONDUCT.md` 与 `SECURITY.md`，OSS 治理成熟度明显提升。
 - CONTRIBUTING 已包含开发环境、测试、覆盖率、本地验证和发布说明，贡献者入门路径清晰。
 - 项目结构清楚，`cli / intent / workflow / memory / validation / analyzer` 分层明确，适合 Codex 和人类维护者理解。

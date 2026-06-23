@@ -168,7 +168,7 @@ Session Memory 模式下，开发过程中不得自动扩写 `.ai/ROADMAP.md`、
 - CLI 命令：`project-copilot`
 - 诊断命令：`project-copilot doctor`
 - 版本命令：`project-copilot --version`
-- 测试命令：`pytest -q`（当前基线：63 passed）
+- 测试命令：`pytest -q`（当前基线：65 passed）
 - CLI 入口：`project_copilot/cli/main.py`
 - Workflow 入口：`project_copilot/workflow/`
 - Intent 入口：`project_copilot/intent/classifier.py`

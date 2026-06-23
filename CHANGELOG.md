@@ -1,5 +1,28 @@
 # Changelog
 
+## v0.3.2
+
+### Added
+
+- ADR 0008 to define the Validation Snapshot lifecycle.
+- Regression coverage for validation refresh boundaries and live-memory precedence.
+
+### Changed
+
+- Refreshed validation derivatives after confirmed `close_day` Session Archive writes.
+- Synced governance rules across ADR index, AGENTS, workflow docs, generated Codex workflow content, and release metadata.
+
+### Clarified
+
+- `.ai/validation.json` is a derived snapshot rather than a long-term fact source.
+- `.ai/derived/metrics.json` refreshes in the same batch as `validation.json`.
+- `docs/validation-report.md` is a rebuildable view and does not override real `.ai` memory.
+
+### Verified
+
+- `pytest -q`
+- Current baseline: 65 passed.
+
 ## v0.3 Alpha
 
 Project Copilot is now packaged as a local-first natural-language project workflow CLI for AI Coding projects.

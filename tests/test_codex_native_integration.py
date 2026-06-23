@@ -200,7 +200,7 @@ def test_repository_agents_md_is_hardened() -> None:
     assert "必要时" not in text
     assert "如果合适" not in text
     assert "可能需要" not in text
-    assert "当前基线：63 passed" in text
+    assert "当前基线：65 passed" in text
 
 
 def test_readme_promotes_codex_native_flow() -> None:
@@ -220,7 +220,7 @@ def test_install_and_validation_docs_are_current() -> None:
     contributing = Path("CONTRIBUTING.md").read_text(encoding="utf-8")
     validation = Path("docs/validation-report.md").read_text(encoding="utf-8")
 
-    assert 'REF="${PROJECT_COPILOT_REF:-v0.3.1}"' in install
+    assert 'REF="${PROJECT_COPILOT_REF:-v0.3.2}"' in install
     assert "pytest -q" in contributing
     assert '--cov=project_copilot' in contributing
     assert "python3 -m unittest discover" not in contributing
