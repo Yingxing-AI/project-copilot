@@ -4,7 +4,7 @@ import re
 from dataclasses import dataclass
 
 from project_copilot.memory import MemoryStore
-from project_copilot.validation.report import refresh_validation_report as refresh_validation_report_file
+from project_copilot.validation.report import sync_validation_artifacts
 from project_copilot.workflow.types import WorkflowContext, WorkflowResult
 
 
@@ -21,17 +21,21 @@ def run(context: WorkflowContext) -> WorkflowResult:
     archive_content = _render_archive(entries)
     archive_path = memory.write_session_archive(archive_content)
     reset_path = memory.reset_session_candidates()
-    validation_report_path, _ = refresh_validation_report_file(context.root)
+    snapshot_path, validation_report_path, _ = sync_validation_artifacts(context.root)
 
     return WorkflowResult(
         intent_name=context.intent_name,
         status="success",
-        title="已生成 Session Archive。",
-        summary="已将当日候选事件归档到 Session Archive，重置当前会话缓冲区，并刷新 Validation 派生视图。",
+        title="已生成 Session Archive 并同步验证文件。",
+        summary="已将当日候选事件归档到 Session Archive，重置当前会话缓冲区，并同步刷新验证快照、派生指标和验证报告。",
         details={
             "归档文件": str(archive_path.relative_to(context.root)),
             "候选数量": len(entries),
             "重置缓冲区": str(reset_path.relative_to(context.root)),
+            "验证快照": str(snapshot_path.relative_to(context.root))
+            if snapshot_path and snapshot_path.is_relative_to(context.root)
+            else (str(snapshot_path) if snapshot_path else "未刷新"),
+            "派生指标": str((context.root / ".ai" / "derived" / "metrics.json").relative_to(context.root)),
             "验证汇总": str(validation_report_path.relative_to(context.root))
             if validation_report_path.is_relative_to(context.root)
             else str(validation_report_path),

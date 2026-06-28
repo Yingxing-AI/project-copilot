@@ -10,9 +10,9 @@
 
 | 项目名称 | 开始时间 | 使用天数 | Charter | ADR | Session Archive | Active Candidates | Roadmap | 记忆状态 | README Drift | ADR Governance | Session Quality | Legacy Migration |
 | --- | --- | ---: | --- | ---: | ---: | ---: | --- | --- | --- | --- | --- | --- |
-| 制造业利润管理系统 V1.0 | 2026-06-17 | 6 | 存在 | 3 | 4 | 3 | 存在 | 需要收敛记忆漂移 | 存在漂移 | 治理健康 | 需要治理 | 迁移未完成 |
-| ai-recruitment | 2026-06-18 | 5 | 存在 | 4 | 6 | 0 | 存在 | 需要收敛记忆漂移 | 存在漂移 | 治理健康 | 质量健康 | 迁移未完成 |
-| Project Copilot | 2026-06-19 | 4 | 存在 | 8 | 2 | 0 | 存在 | 需要收敛记忆漂移 | 存在漂移 | 治理健康 | 质量健康 | 迁移未完成 |
+| 制造业利润管理系统 V1.0 | 2026-06-18 | 8 | 存在 | 4 | 6 | 54 | 存在 | 需要收敛记忆漂移 | 存在漂移 | 治理健康 | 需要治理 | 迁移未完成 |
+| Project Copilot | 2026-06-19 | 7 | 存在 | 8 | 2 | 0 | 存在 | 需要收敛记忆漂移 | 已对齐 | 治理健康 | 质量健康 | 迁移未完成 |
+| ai-recruitment | 2026-06-20 | 6 | 存在 | 5 | 8 | 1 | 存在 | 需要收敛记忆漂移 | 存在漂移 | 治理健康 | 质量健康 | 迁移未完成 |
 
 ---
 
@@ -22,21 +22,21 @@
 
 总工作日志：50
 
-总决策：15
+总决策：17
 
-总 ADR：15
+总 ADR：17
 
-总 Session Archive：12
+总 Session Archive：16
 
-总 Active Candidates：3
+总 Active Candidates：55
 
 存在 Charter 的项目：3
 
 存在 Roadmap 的项目：3
 
-总知识沉淀：43
+总知识沉淀：50
 
-README 存在漂移的项目：3
+README 存在漂移的项目：2
 
 ADR Governance 需治理的项目：0
 

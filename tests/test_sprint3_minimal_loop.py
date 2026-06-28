@@ -83,12 +83,13 @@ def test_close_day_workflow(tmp_path: Path) -> None:
     memory.append_session_candidate("Risk Candidate", "当前存在范围膨胀风险。")
     before_worklog = (tmp_path / ".ai" / "WORKLOG.md").read_text(encoding="utf-8")
     before_validation = (tmp_path / ".ai" / "validation.json").read_text(encoding="utf-8")
+    before_report = (tmp_path / "docs" / "validation-report.md").read_text(encoding="utf-8")
 
     result = run_structured_workflow(tmp_path, "今天结束工作")
 
     assert result.intent_name == "close_day"
     assert result.status == "success"
-    assert "Session Archive" in result.title
+    assert "验证文件" in result.title
     archive_files = list((tmp_path / ".ai" / "sessions" / "archive").rglob("*.md"))
     assert archive_files
     archive_text = archive_files[0].read_text(encoding="utf-8")
@@ -100,6 +101,10 @@ def test_close_day_workflow(tmp_path: Path) -> None:
     assert before_worklog == (tmp_path / ".ai" / "WORKLOG.md").read_text(encoding="utf-8")
     assert (tmp_path / ".ai" / "validation.json").read_text(encoding="utf-8") != before_validation
     assert (tmp_path / ".ai" / "derived" / "metrics.json").exists()
+    assert (tmp_path / "docs" / "validation-report.md").read_text(encoding="utf-8") != before_report
+    assert "验证汇总" in result.details
+    assert "验证快照" in result.details
+    assert "派生指标" in result.details
 
 
 def test_record_decision_routes_uncertain_input_to_hypotheses(tmp_path: Path) -> None:

@@ -39,7 +39,7 @@ The result is a narrow but useful support layer that improves continuity without
 
 ## Current State
 
-- Stable release: `v0.3.2`
+- Stable release: `v0.3.3`
 - Python package with CLI entrypoint
 - MIT licensed
 - GitHub Actions CI across Python 3.10, 3.11, and 3.12

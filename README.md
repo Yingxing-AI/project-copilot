@@ -6,7 +6,7 @@ Project Copilot helps Codex remember the project. It does not manage the project
 
 用户只和 Codex 对话。Codex 负责开发，Git 负责版本管理，Project Copilot 负责安装和维护 `.ai/` 项目记忆，让 Codex 持续理解项目使命、MVP 边界、ADR、长期知识和为什么这样做。
 
-当前版本是 v0.3.2：规则驱动、本地运行、不依赖外部 AI API。
+当前版本是 v0.3.3：规则驱动、本地运行、不依赖外部 AI API。
 
 ## Available Today
 
@@ -57,7 +57,7 @@ Stable install with one command:
 curl -LsSf https://raw.githubusercontent.com/Yingxing-AI/project-copilot/main/install.sh | sh
 ```
 
-The install script defaults to the latest stable ref, currently `v0.3.2`.
+The install script defaults to the latest stable ref, currently `v0.3.3`.
 
 Verify the installed CLI:
 

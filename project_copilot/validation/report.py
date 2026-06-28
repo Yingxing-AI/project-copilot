@@ -37,14 +37,20 @@ class ValidationRecord:
 
 
 def refresh_validation_report(root: Path) -> tuple[Path, list[ValidationRecord]]:
+    _, path, records = sync_validation_artifacts(root)
+    return path, records
+
+
+def sync_validation_artifacts(root: Path) -> tuple[Path | None, Path, list[ValidationRecord]]:
     snapshot = collect_validation_snapshot(root)
+    snapshot_path: Path | None = None
     if snapshot:
-        export_validation_snapshot(root, snapshot)
+        snapshot_path = export_validation_snapshot(root, snapshot)
     records = build_validation_records(root)
     path = root / "docs" / "validation-report.md"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(render_validation_report(records), encoding="utf-8")
-    return path, records
+    return snapshot_path, path, records
 
 
 def build_validation_records(root: Path) -> list[ValidationRecord]:

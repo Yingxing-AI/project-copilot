@@ -420,7 +420,7 @@ def render_codex_workflow_doc() -> str:
             "- 结束工作时统一确认并写入",
             "- 重要决策进入 ADR",
             "- MVP 变更前先确认影响",
-            "- 长期记忆或 Session Archive 确认写入后才刷新 Validation Snapshot",
+            "- 结束工作确认写入后，同步刷新 `validation.json`、`derived/metrics.json` 和 `docs/validation-report.md`",
             "- `validation.json` 是可覆盖快照，不是长期事实；`derived/metrics.json` 与其同批刷新",
             "- `docs/validation-report.md` 只是可重建视图，不能反向作为真实记忆来源",
             "",
